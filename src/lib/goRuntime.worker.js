@@ -3,10 +3,9 @@ let ready;
 async function startRuntime(runtimeBase) {
   if (ready) return ready;
   ready = (async () => {
-    // Vite emits inline workers as module workers, where importScripts is not
-    // available. Go's runtime script is still safe to load as a module: it
-    // installs the Go constructor on globalThis and exports nothing.
-    await import(/* @vite-ignore */ `${runtimeBase}go/wasm_exec.js`);
+    // This worker is emitted as a classic IIFE worker (see vite.config.js),
+    // which lets the Go runtime install its global Go constructor directly.
+    importScripts(`${runtimeBase}go/wasm_exec.js`);
     const go = new Go();
     const response = await fetch(`${runtimeBase}go/runner.wasm`);
     if (!response.ok) throw new Error(`Could not load Go runtime (${response.status}).`);
