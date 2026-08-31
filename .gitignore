@@ -1,0 +1,26 @@
+# JavaScript dependencies and package-manager artifacts
+node_modules/
+.npm/
+.bun/
+
+# Vite production output and generated browser Go runtime
+dist/
+public/go/
+
+# Local test/build caches and Go binaries
+.cache/
+coverage/
+*.test
+go-runner/runner
+
+# Environment-specific configuration
+.env
+.env.*
+!.env.example
+
+# Logs and operating-system/editor files
+*.log
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

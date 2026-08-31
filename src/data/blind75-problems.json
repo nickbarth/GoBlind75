@@ -1,0 +1,988 @@
+{
+  "importedAt": "2026-08-31T01:33:18.731Z",
+  "problems": [
+    {
+      "title": "Contains Duplicate",
+      "category": "Arrays & Hashing",
+      "difficulty": "Easy",
+      "id": "duplicate-integer",
+      "statement": "Given an integer array `nums`, return `true` if any value appears **more than once** in the array, otherwise return `false`.\n\n**Example 1:**\n\n```java\nInput: nums = [1, 2, 3, 3]\n\nOutput: true\n```\n\n\n\n**Example 2:**\n\n```java\nInput: nums = [1, 2, 3, 4]\n\nOutput: false\n```\n\n**Constraints:**\n* `0 <= nums.length <= 10^5`\n* `-10^9 <= nums[i] <= 10^9`",
+      "starterCode": "func hasDuplicate(nums []int) bool {\n    \n}\n",
+      "referenceCode": "func hasDuplicate(nums []int) bool {\n\tseen := make(map[int]struct{})\n\tfor _, num := range nums {\n\t\t\tseen[num] = struct{}{}\n\t}\n\treturn len(seen) < len(nums)\n}\n",
+      "customTestCases": [
+        "nums=[1,2,3,3]",
+        "nums=[1,2,3,4]"
+      ]
+    },
+    {
+      "title": "Valid Anagram",
+      "category": "Arrays & Hashing",
+      "difficulty": "Easy",
+      "id": "is-anagram",
+      "statement": "Given two strings `s` and `t`, return `true` if the two strings are anagrams of each other, otherwise return `false`.\n\nTwo strings are **anagrams** if they contain the same characters, with each character appearing the same number of times, regardless of order.\n\n\n\n**Example 1:**\n\n```java\nInput: s = \"racecar\", t = \"carrace\"\n\nOutput: true\n```\n\n\n\n**Example 2:**\n\n```java\nInput: s = \"jar\", t = \"jam\"\n\nOutput: false\n```\n\n\n\n**Example 3:**\n\n```java\nInput: s = \"x\", t = \"x\"\n\nOutput: true\n```\n\n\n\n**Constraints:**\n* `1 <= s.length, t.length <= 5 * 10^4`\n* `s` and `t` consist of lowercase English letters.",
+      "starterCode": "func isAnagram(s string, t string) bool {\n\n}\n",
+      "referenceCode": "func isAnagram(s string, t string) bool {\n    if len(s) != len(t) {\n        return false\n    }\n    \n    countS, countT := make(map[rune]int), make(map[rune]int)\n    \n    for i := range s {\n        countS[rune(s[i])] = 1 + countS[rune(s[i])]\n        countT[rune(t[i])] = 1 + countT[rune(t[i])]\n    }\n    \n    if len(countS) != len(countT) {\n        return false\n    }\n    for k, v := range countS {\n        if countT[k] != v {\n            return false\n        }\n    }\n    return true\n}\n",
+      "customTestCases": [
+        "s=\"racecar\"\nt=\"carrace\"",
+        "s=\"jar\"\nt=\"jam\""
+      ]
+    },
+    {
+      "title": "Two Sum",
+      "category": "Arrays & Hashing",
+      "difficulty": "Easy",
+      "id": "two-integer-sum",
+      "statement": "Given an array of integers `nums` and an integer `target`, return the indices `i` and `j` such that `nums[i] + nums[j] == target` and `i != j`.\n    \nYou may assume that *every* input has exactly one pair of indices `i` and `j` that satisfy the condition.\n\nReturn the answer with the smaller index first. \n\n**Example 1:**\n\n```java\nInput: \nnums = [3,4,5,6], target = 7\n\nOutput: [0,1]\n```\n\nExplanation: `nums[0] + nums[1] == 7`, so we return `[0, 1]`.\n\n**Example 2:**\n\n```java\nInput: nums = [4,5,6], target = 10\n\nOutput: [0,2]\n```\n\n**Example 3:**\n\n```java\nInput: nums = [5,5], target = 10\n\nOutput: [0,1]\n```\n\n**Constraints:**\n* `2 <= nums.length <= 1000`\n* `-10,000,000 <= nums[i] <= 10,000,000`\n* `-10,000,000 <= target <= 10,000,000`\n* **Only one valid answer exists.**",
+      "starterCode": "func twoSum(nums []int, target int) []int {\n    \n}\n",
+      "referenceCode": "func twoSum(nums []int, target int) []int {\n\tprevMap := make(map[int]int)\n\n\tfor i, n := range nums {\n\t\t\tdiff := target - n\n\t\t\tif j, found := prevMap[diff]; found {\n\t\t\t\t\treturn []int{j, i}\n\t\t\t}\n\t\t\tprevMap[n] = i\n\t}\n\treturn []int{}\n}",
+      "customTestCases": [
+        "nums=[3,4,5,6]\ntarget=7",
+        "nums=[4,5,6]\ntarget=10"
+      ]
+    },
+    {
+      "title": "Group Anagrams",
+      "category": "Arrays & Hashing",
+      "difficulty": "Medium",
+      "id": "anagram-groups",
+      "statement": "Given an array of strings `strs`, group all *anagrams* together into sublists. You may return the output in **any order**.\n\nAn **anagram** is a string that contains the exact same characters as another string, but the order of the characters can be different.\n\n**Example 1:**\n\n```java\nInput: strs = [\"act\",\"pots\",\"tops\",\"cat\",\"stop\",\"hat\"]\n\nOutput: [[\"hat\"],[\"act\", \"cat\"],[\"stop\", \"pots\", \"tops\"]]\n```\n\n**Example 2:**\n\n```java\nInput: strs = [\"x\"]\n\nOutput: [[\"x\"]]\n```\n\n**Example 3:**\n\n```java\nInput: strs = [\"\"]\n\nOutput: [[\"\"]]\n```\n\n**Constraints:**\n* `1 <= strs.length <= 10000`.\n* `0 <= strs[i].length <= 100`\n* `strs[i]` is made up of lowercase English letters.",
+      "starterCode": "func groupAnagrams(strs []string) [][]string {\n\n}\n",
+      "referenceCode": "func groupAnagrams(strs []string) [][]string {\n\tans := make(map[[26]int][]string)\n\tfor _, s := range strs {\n\t\tcount := [26]int{}\n\t\tfor _, c := range s {\n\t\t\tcount[c-'a']++\n\t\t}\n\t\tans[count] = append(ans[count], s)\n\t}\n\t\n\tresult := make([][]string, 0, len(ans))\n\tfor _, group := range ans {\n\t\tresult = append(result, group)\n\t}\n\treturn result\n}\n",
+      "customTestCases": [
+        "strs=[\"act\",\"pots\",\"tops\",\"cat\",\"stop\",\"hat\"]",
+        "strs=[\"x\"]"
+      ]
+    },
+    {
+      "title": "Top K Frequent Elements",
+      "category": "Arrays & Hashing",
+      "difficulty": "Medium",
+      "id": "top-k-elements-in-list",
+      "statement": "Given an integer array `nums` and an integer `k`, return the `k` most frequent elements within the array.\n\nThe test cases are generated such that the answer is always **unique**.\n\nYou may return the output in **any order**.\n\n**Example 1:**\n\n```java\nInput: nums = [1,2,2,3,3,3], k = 2\n\nOutput: [2,3]\n```\n\n**Example 2:**\n\n```java\nInput: nums = [7,7], k = 1\n\nOutput: [7]\n```\n\n**Constraints:**\n* `1 <= nums.length <= 10^4`.\n* `-1000 <= nums[i] <= 1000`\n* `1 <= k <= number of distinct elements in nums`.",
+      "starterCode": "func topKFrequent(nums []int, k int) []int {\n\n}\n",
+      "referenceCode": "func topKFrequent(nums []int, k int) []int {\n\tcount := make(map[int]int)\n\tfreq := make([][]int, len(nums)+1)\n\t\n\tfor _, n := range nums {\n\t\tcount[n] = 1 + count[n]\n\t}\n\t\n\tfor n, c := range count {\n\t\tfreq[c] = append(freq[c], n)\n\t}\n\t\n\tres := []int{}\n\tfor i := len(freq) - 1; i > 0; i-- {\n\t\tfor _, n := range freq[i] {\n\t\t\tres = append(res, n)\n\t\t\tif len(res) == k {\n\t\t\t\treturn res\n\t\t\t}\n\t\t}\n\t}\n\treturn res\n}\n",
+      "customTestCases": [
+        "nums=[1,2,2,3,3,3]\nk=2",
+        "nums=[7,7]\nk=1"
+      ]
+    },
+    {
+      "title": "Encode and Decode Strings",
+      "category": "Arrays & Hashing",
+      "difficulty": "Medium",
+      "id": "string-encode-and-decode",
+      "statement": "Design an algorithm to encode **a list of strings** to **a string**. The **encoded string** is then sent over the network and is **decoded** back to the **original list** of strings.\n\n**Machine 1 (sender)** has the function:\n\n```java\nString encode(List<String> strs) {\n    // ... your code\n    return encoded_string;\n}\n```\n\n**Machine 2 (receiver)** has the function:\n\n```java\nList<String> decode(String encoded_string) {\n    // ... your code\n    return decoded_strs;\n}\n```\n\nSo **Machine 1** does:\n```java\nString encoded_string = encode(strs);\n```\n\nand **Machine 2** does:\n```java\nList<String> decoded_strs = decode(encoded_string);\n```\n\n`decoded_strs` in Machine 2 should be the **same** as the input `strs` in Machine 1.\n\nImplement the `encode` and `decode` methods.\n\n**Example 1:**\n\n```java\nInput: strs = [\"Hello\",\"World\"]\n\nOutput: [\"Hello\",\"World\"]\n```\n\n**Explanation:**\n```java\nSolution solution = new Solution();\nString encoded_string = solution.encode(strs);\n\n// Machine 1 ---encoded_string---> Machine 2\n\nList<String> decoded_strs = solution.decode(encoded_string);\n```\n\n\n\n**Example 2:**\n```java\nInput: strs = [\"\"]\n\nOutput: [\"\"]\n```\n\n\n\n**Constraints:**\n* `0 <= strs.length < 100`\n* `0 <= strs[i].length < 200`\n* `strs[i]` contains any possible characters out of `256` valid ASCII characters.\n\n\n\n**Follow up:** Could you write a generalized algorithm to work on any possible set of characters?",
+      "starterCode": "type Solution struct{}\n\nfunc (s *Solution) Encode(strs []string) string {\n\n}\n\nfunc (s *Solution) Decode(encoded string) []string {\n\n}\n",
+      "referenceCode": "type Solution struct{}\n\nfunc (s *Solution) Encode(strs []string) string {\n\tvar res strings.Builder\n\tfor _, str := range strs {\n\t\tres.WriteString(strconv.Itoa(len(str)))\n\t\tres.WriteByte('#')\n\t\tres.WriteString(str)\n\t}\n\treturn res.String()\n}\n\nfunc (s *Solution) Decode(encoded string) []string {\n\tres := []string{}\n\ti := 0\n\tfor i < len(encoded) {\n\t\tj := i\n\t\tfor encoded[j] != '#' {\n\t\t\tj++\n\t\t}\n\t\tlength, _ := strconv.Atoi(encoded[i:j])\n\t\ti = j + 1\n\t\tres = append(res, encoded[i:i+length])\n\t\ti += length\n\t}\n\treturn res\n}\n",
+      "customTestCases": [
+        "strs=[\"Hello\",\"World\"]",
+        "strs=[\"\"]"
+      ]
+    },
+    {
+      "title": "Product of Array Except Self",
+      "category": "Arrays & Hashing",
+      "difficulty": "Medium",
+      "id": "products-of-array-discluding-self",
+      "statement": "Given an integer array `nums`, return an array `output` where `output[i]` is the product of all the elements of `nums` except `nums[i]`.\n\nEach product is **guaranteed** to fit in a **32-bit** integer.   \n\nFollow-up: Could you solve it in $O(n)$ time without using the division operation?\n\n**Example 1:**\n\n```java\nInput: nums = [1,2,4,6]\n\nOutput: [48,24,12,8]\n```\n\n**Example 2:**\n\n```java\nInput: nums = [-1,0,1,2,3]\n\nOutput: [0,-6,0,0,0]\n```\n\n**Constraints:**\n* `2 <= nums.length <= 100,000`\n* `-30 <= nums[i] <= 30`\n* The product of any prefix or suffix of `nums` is **guaranteed** to fit in a **32-bit** integer.",
+      "starterCode": "func productExceptSelf(nums []int) []int {\n\n}\n",
+      "referenceCode": "func productExceptSelf(nums []int) []int {\n\tres := make([]int, len(nums))\n\tfor i := range res {\n\t\tres[i] = 1\n\t}\n\tfor i := 1; i < len(nums); i++ {\n\t\tres[i] = res[i-1] * nums[i-1]\n\t}\n\tpostfix := 1\n\tfor i := len(nums) - 1; i >= 0; i-- {\n\t\tres[i] *= postfix\n\t\tpostfix *= nums[i]\n\t}\n\treturn res\n}\n",
+      "customTestCases": [
+        "nums=[1,2,4,6]",
+        "nums=[-1,0,1,2,3]"
+      ]
+    },
+    {
+      "title": "Longest Consecutive Sequence",
+      "category": "Arrays & Hashing",
+      "difficulty": "Medium",
+      "id": "longest-consecutive-sequence",
+      "statement": "Given an array of integers `nums`, return *the length* of the longest consecutive sequence of elements that can be formed.\n\nA *consecutive sequence* is a sequence of elements in which each element is exactly `1` greater than the previous element. The elements do *not* have to be consecutive in the original array.\n\nYou must write an algorithm that runs in `O(n)` time.\n\n**Example 1:**\n\n```java\nInput: nums = [2,20,4,10,3,4,5]\n\nOutput: 4\n```\n\nExplanation: The longest consecutive sequence is `[2, 3, 4, 5]`.\n\n**Example 2:**\n\n```java\nInput: nums = [0,3,2,5,4,6,1,1]\n\nOutput: 7\n```\n\n**Constraints:**\n* `0 <= nums.length <= 100,000`\n* `-10^9 <= nums[i] <= 10^9`",
+      "starterCode": "func longestConsecutive(nums []int) int {\n\n}\n",
+      "referenceCode": "func longestConsecutive(nums []int) int {\n\tnumSet := make(map[int]bool)\n\tfor _, n := range nums {\n\t\tnumSet[n] = true\n\t}\n\tlongest := 0\n\n\tfor n := range numSet {\n\t\tif !numSet[n-1] {\n\t\t\tlength := 1\n\t\t\tfor numSet[n+length] {\n\t\t\t\tlength++\n\t\t\t}\n\t\t\tlongest = max(length, longest)\n\t\t}\n\t}\n\treturn longest\n}\n\nfunc max(a, b int) int {\n\tif a > b {\n\t\treturn a\n\t}\n\treturn b\n}\n",
+      "customTestCases": [
+        "nums=[2,20,4,10,3,4,5]",
+        "nums=[0,3,2,5,4,6,1,1]"
+      ]
+    },
+    {
+      "title": "Valid Palindrome",
+      "category": "Two Pointers",
+      "difficulty": "Easy",
+      "id": "is-palindrome",
+      "statement": "Given a string `s`, return `true` if it is a **palindrome**, otherwise return `false`.\n    \nA **palindrome** is a string that reads the same forward and backward. It is also case-insensitive and ignores all non-alphanumeric characters.\n\n**Note:** Alphanumeric characters consist of letters `(A-Z, a-z)` and numbers `(0-9)`.\n\n**Example 1:**\n\n```java\nInput: s = \"Was it a car or a cat I saw?\"\n\nOutput: true\n```\n\nExplanation: After considering only alphanumerical characters we have \"wasitacaroracatisaw\", which is a palindrome.\n\n**Example 2:**\n\n```java\nInput: s = \"tab a cat\"\n\nOutput: false\n```\n\nExplanation: \"tabacat\" is not a palindrome.\n\n**Constraints:**\n* `1 <= s.length <= 1000`\n* `s` is made up of only printable ASCII characters.",
+      "starterCode": "func isPalindrome(s string) bool {\n\n}\n",
+      "referenceCode": "func isPalindrome(s string) bool {\n\tl, r := 0, len(s)-1\n\tfor l < r {\n\t\tfor l < r && !alphaNum(s[l]) {\n\t\t\tl++\n\t\t}\n\t\tfor r > l && !alphaNum(s[r]) {\n\t\t\tr--\n\t\t}\n\t\tif strings.ToLower(string(s[l])) != strings.ToLower(string(s[r])) {\n\t\t\treturn false\n\t\t}\n\t\tl, r = l+1, r-1\n\t}\n\treturn true\n}\n\nfunc alphaNum(c byte) bool {\n\treturn ('A' <= c && c <= 'Z') ||\n\t\t('a' <= c && c <= 'z') ||\n\t\t('0' <= c && c <= '9')\n}\n",
+      "customTestCases": [
+        "s=\"Was it a car or a cat I saw?\"",
+        "s=\"tab a cat\""
+      ]
+    },
+    {
+      "title": "3Sum",
+      "category": "Two Pointers",
+      "difficulty": "Medium",
+      "id": "three-integer-sum",
+      "statement": "Given an integer array `nums`, return all the triplets `[nums[i], nums[j], nums[k]]` where `nums[i] + nums[j] + nums[k] == 0`, and the indices `i`, `j` and `k` are all distinct.\n\nThe output should *not* contain any duplicate triplets. You may return the output and the triplets in **any order**.\n\n**Example 1:**\n\n```java\nInput: nums = [-1,0,1,2,-1,-4]\n\nOutput: [[-1,-1,2],[-1,0,1]]\n```\n\nExplanation:\n`nums[0] + nums[1] + nums[2] = (-1) + 0 + 1 = 0.`\n`nums[1] + nums[2] + nums[4] = 0 + 1 + (-1) = 0.`\n`nums[0] + nums[3] + nums[4] = (-1) + 2 + (-1) = 0.`\nThe distinct triplets are `[-1,0,1]` and `[-1,-1,2]`.\n\n**Example 2:**\n\n```java\nInput: nums = [0,1,1]\n\nOutput: []\n```\n\nExplanation: The only possible triplet does not sum up to 0.\n\n**Example 3:**\n\n```java\nInput: nums = [0,0,0]\n\nOutput: [[0,0,0]]\n```\n\nExplanation: The only possible triplet sums up to 0.\n\n\n**Constraints:**\n* `3 <= nums.length <= 3000`\n* `-10^5 <= nums[i] <= 10^5`",
+      "starterCode": "func threeSum(nums []int) [][]int {\n\n}\n",
+      "referenceCode": "func threeSum(nums []int) [][]int {\n\tres := [][]int{}\n\tsort.Ints(nums)\n\tfor i := 0; i < len(nums); i++ {\n\t\ta := nums[i]\n\t\tif a > 0 {\n\t\t\tbreak\n\t\t}\n\t\tif i > 0 && a == nums[i-1] {\n\t\t\tcontinue\n\t\t}\n\t\tl, r := i+1, len(nums)-1\n\t\tfor l < r {\n\t\t\tthreeSum := a + nums[l] + nums[r]\n\t\t\tif threeSum > 0 {\n\t\t\t\tr--\n\t\t\t} else if threeSum < 0 {\n\t\t\t\tl++\n\t\t\t} else {\n\t\t\t\tres = append(res, []int{a, nums[l], nums[r]})\n\t\t\t\tl++\n\t\t\t\tr--\n\t\t\t\tfor l < r && nums[l] == nums[l-1] {\n\t\t\t\t\tl++\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n\treturn res\n}\n",
+      "customTestCases": [
+        "nums=[-1,0,1,2,-1,-4]",
+        "nums=[0,1,1]"
+      ]
+    },
+    {
+      "title": "Container With Most Water",
+      "category": "Two Pointers",
+      "difficulty": "Medium",
+      "id": "max-water-container",
+      "statement": "You are given an integer array `heights` where `heights[i]` represents the height of the $i^{th}$ bar.\n\nYou may choose any two bars to form a container. Return the *maximum* amount of water a container can store.\n\n\n\n**Example 1:**\n\n```java\nInput: height = [1,7,2,5,4,7,3,6]\n\nOutput: 36\n```\n\nExplanation: The bars at indices `1` and `7` have heights `7` and `6`. The container has width `7 - 1 = 6` and height `min(7, 6) = 6`, so it can store `6 * 6 = 36` units of water. This is the maximum possible area.\n\n\n\n**Example 2:**\n\n```java\nInput: height = [2,2,2]\n\nOutput: 4\n```\n\n\n\n**Constraints:**\n* `2 <= height.length <= 100,000`\n* `0 <= height[i] <= 10,000`",
+      "starterCode": "func maxArea(heights []int) int {\n\n}\n",
+      "referenceCode": "func maxArea(heights []int) int {\n\tl, r := 0, len(heights)-1\n\tres := 0\n\tfor l < r {\n\t\tres = max(res, min(heights[l], heights[r])*(r-l))\n\t\tif heights[l] < heights[r] {\n\t\t\tl++\n\t\t} else if heights[r] <= heights[l] {\n\t\t\tr--\n\t\t}\n\t}\n\n\treturn res\n}\n",
+      "customTestCases": [
+        "height=[1,7,2,5,4,7,3,6]",
+        "height=[2,2,2]"
+      ]
+    },
+    {
+      "title": "Best Time to Buy And Sell Stock",
+      "category": "Sliding Window",
+      "difficulty": "Easy",
+      "id": "buy-and-sell-crypto",
+      "statement": "You are given an integer array `prices` where `prices[i]` is the price of NeetCoin on the `ith` day.\n\nYou may choose a **single day** to buy one NeetCoin and choose a **different day in the future** to sell it.\n\nReturn the maximum profit you can achieve. You may choose to **not make any transactions**, in which case the profit would be `0`.\n\n**Example 1:**\n\n```java\nInput: prices = [10,1,5,6,7,1]\n\nOutput: 6\n```\nExplanation: Buy `prices[1]` and sell `prices[4]`, `profit = 7 - 1 = 6`.\n\n**Example 2:**\n\n```java\nInput: prices = [10,8,7,5,2]\n\nOutput: 0\n```\n\nExplanation: No profitable transactions can be made, thus the max profit is 0.\n\n**Constraints:**\n* `1 <= prices.length <= 100`\n* `0 <= prices[i] <= 100`",
+      "starterCode": "func maxProfit(prices []int) int {\n\n}\n",
+      "referenceCode": "func maxProfit(prices []int) int {\n\tres := 0\n\n\tlowest := prices[0]\n\tfor _, price := range prices {\n\t\tif price < lowest {\n\t\t\tlowest = price\n\t\t}\n\t\tres = max(res, price-lowest)\n\t}\n\treturn res\n}\n",
+      "customTestCases": [
+        "prices=[7,1,5,3,6,4]",
+        "prices=[7,6,4,3,1]"
+      ]
+    },
+    {
+      "title": "Longest Substring Without Repeating Characters",
+      "category": "Sliding Window",
+      "difficulty": "Medium",
+      "id": "longest-substring-without-duplicates",
+      "statement": "Given a string `s`, find the *length of the longest substring* without duplicate characters.\n\nA **substring** is a contiguous sequence of characters within a string.\n\n\n\n**Example 1:**\n\n```java\nInput: s = \"zxyzxyz\"\n\nOutput: 3\n```\n\nExplanation: The string `\"xyz\"` is the longest without duplicate characters.\n\n\n\n**Example 2:**\n\n```java\nInput: s = \"xxxx\"\n\nOutput: 1\n```\n\n\n\n**Constraints:**\n* `0 <= s.length <= 50,000`\n* `s` may consist of printable ASCII characters.",
+      "starterCode": "func lengthOfLongestSubstring(s string) int {\n\n}\n",
+      "referenceCode": "func lengthOfLongestSubstring(s string) int {\n\tcharSet := make(map[byte]bool)\n\tl := 0\n\tres := 0\n\tfor r := 0; r < len(s); r++ {\n\t\tfor charSet[s[r]] {\n\t\t\tdelete(charSet, s[l])\n\t\t\tl++\n\t\t}\n\t\tcharSet[s[r]] = true\n\t\tres = max(res, r-l+1)\n\t}\n\treturn res\n}\n",
+      "customTestCases": [
+        "s=\"abcabcbb\"",
+        "s=\"bbbbb\"",
+        "s=\"pwwkew\""
+      ]
+    },
+    {
+      "title": "Longest Repeating Character Replacement",
+      "category": "Sliding Window",
+      "difficulty": "Medium",
+      "id": "longest-repeating-substring-with-replacement",
+      "statement": "You are given a string `s` consisting of only uppercase english characters and an integer `k`. You can choose up to `k` characters of the string and replace them with any other uppercase English character.\n\nAfter performing at most `k` replacements, return the length of the longest substring which contains only one distinct character.\n\n**Example 1:**\n\n```java\nInput: s = \"XYYX\", k = 2\n\nOutput: 4\n```\n\nExplanation: Either replace the 'X's with 'Y's, or replace the 'Y's with 'X's.\n\n**Example 2:**\n\n```java\nInput: s = \"AAABABB\", k = 1\n\nOutput: 5\n```\n\n**Constraints:**\n* `1 <= s.length <= 100,000`\n* `0 <= k <= s.length`\n* `s` consists of only uppercase english characters.",
+      "starterCode": "func characterReplacement(s string, k int) int {\n\n}\n",
+      "referenceCode": "func characterReplacement(s string, k int) int {\n\tcount := make(map[byte]int)\n\n\tl := 0\n\tmaxf := 0\n\tr := 0\n\tfor r = 0; r < len(s); r++ {\n\t\tcount[s[r]] = 1 + count[s[r]]\n\t\tmaxf = max(maxf, count[s[r]])\n\t\tif (r-l+1)-maxf > k {\n\t\t\tcount[s[l]]--\n\t\t\tl++\n\t\t}\n\t}\n\treturn r - l\n}\n",
+      "customTestCases": [
+        "s=\"XYYX\"\nk=2",
+        "s=\"AAABABB\"\nk=1"
+      ]
+    },
+    {
+      "title": "Minimum Window Substring",
+      "category": "Sliding Window",
+      "difficulty": "Hard",
+      "id": "minimum-window-with-characters",
+      "statement": "Given two strings `s` and `t`, return the shortest **substring** of `s` such that every character in `t`, including duplicates, is present in the substring. If such a substring does not exist, return an empty string `\"\"`.\n\nYou may assume that the correct output is always unique.\n\n**Example 1:**\n\n```java\nInput: s = \"OUZODYXAZV\", t = \"XYZ\"\n\nOutput: \"YXAZ\"\n```\n\nExplanation: `\"YXAZ\"` is the shortest substring that includes `\"X\"`, `\"Y\"`, and `\"Z\"` from string `t`.\n\n**Example 2:**\n\n```java\nInput: s = \"xyz\", t = \"xyz\"\n\nOutput: \"xyz\"\n```\n\n**Example 3:**\n\n```java\nInput: s = \"x\", t = \"xy\"\n\nOutput: \"\"\n```\n\n**Constraints:**\n* `1 <= s.length <= 100,000`\n* `1 <= t.length <= 100,000`\n* `s` and `t` consist of uppercase and lowercase English letters.",
+      "starterCode": "func minWindow(s string, t string) string {\n    \n}\n",
+      "referenceCode": "func minWindow(s string, t string) string {\n    if t == \"\" {\n        return \"\"\n    }\n\n    countT := make(map[rune]int)\n    window := make(map[rune]int)\n\n    for _, c := range t {\n        countT[c]++\n    }\n\n    have, need := 0, len(countT)\n    res := []int{-1, -1}\n    resLen := math.Inf(1)\n    l := 0\n\n    for r, c := range s {\n        window[c]++\n\n        if val, ok := countT[c]; ok && window[c] == val {\n            have++\n        }\n\n        for have == need {\n            if float64(r-l+1) < resLen {\n                res[0], res[1] = l, r\n                resLen = float64(r - l + 1)\n            }\n\n            leftChar := rune(s[l])\n            window[leftChar]--\n            if val, ok := countT[leftChar]; ok && window[leftChar] < val {\n                have--\n            }\n            l++\n        }\n    }\n\n    if resLen == math.Inf(1) {\n        return \"\"\n    }\n    return s[res[0] : res[1]+1]\n}\n",
+      "customTestCases": [
+        "s=\"OUZODYXAZV\"\nt=\"XYZ\"",
+        "s=\"xyz\"\nt=\"xyz\"",
+        "s=\"x\"\nt=\"xy\""
+      ]
+    },
+    {
+      "title": "Valid Parentheses",
+      "category": "Stack",
+      "difficulty": "Easy",
+      "id": "validate-parentheses",
+      "statement": "You are given a string `s` consisting of the following characters: `'('`, `')'`, `'{'`, `'}'`, `'['` and `']'`.\n\nThe input string `s` is valid if and only if:\n\n1. Every open bracket is closed by the same type of close bracket.\n2. Open brackets are closed in the correct order.\n3. Every close bracket has a corresponding open bracket of the same type.\n\nReturn `true` if `s` is a valid string, and `false` otherwise.\n\n**Example 1:**\n\n```java\nInput: s = \"[]\"\n\nOutput: true\n```\n\n**Example 2:**\n\n```java\nInput: s = \"([{}])\"\n\nOutput: true\n```\n\n**Example 3:**\n\n```java\nInput: s = \"[(])\"\n\nOutput: false\n```\n\nExplanation: The brackets are not closed in the correct order.\n\n**Constraints:**\n* `1 <= s.length <= 1000`",
+      "starterCode": "func isValid(s string) bool {\n    \n}\n",
+      "referenceCode": "func isValid(str string) bool {\n\tMap := map[rune]rune{')': '(', ']': '[', '}': '{'}\n\tstack := []rune{}\n\n\tfor _, c := range str {\n\t\tif _, ok := Map[c]; !ok {\n\t\t\tstack = append(stack, c)\n\t\t\tcontinue\n\t\t}\n\t\tif len(stack) == 0 || stack[len(stack)-1] != Map[c] {\n\t\t\treturn false\n\t\t}\n\t\tstack = stack[:len(stack)-1]\n\t}\n\n\treturn len(stack) == 0\n}\n",
+      "customTestCases": [
+        "s=\"[]\"",
+        "s=\"([{}])\""
+      ]
+    },
+    {
+      "title": "Find Minimum In Rotated Sorted Array",
+      "category": "Binary Search",
+      "difficulty": "Medium",
+      "id": "find-minimum-in-rotated-sorted-array",
+      "statement": "You are given an array of length `n` which was originally sorted in ascending order. It has now been **rotated** between `1` and `n` times. For example, the array `nums = [1,2,3,4,5,6]` might become:\n\n* `[3,4,5,6,1,2]` if it was rotated `4` times.\n* `[1,2,3,4,5,6]` if it was rotated `6` times.\n\nNotice that rotating the array `4` times moves the last four elements of the array to the beginning. Rotating the array `6` times produces the original array.\n\nAssuming all elements in the rotated sorted array `nums` are **unique**, return the minimum element of this array.\n\nA solution that runs in `O(n)` time is trivial, can you write an algorithm that runs in `O(log n) time`?\n\n**Example 1:**\n\n```java\nInput: nums = [3,4,5,6,1,2]\n\nOutput: 1\n```\n\n**Example 2:**\n\n```java\nInput: nums = [4,5,0,1,2,3]\n\nOutput: 0\n```\n\n**Example 3:**\n\n```java\nInput: nums = [4,5,6,7]\n\nOutput: 4\n```\n\n**Constraints:**\n* `1 <= nums.length <= 1000`\n* `-1000 <= nums[i] <= 1000`",
+      "starterCode": "func findMin(nums []int) int {\n\n}\n",
+      "referenceCode": "func findMin(nums []int) int {\n\tstart, end := 0, len(nums)-1\n\tcurrMin := math.MaxInt32\n\n\tfor start < end {\n\t\tmid := start + (end-start)/2\n\t\tcurrMin = min(currMin, nums[mid])\n\n\t\t// right has the min\n\t\tif nums[mid] > nums[end] {\n\t\t\tstart = mid + 1\n\n\t\t\t// left has the min\n\t\t} else {\n\t\t\tend = mid - 1\n\n\t\t}\n\t}\n\n\treturn min(currMin, nums[start])\n}\n",
+      "customTestCases": [
+        "nums=[3,4,5,6,1,2]",
+        "nums=[4,5,0,1,2,3]"
+      ]
+    },
+    {
+      "title": "Search In Rotated Sorted Array",
+      "category": "Binary Search",
+      "difficulty": "Medium",
+      "id": "find-target-in-rotated-sorted-array",
+      "statement": "You are given an array of length `n` which was originally sorted in ascending order. It has now been **rotated** between `1` and `n` times. For example, the array `nums = [1,2,3,4,5,6]` might become:\n\n* `[3,4,5,6,1,2]` if it was rotated `4` times.\n* `[1,2,3,4,5,6]` if it was rotated `6` times.\n\nGiven the rotated sorted array `nums` and an integer `target`, return the index of `target` within `nums`, or `-1` if it is not present.\n\nYou may assume all elements in the sorted rotated array `nums` are **unique**,\n\nA solution that runs in `O(n)` time is trivial, can you write an algorithm that runs in `O(log n) time`?\n\n**Example 1:**\n\n```java\nInput: nums = [3,4,5,6,1,2], target = 1\n\nOutput: 4\n```\n\n**Example 2:**\n\n```java\nInput: nums = [3,5,6,0,1,2], target = 4\n\nOutput: -1\n```\n\n**Constraints:**\n* `1 <= nums.length <= 1000`\n* `-1000 <= nums[i] <= 1000`\n* `-1000 <= target <= 1000`\n* All values of `nums` are **unique**.\n* `nums` is an ascending array that is possibly rotated.",
+      "starterCode": "func search(nums []int, target int) int {\n\n}\n",
+      "referenceCode": "func search(nums []int, target int) int {\n\tl, r := 0, len(nums)-1\n\n\tfor l <= r {\n\t\tmid := (l + r) / 2\n\t\tif target == nums[mid] {\n\t\t\treturn mid\n\t\t}\n\n\t\tif nums[l] <= nums[mid] {\n\t\t\tif target > nums[mid] || target < nums[l] {\n\t\t\t\tl = mid + 1\n\t\t\t} else {\n\t\t\t\tr = mid - 1\n\t\t\t}\n\n\t\t} else {\n\t\t\tif target < nums[mid] || target > nums[r] {\n\t\t\t\tr = mid - 1\n\t\t\t} else {\n\t\t\t\tl = mid + 1\n\t\t\t}\n\t\t}\n\t}\n\n\treturn -1\n}\n",
+      "customTestCases": [
+        "nums=[3,4,5,6,1,2]\ntarget=1",
+        "nums=[3,5,6,0,1,2]\ntarget=4"
+      ]
+    },
+    {
+      "title": "Reverse Linked List",
+      "category": "Linked List",
+      "difficulty": "Easy",
+      "id": "reverse-a-linked-list",
+      "statement": "Given the beginning of a singly linked list `head`, reverse the list, and return the new beginning of the list.\n\n**Example 1:**\n\n```java\nInput: head = [0,1,2,3]\n\nOutput: [3,2,1,0]\n```\n\n**Example 2:**\n\n```java\nInput: head = []\n\nOutput: []\n```\n\n**Constraints:**\n* `0 <= The length of the list <= 1000`.\n* `-1000 <= Node.val <= 1000`",
+      "starterCode": "/**\n * Definition for singly-linked list.\n * type ListNode struct {\n *     Val int\n *     Next *ListNode\n * }\n */\n\nfunc reverseList(head *ListNode) *ListNode {\n    \n}\n",
+      "referenceCode": "/**\n * Definition for singly-linked list.\n * type ListNode struct {\n *     Val int\n *     Next *ListNode\n * }\n */\n\nfunc reverseList(head *ListNode) *ListNode {\n    var prev *ListNode = nil\n    curr := head\n    \n    for curr != nil {\n        temp := curr.Next\n        curr.Next = prev\n        prev = curr\n        curr = temp\n    }\n    \n    return prev\n}\n",
+      "customTestCases": [
+        "head=[0,1,2,3]",
+        "head=[]"
+      ]
+    },
+    {
+      "title": "Merge Two Sorted Lists",
+      "category": "Linked List",
+      "difficulty": "Easy",
+      "id": "merge-two-sorted-linked-lists",
+      "statement": "You are given the heads of two sorted linked lists `list1` and `list2`.\n\nMerge the two lists into one **sorted** linked list and return the head of the new sorted linked list.\n\nThe new list should be made up of nodes from `list1` and `list2`.\n\n**Example 1:**\n\n```java\nInput: list1 = [1,2,4], list2 = [1,3,5]\n\nOutput: [1,1,2,3,4,5]\n```\n\n**Example 2:**\n\n```java\nInput: list1 = [], list2 = [1,2]\n\nOutput: [1,2]\n```\n\n**Example 3:**\n\n```java\nInput: list1 = [], list2 = []\n\nOutput: []\n```\n\n**Constraints:**\n* `0 <= The length of the each list <= 100`.\n* `-100 <= Node.val <= 100`",
+      "starterCode": "/**\n * Definition for singly-linked list.\n * type ListNode struct {\n *     Val int\n *     Next *ListNode\n * }\n */\n\nfunc mergeTwoLists(list1 *ListNode, list2 *ListNode) *ListNode {\n    \n}\n",
+      "referenceCode": "/**\n * Definition for singly-linked list.\n * type ListNode struct {\n *     Val int\n *     Next *ListNode\n * }\n */\n\nfunc mergeTwoLists(list1 *ListNode, list2 *ListNode) *ListNode {\n    dummy := &ListNode{}\n    node := dummy\n\n    for list1 != nil && list2 != nil {\n        if list1.Val < list2.Val {\n            node.Next = list1\n            list1 = list1.Next\n        } else {\n            node.Next = list2\n            list2 = list2.Next\n        }\n        node = node.Next\n    }\n\n    if list1 != nil {\n        node.Next = list1\n    } else {\n        node.Next = list2\n    }\n\n    return dummy.Next\n}\n",
+      "customTestCases": [
+        "list1=[1,2,4]\nlist2=[1,3,5]",
+        "list1=[]\nlist2=[1,2]"
+      ]
+    },
+    {
+      "title": "Linked List Cycle",
+      "category": "Linked List",
+      "difficulty": "Easy",
+      "id": "linked-list-cycle-detection",
+      "statement": "Given the beginning of a linked list `head`, return `true` if there is a cycle in the linked list. Otherwise, return `false`.\n\nThere is a cycle in a linked list if at least one node in the list can be visited again by following the `next` pointer.\n\nInternally, `index` determines the index of the beginning of the cycle, if it exists. The tail node of the list will set it's `next` pointer to the `index-th` node. If `index = -1`, then the tail node points to `null` and no cycle exists.\n\n**Note:** `index` is **not** given to you as a parameter.\n\n**Example 1:**\n\n```java\nInput: head = [1,2,3,4], index = 1\n\nOutput: true\n```\n\nExplanation: There is a cycle in the linked list, where the tail connects to the 1st node (0-indexed).\n\n**Example 2:**\n\n```java\nInput: head = [1,2], index = -1\n\nOutput: false\n```\n\n**Constraints:**\n* `0 <= Length of the list <= 1000`.\n* `-1000 <= Node.val <= 1000`\n* `index` is `-1` or a valid index in the linked list.",
+      "starterCode": "/**\n * Definition for singly-linked list.\n * type ListNode struct {\n *     Val int\n *     Next *ListNode\n * }\n */\n\nfunc hasCycle(head *ListNode) bool {\n    \n}\n",
+      "referenceCode": "/**\n * Definition for singly-linked list.\n * type ListNode struct {\n *     Val int\n *     Next *ListNode\n * }\n */\n\nfunc hasCycle(head *ListNode) bool {\n    slow, fast := head, head\n    \n    for fast != nil && fast.Next != nil {\n        slow = slow.Next\n        fast = fast.Next.Next\n        if slow == fast {\n            return true\n        }\n    }\n    \n    return false\n}\n",
+      "customTestCases": [
+        "head=[1,2,3,4]\nindex=1",
+        "head=[1,2]\nindex=-1"
+      ]
+    },
+    {
+      "title": "Reorder List",
+      "category": "Linked List",
+      "difficulty": "Medium",
+      "id": "reorder-linked-list",
+      "statement": "You are given the head of a singly linked-list.\n    \nThe positions of a linked list of `length = 7` for example, can intially be represented as:\n\n`[0, 1, 2, 3, 4, 5, 6]`\n\nReorder the nodes of the linked list to be in the following order:\n\n`[0, 6, 1, 5, 2, 4, 3]`\n\nNotice that in the general case for a list of `length = n` the nodes are reordered to be in the following order:\n\n`[0, n-1, 1, n-2, 2, n-3, ...]`\n\nYou may not modify the values in the list's nodes, but instead you must reorder the nodes themselves.\n\n**Example 1:**\n\n```java\nInput: head = [2,4,6,8]\n\nOutput: [2,8,4,6]\n```\n\n**Example 2:**\n\n```java\nInput: head = [2,4,6,8,10]\n\nOutput: [2,10,4,8,6]\n```\n\n**Constraints:**\n* `1 <= Length of the list <= 1000`.\n* `1 <= Node.val <= 1000`",
+      "starterCode": "/**\n * Definition for singly-linked list.\n * type ListNode struct {\n *     Val int\n *     Next *ListNode\n * }\n */\n\nfunc reorderList(head *ListNode) {\n    \n}\n",
+      "referenceCode": "/**\n * Definition for singly-linked list.\n * type ListNode struct {\n *     Val int\n *     Next *ListNode\n * }\n */\n\nfunc reorderList(head *ListNode) {\n    if head == nil || head.Next == nil {\n        return\n    }\n    \n    slow, fast := head, head.Next\n    for fast != nil && fast.Next != nil {\n        slow = slow.Next\n        fast = fast.Next.Next\n    }\n    \n    second := slow.Next\n    slow.Next = nil\n    var prev *ListNode = nil\n    \n    for second != nil {\n        tmp := second.Next\n        second.Next = prev\n        prev = second\n        second = tmp\n    }\n    \n    first, second := head, prev\n    for second != nil {\n        tmp1, tmp2 := first.Next, second.Next\n        first.Next = second\n        second.Next = tmp1\n        first, second = tmp1, tmp2\n    }\n}\n",
+      "customTestCases": [
+        "head=[2,4,6,8]",
+        "head=[2,4,6,8,10]"
+      ]
+    },
+    {
+      "title": "Remove Nth Node From End of List",
+      "category": "Linked List",
+      "difficulty": "Medium",
+      "id": "remove-node-from-end-of-linked-list",
+      "statement": "Given the `head` of a linked list and an integer `n`, remove the `nth` node from the end of the list and return its head.\n\n**Example 1:**\n\n```java\nInput: head = [1,2,3,4], n = 2\n\nOutput: [1,2,4]\n```\n\n**Example 2:**\n\n```java\nInput: head = [5], n = 1\n\nOutput: []\n```\n\n**Example 3:**\n\n```java\nInput: head = [1,2], n = 2\n\nOutput: [2]\n```\n\n**Constraints:**\n* The number of nodes in the list is `sz`.\n* `1 <= sz <= 30`\n* `0 <= Node.val <= 100`\n* `1 <= n <= sz`",
+      "starterCode": "/**\n * Definition for singly-linked list.\n * type ListNode struct {\n *     Val int\n *     Next *ListNode\n * }\n */\n\nfunc removeNthFromEnd(head *ListNode, n int) *ListNode {\n    \n}\n",
+      "referenceCode": "/**\n * Definition for singly-linked list.\n * type ListNode struct {\n *     Val int\n *     Next *ListNode\n * }\n */\n\nfunc removeNthFromEnd(head *ListNode, n int) *ListNode {\n    dummy := &ListNode{Val: 0, Next: head}\n    left := dummy\n    right := head\n    \n    for n > 0 {\n        right = right.Next\n        n--\n    }\n    \n    for right != nil {\n        left = left.Next\n        right = right.Next\n    }\n    \n    left.Next = left.Next.Next\n    return dummy.Next\n}\n",
+      "customTestCases": [
+        "head=[1,2,3,4]\nn=2",
+        "head=[5]\nn=1"
+      ]
+    },
+    {
+      "title": "Merge K Sorted Lists",
+      "category": "Linked List",
+      "difficulty": "Hard",
+      "id": "merge-k-sorted-linked-lists",
+      "statement": "You are given an array of `k` linked lists `lists`, where each list is sorted in ascending order.\n\nReturn the **sorted** linked list that is the result of merging all of the individual linked lists.\n\n**Example 1:**\n\n```java\nInput: lists = [[1,2,4],[1,3,5],[3,6]]\n\nOutput: [1,1,2,3,3,4,5,6]\n```\n\n**Example 2:**\n\n```java\nInput: lists = []\n\nOutput: []\n```\n\n**Example 3:**\n\n```java\nInput: lists = [[]]\n\nOutput: []\n```\n\n**Constraints:**\n* `0 <= lists.length <= 10000`\n* `0 <= lists[i].length <= 500`\n* `-10000 <= lists[i][j] <= 10000`\n* `lists[i]` is sorted in **ascending** order.\n* The sum of `lists[i].length` will not exceed `10000`.",
+      "starterCode": "/**\n * Definition for singly-linked list.\n * type ListNode struct {\n *     Val int\n *     Next *ListNode\n * }\n */\n\nfunc mergeKLists(lists []*ListNode) *ListNode {\n    \n}\n",
+      "referenceCode": "/**\n * Definition for singly-linked list.\n * type ListNode struct {\n *     Val int\n *     Next *ListNode\n * }\n */\n\n func mergeKLists(lists []*ListNode) *ListNode {\n    if lists == nil || len(lists) == 0 {\n        return nil\n    }\n    \n    for len(lists) > 1 {\n        var mergedLists []*ListNode\n        \n        for i := 0; i < len(lists); i += 2 {\n            l1 := lists[i]\n            var l2 *ListNode\n            if i+1 < len(lists) {\n                l2 = lists[i+1]\n            }\n            mergedLists = append(mergedLists, mergeList(l1, l2))\n        }\n        \n        lists = mergedLists\n    }\n    \n    return lists[0]\n}\n\nfunc mergeList(l1 *ListNode, l2 *ListNode) *ListNode {\n    dummy := &ListNode{}\n    tail := dummy\n    \n    for l1 != nil && l2 != nil {\n        if l1.Val < l2.Val {\n            tail.Next = l1\n            l1 = l1.Next\n        } else {\n            tail.Next = l2\n            l2 = l2.Next\n        }\n        tail = tail.Next\n    }\n    \n    if l1 != nil {\n        tail.Next = l1\n    }\n    if l2 != nil {\n        tail.Next = l2\n    }\n    \n    return dummy.Next\n}\n",
+      "customTestCases": [
+        "lists=[[1,2,4],[1,3,5],[3,6]]",
+        "lists=[]",
+        "lists=[[]]"
+      ]
+    },
+    {
+      "title": "Invert Binary Tree",
+      "category": "Trees",
+      "difficulty": "Easy",
+      "id": "invert-a-binary-tree",
+      "statement": "You are given the root of a binary tree `root`. Invert the binary tree and return its root.\n\n**Example 1:**\n\n```java\nInput: root = [1,2,3,4,5,6,7]\n\nOutput: [1,3,2,7,6,5,4]\n```\n\n**Example 2:**\n\n```java\nInput: root = [3,2,1]\n\nOutput: [3,1,2]\n```\n\n**Example 3:**\n\n```java\nInput: root = []\n\nOutput: []\n```\n\n**Constraints:**\n* `0 <= The number of nodes in the tree <= 100`.\n* `-100 <= Node.val <= 100`",
+      "starterCode": "/**\n * Definition for a binary tree node.\n * type TreeNode struct {\n *     Val int\n *     Left *TreeNode\n *     Right *TreeNode\n * }\n */\n\nfunc invertTree(root *TreeNode) *TreeNode {\n    \n}\n",
+      "referenceCode": "/**\n * Definition for a binary tree node.\n * type TreeNode struct {\n *     Val int\n *     Left *TreeNode\n *     Right *TreeNode\n * }\n */\n\nfunc invertTree(root *TreeNode) *TreeNode {\n    if root == nil {\n        return nil\n    }\n    \n    root.Left, root.Right = root.Right, root.Left\n    \n    invertTree(root.Left)\n    invertTree(root.Right)\n    \n    return root\n}\n",
+      "customTestCases": [
+        "root=[4,2,7,1,3,6,9]",
+        "root=[2,1,3]",
+        "root=[]"
+      ]
+    },
+    {
+      "title": "Maximum Depth of Binary Tree",
+      "category": "Trees",
+      "difficulty": "Easy",
+      "id": "depth-of-binary-tree",
+      "statement": "Given the `root` of a binary tree, return its **depth**.\n\nThe **depth** of a binary tree is defined as the number of nodes along the longest path from the root node down to the farthest leaf node.\n\n**Example 1:**\n\n```java\nInput: root = [1,2,3,null,null,4]\n\nOutput: 3\n```\n\n**Example 2:**\n\n```java\nInput: root = []\n\nOutput: 0\n```\n\n**Constraints:**\n* `0 <= The number of nodes in the tree <= 100`.\n* `-100 <= Node.val <= 100`",
+      "starterCode": "/**\n * Definition for a binary tree node.\n * type TreeNode struct {\n *     Val int\n *     Left *TreeNode\n *     Right *TreeNode\n * }\n */\n\nfunc maxDepth(root *TreeNode) int {\n    \n}\n",
+      "referenceCode": "/**\n * Definition for a binary tree node.\n * type TreeNode struct {\n *     Val int\n *     Left *TreeNode\n *     Right *TreeNode\n * }\n */\n\n// RECURSIVE DFS\nfunc maxDepth(root *TreeNode) int {\n    if root == nil {\n        return 0\n    }\n    \n    return 1 + max(maxDepth(root.Left), maxDepth(root.Right))\n}\n\nfunc max(a, b int) int {\n    if a > b {\n        return a\n    }\n    return b\n}\n\n// ITERATIVE DFS\n// func maxDepth(root *TreeNode) int {\n//     type NodeDepth struct {\n//         node  *TreeNode\n//         depth int\n//     }\n//     \n//     stack := []NodeDepth{{root, 1}}\n//     res := 0\n//     \n//     for len(stack) > 0 {\n//         nd := stack[len(stack)-1]\n//         stack = stack[:len(stack)-1]\n//         \n//         if nd.node != nil {\n//             res = max(res, nd.depth)\n//             stack = append(stack, NodeDepth{nd.node.Left, nd.depth + 1})\n//             stack = append(stack, NodeDepth{nd.node.Right, nd.depth + 1})\n//         }\n//     }\n//     \n//     return res\n// }\n\n// BFS\n// func maxDepth(root *TreeNode) int {\n//     if root == nil {\n//         return 0\n//     }\n//     \n//     queue := []*TreeNode{root}\n//     level := 0\n//     \n//     for len(queue) > 0 {\n//         qLen := len(queue)\n//         for i := 0; i < qLen; i++ {\n//             node := queue[0]\n//             queue = queue[1:]\n//             \n//             if node.Left != nil {\n//                 queue = append(queue, node.Left)\n//             }\n//             if node.Right != nil {\n//                 queue = append(queue, node.Right)\n//             }\n//         }\n//         level++\n//     }\n//     \n//     return level\n// }\n",
+      "customTestCases": [
+        "root=[1,2,3,null,null,4]",
+        "root=[]"
+      ]
+    },
+    {
+      "title": "Same Tree",
+      "category": "Trees",
+      "difficulty": "Easy",
+      "id": "same-binary-tree",
+      "statement": "Given the roots of two binary trees `p` and `q`, return `true` if the trees are **equivalent**, otherwise return `false`.\n\nTwo binary trees are considered **equivalent** if they share the exact same structure and the nodes have the same values.\n\n**Example 1:**\n\n```java\nInput: p = [1,2,3], q = [1,2,3]\n\nOutput: true\n```\n\n**Example 2:**\n\n```java\nInput: p = [4,7], q = [4,null,7]\n\nOutput: false\n```\n\n**Example 3:**\n\n```java\nInput: p = [1,2,3], q = [1,3,2]\n\nOutput: false\n```\n\n**Constraints:**\n* `0 <= The number of nodes in both trees <= 100`.\n* `-100 <= Node.val <= 100`",
+      "starterCode": "/**\n * Definition for a binary tree node.\n * type TreeNode struct {\n *     Val int\n *     Left *TreeNode\n *     Right *TreeNode\n * }\n */\n\nfunc isSameTree(p *TreeNode, q *TreeNode) bool {\n    \n}\n",
+      "referenceCode": "/**\n * Definition for a binary tree node.\n * type TreeNode struct {\n *     Val int\n *     Left *TreeNode\n *     Right *TreeNode\n * }\n */\n \nfunc isSameTree(p *TreeNode, q *TreeNode) bool {\n    if p == nil && q == nil {\n        return true\n    }\n    if p != nil && q != nil && p.Val == q.Val {\n        return isSameTree(p.Left, q.Left) && isSameTree(p.Right, q.Right)\n    } else {\n        return false\n    }\n}\n",
+      "customTestCases": [
+        "p=[1,2,3]\nq=[1,2,3]",
+        "p=[4,7]\nq=[4,null,7]",
+        "p=[1,2,3]\nq=[1,3,2]"
+      ]
+    },
+    {
+      "title": "Subtree of Another Tree",
+      "category": "Trees",
+      "difficulty": "Easy",
+      "id": "subtree-of-a-binary-tree",
+      "statement": "Given the roots of two binary trees `root` and `subRoot`, return `true` if there is a subtree of `root` with the same structure and node values of `subRoot` and `false` otherwise.\n\nA subtree of a binary tree `tree` is a tree that consists of a node in `tree` and all of this node's descendants. The tree `tree` could also be considered as a subtree of itself.\n\n\n\n**Example 1:**\n\n```java\nInput: root = [1,2,3,4,5], subRoot = [2,4,5]\n\nOutput: true\n```\n\n\n\n**Example 2:**\n\n```java\nInput: root = [1,2,3,4,5,null,null,6], subRoot = [2,4,5]\n\nOutput: false\n```\n\n\n\n**Constraints:**\n* The number of nodes in the `root` tree is in the range `[1, 2000]`.\n* The number of nodes in the `subRoot` tree is in the range `[1, 1000]`.\n* `-10^4 <= root.val <= 10^4`\n* `-10^4 <= subRoot.val <= 10^4`",
+      "starterCode": "/**\n * Definition for a binary tree node.\n * type TreeNode struct {\n *     Val int\n *     Left *TreeNode\n *     Right *TreeNode\n * }\n */\n\nfunc isSubtree(root *TreeNode, subRoot *TreeNode) bool {\n    \n}\n",
+      "referenceCode": "/**\n * Definition for a binary tree node.\n * type TreeNode struct {\n *     Val int\n *     Left *TreeNode\n *     Right *TreeNode\n * }\n */\n \nfunc isSubtree(root *TreeNode, subRoot *TreeNode) bool {\n    if subRoot == nil {\n        return true\n    }\n    if root == nil {\n        return false\n    }\n\n    if sameTree(root, subRoot) {\n        return true\n    }\n    return isSubtree(root.Left, subRoot) || isSubtree(root.Right, subRoot)\n}\n\nfunc sameTree(root *TreeNode, subRoot *TreeNode) bool {\n    if root == nil && subRoot == nil {\n        return true\n    }\n    if root != nil && subRoot != nil && root.Val == subRoot.Val {\n        return sameTree(root.Left, subRoot.Left) && sameTree(root.Right, subRoot.Right)\n    }\n    return false\n}\n",
+      "customTestCases": [
+        "root=[1,2,3,4,5]\nsubRoot=[2,4,5]",
+        "root=[1,2,3,4,5,null,null,6]\nsubRoot=[2,4,5]"
+      ]
+    },
+    {
+      "title": "Lowest Common Ancestor of a Binary Search Tree",
+      "category": "Trees",
+      "difficulty": "Medium",
+      "id": "lowest-common-ancestor-in-binary-search-tree",
+      "statement": "Given a binary search tree (BST) where all node values are *unique*, and two nodes from the tree `p` and `q`, return the lowest common ancestor (LCA) of the two nodes.\n\nThe lowest common ancestor between two nodes `p` and `q` is the lowest node in a tree `T` such that both `p` and `q` are descendants. The ancestor is allowed to be a descendant of itself.\n\n\n\n**Example 1:**\n\n```java\nInput: root = [5,3,8,1,4,7,9,null,2], p = 3, q = 8\n\nOutput: 5\n```\n\n\n\n**Example 2:**\n\n```java\nInput: root = [5,3,8,1,4,7,9,null,2], p = 3, q = 4\n\nOutput: 3\n```\n\nExplanation: The LCA of nodes 3 and 4 is 3, since a node can be a descendant of itself.\n\n\n\n**Constraints:**\n* `2 <= The number of nodes in the tree <= 100`.\n* `-100 <= Node.val <= 100`\n* `p != q`\n* `p` and `q` will both exist in the BST.",
+      "starterCode": "/**\n * Definition for a binary tree node.\n * type TreeNode struct {\n *     Val int\n *     Left *TreeNode\n *     Right *TreeNode\n * }\n */\n\nfunc lowestCommonAncestor(root *TreeNode, p *TreeNode, q *TreeNode) *TreeNode {\n    \n}\n",
+      "referenceCode": "/**\n * Definition for a binary tree node.\n * type TreeNode struct {\n *     Val int\n *     Left *TreeNode\n *     Right *TreeNode\n * }\n */\n\nfunc lowestCommonAncestor(root *TreeNode, p *TreeNode, q *TreeNode) *TreeNode {\n    for {\n        if root.Val < p.Val && root.Val < q.Val {\n            root = root.Right\n        } else if root.Val > p.Val && root.Val > q.Val {\n            root = root.Left\n        } else {\n            return root\n        }\n    }\n}\n",
+      "customTestCases": [
+        "root=[5,3,8,1,4,7,9,null,2]\np=3\nq=8",
+        "root=[5,3,8,1,4,7,9,null,2]\np=3\nq=4"
+      ]
+    },
+    {
+      "title": "Binary Tree Level Order Traversal",
+      "category": "Trees",
+      "difficulty": "Medium",
+      "id": "level-order-traversal-of-binary-tree",
+      "statement": "Given a binary tree `root`, return the level order traversal of it as a nested list, where each sublist contains the values of nodes at a particular level in the tree, from left to right.\n\n**Example 1:**\n\n```java\nInput: root = [1,2,3,4,5,6,7]\n\nOutput: [[1],[2,3],[4,5,6,7]]\n```\n\n**Example 2:**\n\n```java\nInput: root = [1]\n\nOutput: [[1]]\n```\n\n**Example 3:**\n\n```java\nInput: root = []\n\nOutput: []\n```\n\n**Constraints:**\n* `0 <= The number of nodes in the tree <= 2000`.\n* `-1000 <= Node.val <= 1000`",
+      "starterCode": "/**\n * Definition for a binary tree node.\n * type TreeNode struct {\n *     Val int\n *     Left *TreeNode\n *     Right *TreeNode\n * }\n */\n\nfunc levelOrder(root *TreeNode) [][]int {\n    \n}\n",
+      "referenceCode": "/**\n * Definition for a binary tree node.\n * type TreeNode struct {\n *     Val int\n *     Left *TreeNode\n *     Right *TreeNode\n * }\n */\n\nfunc levelOrder(root *TreeNode) [][]int {\n    var res [][]int\n    if root == nil {\n        return res\n    }\n\n    queue := []*TreeNode{root}\n\n    for len(queue) > 0 {\n        levelSize := len(queue)\n        var levelVals []int\n\n        for i := 0; i < levelSize; i++ {\n            node := queue[0]\n            queue = queue[1:]\n            levelVals = append(levelVals, node.Val)\n\n            if node.Left != nil {\n                queue = append(queue, node.Left)\n            }\n            if node.Right != nil {\n                queue = append(queue, node.Right)\n            }\n        }\n\n        res = append(res, levelVals)\n    }\n\n    return res\n}\n",
+      "customTestCases": [
+        "root=[1,2,3,4,5,6,7]",
+        "root=[1]",
+        "root=[]"
+      ]
+    },
+    {
+      "title": "Validate Binary Search Tree",
+      "category": "Trees",
+      "difficulty": "Medium",
+      "id": "valid-binary-search-tree",
+      "statement": "Given the `root` of a binary tree, return `true` if it is a **valid binary search tree**, otherwise return `false`.\n\nA **valid binary search tree** satisfies the following constraints:    \n* The left subtree of every node contains only nodes with keys **less than** the node's key.\n* The right subtree of every node contains only nodes with keys **greater than** the node's key.\n* Both the left and right subtrees are also binary search trees.\n\n**Example 1:**\n\n```java\nInput: root = [2,1,3]\n\nOutput: true\n```\n\n**Example 2:**\n\n```java\nInput: root = [1,2,3]\n\nOutput: false\n```\n\nExplanation: The root node's value is 1 but its left child's value is 2 which is greater than 1.\n\n**Constraints:**\n* `1 <= The number of nodes in the tree <= 10000`.\n* `-1000000000 <= Node.val <= 1000000000`",
+      "starterCode": "/**\n * Definition for a binary tree node.\n * type TreeNode struct {\n *     Val int\n *     Left *TreeNode\n *     Right *TreeNode\n * }\n */\n\nfunc isValidBST(root *TreeNode) bool {\n    \n}\n",
+      "referenceCode": "/**\n * Definition for a binary tree node.\n * type TreeNode struct {\n *     Val int\n *     Left *TreeNode\n *     Right *TreeNode\n * }\n */\n\nfunc isValidBST(root *TreeNode) bool {\n    var valid func(node *TreeNode, left int, right int) bool\n    valid = func(node *TreeNode, left int, right int) bool {\n        if node == nil {\n            return true\n        }\n        \n        if !(left < node.Val && node.Val < right) {\n            return false\n        }\n        \n        return valid(node.Left, left, node.Val) && valid(node.Right, node.Val, right)\n    }\n    \n    return valid(root, math.MinInt, math.MaxInt)\n}\n",
+      "customTestCases": [
+        "root=[2,1,3]",
+        "root=[1,2,3]"
+      ]
+    },
+    {
+      "title": "Kth Smallest Element In a Bst",
+      "category": "Trees",
+      "difficulty": "Medium",
+      "id": "kth-smallest-integer-in-bst",
+      "statement": "Given the `root` of a binary search tree, and an integer `k`, return the `kth` smallest value (**1-indexed**) in the tree.\n\nA **binary search tree** satisfies the following constraints:    \n* The left subtree of every node contains only nodes with keys **less than** the node's key.\n* The right subtree of every node contains only nodes with keys **greater than** the node's key.\n* Both the left and right subtrees are also binary search trees.\n\n**Example 1:**\n\n```java\nInput: root = [2,1,3], k = 1\n\nOutput: 1\n```\n\n**Example 2:**\n\n```java\nInput: root = [4,3,5,2,null], k = 4\n\nOutput: 5\n```\n\n**Constraints:**\n* `1 <= k <= The number of nodes in the tree <= 10,000`.\n* `0 <= Node.val <= 10,000`",
+      "starterCode": "/**\n * Definition for a binary tree node.\n * type TreeNode struct {\n *     Val int\n *     Left *TreeNode\n *     Right *TreeNode\n * }\n */\n\nfunc kthSmallest(root *TreeNode, k int) int {\n    \n}\n",
+      "referenceCode": "/**\n * Definition for a binary tree node.\n * type TreeNode struct {\n *     Val int\n *     Left *TreeNode\n *     Right *TreeNode\n * }\n */\n\nfunc kthSmallest(root *TreeNode, k int) int {\n    var stack []*TreeNode\n    curr := root\n    \n    for len(stack) > 0 || curr != nil {\n        for curr != nil {\n            stack = append(stack, curr)\n            curr = curr.Left\n        }\n        \n        curr = stack[len(stack)-1]\n        stack = stack[:len(stack)-1]\n        k--\n        \n        if k == 0 {\n            return curr.Val\n        }\n        \n        curr = curr.Right\n    }\n    \n    return 0\n}\n",
+      "customTestCases": [
+        "root=[2,1,3]\nk=1",
+        "root=[4,3,5,2,null]\nk=4"
+      ]
+    },
+    {
+      "title": "Construct Binary Tree From Preorder And Inorder Traversal",
+      "category": "Trees",
+      "difficulty": "Medium",
+      "id": "binary-tree-from-preorder-and-inorder-traversal",
+      "statement": "You are given two integer arrays `preorder` and `inorder`.\n        \n* `preorder` is the preorder traversal of a binary tree\n* `inorder` is the inorder traversal of the same tree\n* Both arrays are of the same size and consist of unique values.\n\nRebuild the binary tree from the preorder and inorder traversals and return its root.\n\n**Example 1:**\n\n```java\nInput: preorder = [1,2,3,4], inorder = [2,1,3,4]\n\nOutput: [1,2,3,null,null,null,4]\n```\n\n**Example 2:**\n\n```java\nInput: preorder = [1], inorder = [1]\n\nOutput: [1]\n```\n\n**Constraints:**\n* `1 <= inorder.length <= 2001`.\n* `inorder.length == preorder.length`\n* `-1000 <= preorder[i], inorder[i] <= 1000`",
+      "starterCode": "/**\n * Definition for a binary tree node.\n * type TreeNode struct {\n *     Val int\n *     Left *TreeNode\n *     Right *TreeNode\n * }\n */\n\nfunc buildTree(preorder []int, inorder []int) *TreeNode {\n    \n}\n",
+      "referenceCode": "/**\n * Definition for a binary tree node.\n * type TreeNode struct {\n *     Val int\n *     Left *TreeNode\n *     Right *TreeNode\n * }\n */\n\nfunc buildTree(preorder []int, inorder []int) *TreeNode {\n    indices := make(map[int]int)\n    for i, val := range inorder {\n        indices[val] = i\n    }\n\n    preIdx := 0\n\n    var dfs func(int, int) *TreeNode\n    dfs = func(left, right int) *TreeNode {\n        if left > right {\n            return nil\n        }\n\n        rootVal := preorder[preIdx]\n        preIdx++\n\n        root := &TreeNode{Val: rootVal}\n        mid := indices[rootVal]\n\n        root.Left = dfs(left, mid - 1)\n        root.Right = dfs(mid + 1, right)\n\n        return root\n    }\n\n    return dfs(0, len(inorder) - 1)\n}\n",
+      "customTestCases": [
+        "preorder=[1,2,3,4]\ninorder=[2,1,3,4]",
+        "preorder=[1]\ninorder=[1]"
+      ]
+    },
+    {
+      "title": "Binary Tree Maximum Path Sum",
+      "category": "Trees",
+      "difficulty": "Hard",
+      "id": "binary-tree-maximum-path-sum",
+      "statement": "Given the `root` of a *non-empty* binary tree, return the maximum **path sum** of any *non-empty* path.\n\nA **path** in a binary tree is a sequence of nodes where each pair of adjacent nodes has an edge connecting them. A node can *not* appear in the sequence more than once. The path does *not* necessarily need to include the root.\n\nThe **path sum** of a path is the sum of the node's values in the path.\n\n**Example 1:**\n\n```java\nInput: root = [1,2,3]\n\nOutput: 6\n```\n\nExplanation: The path is 2 -> 1 -> 3 with a sum of 2 + 1 + 3 = 6.\n\n**Example 2:**\n\n```java\nInput: root = [-15,10,20,null,null,15,5,-5]\n\nOutput: 40\n```\n\nExplanation: The path is 15 -> 20 -> 5 with a sum of 15 + 20 + 5 = 40.\n\n**Constraints:**\n* `1 <= The number of nodes in the tree <= 30000`.\n* `-1000 <= Node.val <= 1000`",
+      "starterCode": "/**\n * Definition for a binary tree node.\n * type TreeNode struct {\n *     Val int\n *     Left *TreeNode\n *     Right *TreeNode\n * }\n */\n\nfunc maxPathSum(root *TreeNode) int {\n    \n}\n",
+      "referenceCode": "/**\n * Definition for a binary tree node.\n * type TreeNode struct {\n *     Val int\n *     Left *TreeNode\n *     Right *TreeNode\n * }\n */\n\nfunc maxPathSum(root *TreeNode) int {\n    res := root.Val\n    \n    var dfs func(root *TreeNode) int\n    dfs = func(root *TreeNode) int {\n        if root == nil {\n            return 0\n        }\n        \n        leftMax := dfs(root.Left)\n        rightMax := dfs(root.Right)\n        leftMax = max(leftMax, 0)\n        rightMax = max(rightMax, 0)\n        \n        res = max(res, root.Val + leftMax + rightMax)\n        \n        return root.Val + max(leftMax, rightMax)\n    }\n    \n    dfs(root)\n    return res\n}\n",
+      "customTestCases": [
+        "root=[1,2,3]",
+        "root=[-15,10,20,null,null,15,5,-5]"
+      ]
+    },
+    {
+      "title": "Serialize And Deserialize Binary Tree",
+      "category": "Trees",
+      "difficulty": "Hard",
+      "id": "serialize-and-deserialize-binary-tree",
+      "statement": "Implement an algorithm to serialize and deserialize a binary tree.\n\nSerialization is the process of converting an in-memory structure into a sequence of bits so that it can be stored or sent across a network to be reconstructed later in another computer environment.\n\nYou just need to ensure that a binary tree can be serialized to a string and this string can be deserialized to the original tree structure. There is no additional restriction on how your serialization/deserialization algorithm should work.\n\n**Note:** The input/output format shown in the examples is illustrative. You do not need to use the same serialization format.\n\n**Example 1:**\n\n```java\nInput: root = [1,2,3,null,null,4,5]\n\nOutput: [1,2,3,null,null,4,5]\n```\n\n**Example 2:**\n\n```java\nInput: root = []\n\nOutput: []\n```\n\n**Constraints:**\n* `0 <= The number of nodes in the tree <= 10,000`.\n* `-1000 <= Node.val <= 1000`",
+      "starterCode": "/**\n * Definition for a binary tree node.\n * type TreeNode struct {\n *     Val int\n *     Left *TreeNode\n *     Right *TreeNode\n * }\n */\n\ntype Codec struct {\n    \n}\n\nfunc Constructor() Codec {\n    \n}\n\n// Serializes a tree to a single string.\nfunc (this *Codec) serialize(root *TreeNode) string {\n    \n}\n\n// Deserializes your encoded data to tree.\nfunc (this *Codec) deserialize(data string) *TreeNode {\n    \n}\n",
+      "referenceCode": "/**\n * Definition for a binary tree node.\n * type TreeNode struct {\n *     Val int\n *     Left *TreeNode\n *     Right *TreeNode\n * }\n */\n\ntype Codec struct {\n    i int\n}\n\nfunc Constructor() Codec {\n    return Codec{}\n}\n\n// Serializes a tree to a single string.\nfunc (this *Codec) serialize(root *TreeNode) string {\n    var res []string\n    \n    var dfs func(node *TreeNode)\n    dfs = func(node *TreeNode) {\n        if node == nil {\n            res = append(res, \"N\")\n            return\n        }\n        res = append(res, strconv.Itoa(node.Val))\n        dfs(node.Left)\n        dfs(node.Right)\n    }\n    \n    dfs(root)\n    return strings.Join(res, \",\")\n}\n\n// Deserializes your encoded data to tree.\nfunc (this *Codec) deserialize(data string) *TreeNode {\n    vals := strings.Split(data, \",\")\n    this.i = 0\n    \n    var dfs func() *TreeNode\n    dfs = func() *TreeNode {\n        if vals[this.i] == \"N\" {\n            this.i++\n            return nil\n        }\n        val, _ := strconv.Atoi(vals[this.i])\n        node := &TreeNode{Val: val}\n        this.i++\n        node.Left = dfs()\n        node.Right = dfs()\n        return node\n    }\n    \n    return dfs()\n}\n",
+      "customTestCases": [
+        "root=[1,2,3,null,null,4,5]",
+        "root=[]"
+      ]
+    },
+    {
+      "title": "Find Median From Data Stream",
+      "category": "Heap / Priority Queue",
+      "difficulty": "Hard",
+      "id": "find-median-in-a-data-stream",
+      "statement": "The **[median](https://en.wikipedia.org/wiki/Median)** is the middle value in a sorted list of integers. For lists of *even* length, there is no middle value, so the median is the [mean](https://en.wikipedia.org/wiki/Mean) of the two middle values.\n\nFor example:\n* For `arr = [1,2,3]`, the median is `2`.\n* For `arr = [1,2]`, the median is `(1 + 2) / 2 = 1.5`\n\nImplement the MedianFinder class:\n\n* `MedianFinder()` initializes the `MedianFinder` object.\n* `void addNum(int num)` adds the integer `num` from the data stream to the data structure.\n* `double findMedian()` returns the median of all elements so far.\n\n**Example 1:**\n\n```java\nInput:\n[\"MedianFinder\", \"addNum\", \"1\", \"findMedian\", \"addNum\", \"3\" \"findMedian\", \"addNum\", \"2\", \"findMedian\"]\n\nOutput:\n[null, null, 1.0, null, 2.0, null, 2.0]\n\nExplanation:\nMedianFinder medianFinder = new MedianFinder();\nmedianFinder.addNum(1);    // arr = [1]\nmedianFinder.findMedian(); // return 1.0\nmedianFinder.addNum(3);    // arr = [1, 3]\nmedianFinder.findMedian(); // return 2.0\nmedianFinder.addNum(2);    // arr[1, 2, 3]\nmedianFinder.findMedian(); // return 2.0\n```\n\n**Constraints:**\n* `-100,000 <= num <= 100,000`\n* At most `50,000` calls will be made to `addNum` and `findMedian`.\n* `findMedian` will only be called after adding at least one integer to the data structure.",
+      "starterCode": "type MedianFinder struct {\n    \n}\n\n\nfunc Constructor() MedianFinder {\n    \n}\n\n\nfunc (this *MedianFinder) AddNum(num int)  {\n    \n}\n\n\nfunc (this *MedianFinder) FindMedian() float64 {\n    \n}\n",
+      "referenceCode": "type MedianFinder struct {\n    small []int // maxHeap\n    large []int // minHeap\n}\n\n\nfunc Constructor() MedianFinder {\n    return MedianFinder{\n        small: []int{},\n        large: []int{},\n    }\n}\n\n\nfunc (this *MedianFinder) AddNum(num int)  {\n    if len(this.large) > 0 && num > this.large[0] {\n        heap.Push(&minHeap{&this.large}, num)\n    } else {\n        heap.Push(&maxHeap{&this.small}, num)\n    }\n    \n    if len(this.small) > len(this.large)+1 {\n        val := heap.Pop(&maxHeap{&this.small}).(int)\n        heap.Push(&minHeap{&this.large}, val)\n    }\n    if len(this.large) > len(this.small)+1 {\n        val := heap.Pop(&minHeap{&this.large}).(int)\n        heap.Push(&maxHeap{&this.small}, val)\n    }\n}\n\n\nfunc (this *MedianFinder) FindMedian() float64 {\n    if len(this.small) > len(this.large) {\n        return float64(this.small[0])\n    } else if len(this.large) > len(this.small) {\n        return float64(this.large[0])\n    }\n    return (float64(this.small[0]) + float64(this.large[0])) / 2.0\n}\n\ntype maxHeap struct {\n    nums *[]int\n}\n\nfunc (h maxHeap) Len() int           { return len(*h.nums) }\nfunc (h maxHeap) Less(i, j int) bool { return (*h.nums)[i] > (*h.nums)[j] }\nfunc (h maxHeap) Swap(i, j int)      { (*h.nums)[i], (*h.nums)[j] = (*h.nums)[j], (*h.nums)[i] }\n\nfunc (h *maxHeap) Push(x interface{}) {\n    *h.nums = append(*h.nums, x.(int))\n}\n\nfunc (h *maxHeap) Pop() interface{} {\n    old := *h.nums\n    n := len(old)\n    x := old[n-1]\n    *h.nums = old[0 : n-1]\n    return x\n}\n\ntype minHeap struct {\n    nums *[]int\n}\n\nfunc (h minHeap) Len() int           { return len(*h.nums) }\nfunc (h minHeap) Less(i, j int) bool { return (*h.nums)[i] < (*h.nums)[j] }\nfunc (h minHeap) Swap(i, j int)      { (*h.nums)[i], (*h.nums)[j] = (*h.nums)[j], (*h.nums)[i] }\n\nfunc (h *minHeap) Push(x interface{}) {\n    *h.nums = append(*h.nums, x.(int))\n}\n\nfunc (h *minHeap) Pop() interface{} {\n    old := *h.nums\n    n := len(old)\n    x := old[n-1]\n    *h.nums = old[0 : n-1]\n    return x\n}\n",
+      "customTestCases": [
+        "[\"MedianFinder\", \"addNum\", \"1\", \"findMedian\", \"addNum\", \"2\", \"findMedian\", \"addNum\", \"3\", \"findMedian\"]"
+      ]
+    },
+    {
+      "title": "Combination Sum",
+      "category": "Backtracking",
+      "difficulty": "Medium",
+      "id": "combination-target-sum",
+      "statement": "You are given an array of **distinct** integers `nums` and a target integer `target`. Your task is to return a list of all **unique combinations** of `nums` where the chosen numbers sum to `target`.\n\nThe **same** number may be chosen from `nums` an **unlimited number of times**. Two combinations are the same if the frequency of each of the chosen numbers is the same, otherwise they are different.\n\nYou may return the combinations in **any order** and the order of the numbers in each combination can be in **any order**.\n\n**Example 1:**\n\n```java\nInput:\nnums = [2,5,6,9]\ntarget = 9\n\nOutput: [[2,2,5],[9]]\n```\n\nExplanation:\n2 + 2 + 5 = 9. We use 2 twice, and 5 once.\n9 = 9. We use 9 once.\n\n**Example 2:**\n\n```java\nInput:\nnums = [3,4,5]\ntarget = 16\n\nOutput: [[3,3,3,3,4],[3,3,5,5],[4,4,4,4],[3,4,4,5]]\n```\n\n**Example 3:**\n\n```java\nInput:\nnums = [3]\ntarget = 5\n\nOutput: []\n```\n\n**Constraints:**\n* All elements of `nums` are **distinct**.\n* `1 <= nums.length <= 20`\n* `2 <= nums[i] <= 30`\n* `2 <= target <= 30`",
+      "starterCode": "func combinationSum(nums []int, target int) [][]int {\n    \n}\n",
+      "referenceCode": "func combinationSum(nums []int, target int) [][]int {\n    var res [][]int\n\n    var dfs func(i int, cur []int, total int)\n    dfs = func(i int, cur []int, total int) {\n        if total == target {\n            tmp := make([]int, len(cur))\n            copy(tmp, cur)\n            res = append(res, tmp)\n            return\n        }\n        if i >= len(nums) || total > target {\n            return\n        }\n\n        cur = append(cur, nums[i])\n        dfs(i, cur, total+nums[i])\n        cur = cur[:len(cur)-1]\n        dfs(i+1, cur, total)\n    }\n\n    dfs(0, []int{}, 0)\n    return res\n}\n",
+      "customTestCases": [
+        "nums=[2,5,6,9]\ntarget=9",
+        "nums=[3,4,5]\ntarget=16",
+        "nums=[3]\ntarget=5"
+      ]
+    },
+    {
+      "title": "Word Search",
+      "category": "Backtracking",
+      "difficulty": "Medium",
+      "id": "search-for-word",
+      "statement": "Given a 2-D grid of characters `board` and a string `word`, return `true` if the word is present in the grid, otherwise return `false`.\n\nFor the word to be present it must be possible to form it with a path in the board with horizontally or vertically neighboring cells. The same cell may not be used more than once in a word.\n\n**Example 1:**\n\n```java\nInput: \nboard = [\n  [\"A\",\"B\",\"C\",\"D\"],\n  [\"S\",\"A\",\"A\",\"T\"],\n  [\"A\",\"C\",\"A\",\"E\"]\n],\nword = \"CAT\"\n\nOutput: true\n```\n\n**Example 2:**\n\n```java\nInput: \nboard = [\n  [\"A\",\"B\",\"C\",\"D\"],\n  [\"S\",\"A\",\"A\",\"T\"],\n  [\"A\",\"C\",\"A\",\"E\"]\n],\nword = \"BAT\"\n\nOutput: false\n```\n\n**Constraints:**\n* `1 <= board.length, board[i].length <= 5`\n* `1 <= word.length <= 10`\n* `board` and `word` consists of only lowercase and uppercase English letters.",
+      "starterCode": "func exist(board [][]byte, word string) bool {\n\n}\n",
+      "referenceCode": "func exist(board [][]byte, word string) bool {\n    m := len(board)\n    n := len(board[0])\n\n    for i := 0; i < m; i++ {\n        for j := 0; j < n; j++ {\n            if board[i][j] == word[0] {\n                if dfs(board, word, 0, i, j, m, n) {\n                    return true\n                }\n            }\n        }\n    }\n\n    return false\n}\n\nfunc dfs(board [][]byte, word string, index, i, j, m, n int) bool {\n    if i < 0 || i >= m || j < 0 || j >= n || board[i][j] != word[index] {\n        return false\n    }\n    if index == len(word)-1 {\n        return true\n    }\n\n    temp := board[i][j]\n    board[i][j] = '#'\n\n    if dfs(board, word, index+1, i-1, j, m, n) ||\n        dfs(board, word, index+1, i+1, j, m, n) ||\n        dfs(board, word, index+1, i, j-1, m, n) ||\n        dfs(board, word, index+1, i, j+1, m, n) {\n        return true\n    }\n\n    board[i][j] = temp\n    return false\n}\n",
+      "customTestCases": [
+        "board=[[\"A\",\"B\",\"C\",\"D\"],[\"S\",\"A\",\"A\",\"T\"],[\"A\",\"C\",\"A\",\"E\"]]\nword=\"CAT\"",
+        "board=[[\"A\",\"B\",\"C\",\"D\"],[\"S\",\"A\",\"A\",\"T\"],[\"A\",\"C\",\"A\",\"E\"]]\nword=\"BAT\""
+      ]
+    },
+    {
+      "title": "Implement Trie Prefix Tree",
+      "category": "Tries",
+      "difficulty": "Medium",
+      "id": "implement-prefix-tree",
+      "statement": "A **prefix tree** (also known as a trie) is a tree data structure used to efficiently store and retrieve keys in a set of strings. Some applications of this data structure include auto-complete and spell checker systems.\n\nImplement the PrefixTree class:\n* `PrefixTree()` Initializes the prefix tree object.\n* `void insert(String word)` Inserts the string `word` into the prefix tree.\n* `boolean search(String word)` Returns `true` if the string `word` is in the prefix tree (i.e., was inserted before), and `false` otherwise.\n* `boolean startsWith(String prefix)` Returns `true` if there is a previously inserted string `word` that has the prefix `prefix`, and `false` otherwise.\n\n**Example 1:**\n\n```java\nInput:\n[\"Trie\", \"insert\", \"dog\", \"search\", \"dog\", \"search\", \"do\", \"startsWith\", \"do\", \"insert\", \"do\", \"search\", \"do\"]\n\nOutput:\n[null, null, true, false, true, null, true]\n\nExplanation:\nPrefixTree prefixTree = new PrefixTree();\nprefixTree.insert(\"dog\");\nprefixTree.search(\"dog\");    // return true\nprefixTree.search(\"do\");     // return false\nprefixTree.startsWith(\"do\"); // return true\nprefixTree.insert(\"do\");\nprefixTree.search(\"do\");     // return true\n```\n\n**Constraints:**\n* `1 <= word.length, prefix.length <= 1000`\n* `word` and `prefix` are made up of lowercase English letters.",
+      "starterCode": "type PrefixTree struct {\n\n}\n\nfunc Constructor() PrefixTree {\n    \n}\n\nfunc (this *PrefixTree) Insert(word string) {\n\n}\n\nfunc (this *PrefixTree) Search(word string) bool {\n\n}\n\nfunc (this *PrefixTree) StartsWith(prefix string) bool {\n\n}\n",
+      "referenceCode": "type PrefixTreeNode struct {\n    children [26]*PrefixTreeNode\n    end      bool\n}\n\ntype PrefixTree struct {\n    root *PrefixTreeNode\n}\n\nfunc Constructor() PrefixTree {\n    return PrefixTree{root: &PrefixTreeNode{}}\n}\n\nfunc (this *PrefixTree) Insert(word string) {\n    curr := this.root\n    for _, c := range word {\n        i := int(c - 'a')\n        if curr.children[i] == nil {\n            curr.children[i] = &PrefixTreeNode{}\n        }\n        curr = curr.children[i]\n    }\n    curr.end = true\n}\n\nfunc (this *PrefixTree) Search(word string) bool {\n    curr := this.root\n    for _, c := range word {\n        i := int(c - 'a')\n        if curr.children[i] == nil {\n            return false\n        }\n        curr = curr.children[i]\n    }\n    return curr.end\n}\n\nfunc (this *PrefixTree) StartsWith(prefix string) bool {\n    curr := this.root\n    for _, c := range prefix {\n        i := int(c - 'a')\n        if curr.children[i] == nil {\n            return false\n        }\n        curr = curr.children[i]\n    }\n    return true\n}\n",
+      "customTestCases": [
+        "[\"PrefixTree\", \"insert\", \"apple\", \"search\", \"apple\", \"search\", \"app\", \"startsWith\", \"app\", \"insert\", \"app\", \"search\", \"app\"]"
+      ]
+    },
+    {
+      "title": "Design Add And Search Words Data Structure",
+      "category": "Tries",
+      "difficulty": "Medium",
+      "id": "design-word-search-data-structure",
+      "statement": "Design a data structure that supports adding new words and searching for existing words.\n\nImplement the `WordDictionary` class:\n\n* `void addWord(word)` Adds `word` to the data structure.\n* `bool search(word)` Returns `true` if there is any string in the data structure that matches `word` or `false` otherwise. `word` may contain dots `'.'` where dots can be matched with any letter.\n\n**Example 1:**\n\n```java\nInput:\n[\"WordDictionary\",\"addWord\",\"addWord\",\"addWord\",\"search\",\"search\",\"search\",\"search\"]\n[[],[\"day\"],[\"bay\"],[\"may\"],[\"say\"],[\"day\"],[\".ay\"],[\"b..\"]]\n\nOutput:\n[null, null, null, null, false, true, true, true]\n\nExplanation:\nWordDictionary wordDictionary = new WordDictionary();\nwordDictionary.addWord(\"day\");\nwordDictionary.addWord(\"bay\");\nwordDictionary.addWord(\"may\");\nwordDictionary.search(\"say\"); // return false\nwordDictionary.search(\"day\"); // return true\nwordDictionary.search(\".ay\"); // return true\nwordDictionary.search(\"b..\"); // return true\n```\n\n**Constraints:**\n* `1 <= word.length <= 25`\n* `word` in `addWord` consists of lowercase English letters.\n* `word` in `search` consist of `'.'` or lowercase English letters.\n* There will be at most `2` dots in `word` for `search` queries.\n* At most `10,000` calls will be made to `addWord` and `search`.",
+      "starterCode": "type WordDictionary struct {\n    \n}\n\nfunc Constructor() WordDictionary {\n    \n}\n\nfunc (this *WordDictionary) AddWord(word string)  {\n    \n}\n\nfunc (this *WordDictionary) Search(word string) bool {\n    \n}\n",
+      "referenceCode": "type TrieNode struct {\n    children map[string]*TrieNode\n    word     bool\n}\n\ntype WordDictionary struct {\n    root *TrieNode\n}\n\nfunc Constructor() WordDictionary {\n    return WordDictionary{root: &TrieNode{children: make(map[string]*TrieNode)}}\n}\n\nfunc (this *WordDictionary) AddWord(word string) {\n    cur := this.root\n    for _, c := range word {\n        char := string(c)\n        if cur.children[char] == nil {\n            cur.children[char] = &TrieNode{children: make(map[string]*TrieNode)}\n        }\n        cur = cur.children[char]\n    }\n    cur.word = true\n}\n\nfunc (this *WordDictionary) Search(word string) bool {\n    var dfs func(j int, root *TrieNode) bool\n    dfs = func(j int, root *TrieNode) bool {\n        cur := root\n        for i := j; i < len(word); i++ {\n            c := string(word[i])\n            if c == \".\" {\n                for _, child := range cur.children {\n                    if dfs(i+1, child) {\n                        return true\n                    }\n                }\n                return false\n            } else {\n                if cur.children[c] == nil {\n                    return false\n                }\n                cur = cur.children[c]\n            }\n        }\n        return cur.word\n    }\n    return dfs(0, this.root)\n}\n",
+      "customTestCases": [
+        "[\"WordDictionary\",\"addWord\",\"addWord\",\"addWord\",\"search\",\"search\",\"search\",\"search\"]\n[[],[\"day\"],[\"bay\"],[\"may\"],[\"say\"],[\"day\"],[\".ay\"],[\"b..\"]]"
+      ]
+    },
+    {
+      "title": "Word Search II",
+      "category": "Tries",
+      "difficulty": "Hard",
+      "id": "search-for-word-ii",
+      "statement": "Given a 2-D grid of characters `board` and a list of strings `words`, return all words that are present in the grid.\n\nFor a word to be present it must be possible to form the word with a path in the board with horizontally or vertically neighboring cells. The same cell may not be used more than once in a word.\n\n**Example 1:**\n\n```java\nInput:\nboard = [\n  [\"a\",\"b\",\"c\",\"d\"],\n  [\"s\",\"a\",\"a\",\"t\"],\n  [\"a\",\"c\",\"k\",\"e\"],\n  [\"a\",\"c\",\"d\",\"n\"]\n],\nwords = [\"bat\",\"cat\",\"back\",\"backend\",\"stack\"]\n\nOutput: [\"cat\",\"back\",\"backend\"]\n```\n\n**Example 2:**\n\n```java\nInput:\nboard = [\n  [\"x\",\"o\"],\n  [\"x\",\"o\"]\n],\nwords = [\"xoxo\"]\n\nOutput: []\n```\n\n**Constraints:**\n* `1 <= board.length, board[i].length <= 12`\n* `board[i]` consists only of lowercase English letter.\n* `1 <= words.length <= 30,000`\n* `1 <= words[i].length <= 10`\n* `words[i]` consists only of lowercase English letters.\n* All strings within `words` are distinct.",
+      "starterCode": "func findWords(board [][]byte, words []string) []string {\n    \n}\n",
+      "referenceCode": "type TrieNode struct {\n    children map[byte]*TrieNode\n    isWord   bool\n    refs     int\n}\n\nfunc (this *TrieNode) addWord(word string) {\n    cur := this\n    cur.refs++\n    for i := 0; i < len(word); i++ {\n        c := word[i]\n        if cur.children[c] == nil {\n            cur.children[c] = &TrieNode{children: make(map[byte]*TrieNode)}\n        }\n        cur = cur.children[c]\n        cur.refs++\n    }\n    cur.isWord = true\n}\n\nfunc (this *TrieNode) removeWord(word string) {\n    cur := this\n    cur.refs--\n    for i := 0; i < len(word); i++ {\n        c := word[i]\n        if cur.children[c] != nil {\n            cur = cur.children[c]\n            cur.refs--\n        }\n    }\n}\n\nfunc findWords(board [][]byte, words []string) []string {\n    root := &TrieNode{children: make(map[byte]*TrieNode)}\n    for _, w := range words {\n        root.addWord(w)\n    }\n\n    ROWS, COLS := len(board), len(board[0])\n    res := make(map[string]bool)\n    visit := make(map[[2]int]bool)\n\n    var dfs func(r, c int, node *TrieNode, word string)\n    dfs = func(r, c int, node *TrieNode, word string) {\n        if r < 0 || r >= ROWS || c < 0 || c >= COLS ||\n           node.children[board[r][c]] == nil ||\n           node.children[board[r][c]].refs < 1 ||\n           visit[[2]int{r, c}] {\n            return\n        }\n\n        visit[[2]int{r, c}] = true\n        node = node.children[board[r][c]]\n        word += string(board[r][c])\n\n        if node.isWord {\n            node.isWord = false\n            res[word] = true\n            root.removeWord(word)\n        }\n\n        dfs(r+1, c, node, word)\n        dfs(r-1, c, node, word)\n        dfs(r, c+1, node, word)\n        dfs(r, c-1, node, word)\n\n        delete(visit, [2]int{r, c})\n    }\n\n    for r := 0; r < ROWS; r++ {\n        for c := 0; c < COLS; c++ {\n            dfs(r, c, root, \"\")\n        }\n    }\n\n    result := make([]string, 0, len(res))\n    for word := range res {\n        result = append(result, word)\n    }\n    return result\n}\n",
+      "customTestCases": [
+        "board=[[\"a\",\"b\",\"c\",\"d\"],[\"s\",\"a\",\"a\",\"t\"],[\"a\",\"c\",\"k\",\"e\"],[\"a\",\"c\",\"d\",\"n\"]]\nwords=[\"bat\",\"cat\",\"back\",\"backend\",\"stack\"]",
+        "board=[[\"x\",\"o\"],[\"x\",\"o\"]]\nwords=[\"xoxo\"]"
+      ]
+    },
+    {
+      "title": "Number of Islands",
+      "category": "Graphs",
+      "difficulty": "Medium",
+      "id": "count-number-of-islands",
+      "statement": "Given a 2D grid `grid` where `'1'` represents land and `'0'` represents water, count and return the number of islands.\n\nAn **island** is formed by connecting adjacent lands horizontally or vertically and is surrounded by water. You may assume water is surrounding the grid (i.e., all the edges are water).   \n\n**Example 1:**\n\n```java\nInput: grid = [\n    [\"0\",\"1\",\"1\",\"1\",\"0\"],\n    [\"0\",\"1\",\"0\",\"1\",\"0\"],\n    [\"1\",\"1\",\"0\",\"0\",\"0\"],\n    [\"0\",\"0\",\"0\",\"0\",\"0\"]\n  ]\nOutput: 1\n```\n\n**Example 2:**\n\n```java\nInput: grid = [\n    [\"1\",\"1\",\"0\",\"0\",\"1\"],\n    [\"1\",\"1\",\"0\",\"0\",\"1\"],\n    [\"0\",\"0\",\"1\",\"0\",\"0\"],\n    [\"0\",\"0\",\"0\",\"1\",\"1\"]\n  ]\nOutput: 4\n```\n\n\n**Constraints:**\n* `1 <= grid.length, grid[i].length <= 100`\n* `grid[i][j]` is `'0'` or `'1'`.",
+      "starterCode": "func numIslands(grid [][]byte) int {\n    \n}\n",
+      "referenceCode": "func numIslands(grid [][]byte) int {\n    if len(grid) == 0 || len(grid[0]) == 0 {\n        return 0\n    }\n    islands := 0\n    visit := make(map[[2]int]bool)\n    rows, cols := len(grid), len(grid[0])\n\n    var dfs func(r, c int)\n    dfs = func(r, c int) {\n        if r < 0 || r >= rows ||\n            c < 0 || c >= cols ||\n            grid[r][c] == '0' ||\n            visit[[2]int{r, c}] {\n            return\n        }\n        visit[[2]int{r, c}] = true\n        directions := [][2]int{{0, 1}, {0, -1}, {1, 0}, {-1, 0}}\n        for _, dir := range directions {\n            dr, dc := dir[0], dir[1]\n            dfs(r+dr, c+dc)\n        }\n    }\n\n    for r := 0; r < rows; r++ {\n        for c := 0; c < cols; c++ {\n            if grid[r][c] == '1' && !visit[[2]int{r, c}] {\n                islands++\n                dfs(r, c)\n            }\n        }\n    }\n\n    return islands\n}\n",
+      "customTestCases": [
+        "grid=[[\"0\",\"1\",\"1\",\"1\",\"0\"],[\"0\",\"1\",\"0\",\"1\",\"0\"],[\"1\",\"1\",\"0\",\"0\",\"0\"],[\"0\",\"0\",\"0\",\"0\",\"0\"]]",
+        "grid=[[\"1\",\"1\",\"0\",\"0\",\"1\"],[\"1\",\"1\",\"0\",\"0\",\"1\"],[\"0\",\"0\",\"1\",\"0\",\"0\"],[\"0\",\"0\",\"0\",\"1\",\"1\"]]"
+      ]
+    },
+    {
+      "title": "Clone Graph",
+      "category": "Graphs",
+      "difficulty": "Medium",
+      "id": "clone-graph",
+      "statement": "Given a node in a connected undirected graph, return a deep copy of the graph.\n\nEach node in the graph contains an integer value and a list of its neighbors.\n\n```java\nclass Node {\n    public int val;\n    public List<Node> neighbors;\n}\n```\n\nThe graph is shown in the test cases as an adjacency list. **An adjacency list** is a mapping of nodes to lists, used to represent a finite graph. Each list describes the set of neighbors of a node in the graph.\n\nFor simplicity, nodes values are numbered from 1 to `n`, where `n` is the total number of nodes in the graph. The index of each node within the adjacency list is the same as the node's value (1-indexed).\n\nThe input node will always be the first node in the graph and have `1` as the value.\n\n**Example 1:**\n\n```java\nInput: adjList = [[2],[1,3],[2]]\n\nOutput: [[2],[1,3],[2]]\n```\n\nExplanation: There are 3 nodes in the graph.\nNode 1: val = 1 and neighbors = [2].\nNode 2: val = 2 and neighbors = [1, 3].\nNode 3: val = 3 and neighbors = [2].\n\n**Example 2:**\n\n```java\nInput: adjList = [[]]\n\nOutput: [[]]\n```\n\nExplanation: The graph has one node with no neighbors.\n\n**Example 3:**\n\n```java\nInput: adjList = []\n\nOutput: []\n```\n\nExplanation: The graph is empty.\n\n**Constraints:**\n* `0 <= The number of nodes in the graph <= 100`.\n* `1 <= Node.val <= 100`\n* There are no duplicate edges and no self-loops in the graph.",
+      "starterCode": "/**\n * Definition for a Node.\n * type Node struct {\n *     Val int\n *     Neighbors []*Node\n * }\n */\n\nfunc cloneGraph(node *Node) *Node {\n    \n}\n",
+      "referenceCode": "/**\n * Definition for a Node.\n * type Node struct {\n *     Val int\n *     Neighbors []*Node\n * }\n */\n\nfunc cloneGraph(node *Node) *Node {\n    oldToNew := make(map[*Node]*Node)\n\n    var dfs func(node *Node) *Node\n    dfs = func(node *Node) *Node {\n        if _, ok := oldToNew[node]; ok {\n            return oldToNew[node]\n        }\n        copy := &Node{Val: node.Val}\n        oldToNew[node] = copy\n        for _, nei := range node.Neighbors {\n            copy.Neighbors = append(copy.Neighbors, dfs(nei))\n        }\n        return copy\n    }\n\n    if node != nil {\n        return dfs(node)\n    }\n    return nil\n}\n",
+      "customTestCases": [
+        "adjList=[[2],[1,3],[2]]",
+        "adjList=[[]]",
+        "adjList=[]"
+      ]
+    },
+    {
+      "title": "Pacific Atlantic Water Flow",
+      "category": "Graphs",
+      "difficulty": "Medium",
+      "id": "pacific-atlantic-water-flow",
+      "statement": "You are given a rectangular island `heights` where `heights[r][c]` represents the **height above sea level** of the cell at coordinate `(r, c)`.\n\nThe islands borders the **Pacific Ocean** from the top and left sides, and borders the **Atlantic Ocean** from the bottom and right sides.\n\nWater can flow in **four directions** (up, down, left, or right) from a cell to a neighboring cell with **height equal or lower**. Water can also flow into the ocean from cells adjacent to the ocean.\n\nFind all cells where water can flow from that cell to **both** the Pacific and Atlantic oceans. Return it as a **2D list** where each element is a list `[r, c]` representing the row and column of the cell. You may return the answer in **any order**.\n\n**Example 1:**\n\n```java\nInput: heights = [\n  [4,2,7,3,4],\n  [7,4,6,4,7],\n  [6,3,5,3,6]\n]\n\nOutput: [[0,2],[0,4],[1,0],[1,1],[1,2],[1,3],[1,4],[2,0]]\n```\n\n**Example 2:**\n\n```java\nInput: heights = [[1],[1]]\n\nOutput: [[0,0],[1,0]]\n```\n\n**Constraints:**\n* `1 <= heights.length, heights[r].length <= 100`\n* `0 <= heights[r][c] <= 1000`",
+      "starterCode": "func pacificAtlantic(heights [][]int) [][]int {\n    \n}\n",
+      "referenceCode": "func pacificAtlantic(heights [][]int) [][]int {\n    rows, cols := len(heights), len(heights[0])\n    pac, atl := make(map[[2]int]bool), make(map[[2]int]bool)\n\n    var dfs func(r, c int, visit map[[2]int]bool, prevHeight int)\n    dfs = func(r, c int, visit map[[2]int]bool, prevHeight int) {\n        if visit[[2]int{r, c}] ||\n            r < 0 ||\n            c < 0 ||\n            r == rows ||\n            c == cols ||\n            heights[r][c] < prevHeight {\n            return\n        }\n        visit[[2]int{r, c}] = true\n        dfs(r+1, c, visit, heights[r][c])\n        dfs(r-1, c, visit, heights[r][c])\n        dfs(r, c+1, visit, heights[r][c])\n        dfs(r, c-1, visit, heights[r][c])\n    }\n\n    for c := 0; c < cols; c++ {\n        dfs(0, c, pac, heights[0][c])\n        dfs(rows-1, c, atl, heights[rows-1][c])\n    }\n\n    for r := 0; r < rows; r++ {\n        dfs(r, 0, pac, heights[r][0])\n        dfs(r, cols-1, atl, heights[r][cols-1])\n    }\n\n    res := [][]int{}\n    for r := 0; r < rows; r++ {\n        for c := 0; c < cols; c++ {\n            if pac[[2]int{r, c}] && atl[[2]int{r, c}] {\n                res = append(res, []int{r, c})\n            }\n        }\n    }\n    return res\n}\n",
+      "customTestCases": [
+        "heights=[[4,2,7,3,4],[7,4,6,4,7],[6,3,5,3,6]]",
+        "heights=[[1],[1]]"
+      ]
+    },
+    {
+      "title": "Course Schedule",
+      "category": "Graphs",
+      "difficulty": "Medium",
+      "id": "course-schedule",
+      "statement": "You are given an array `prerequisites` where `prerequisites[i] = [a, b]` indicates that you **must** take course `b` first if you want to take course `a`.\n\nThe pair `[0, 1]`, indicates that must take course `1` before taking course `0`.\n\nThere are a total of `numCourses` courses you are required to take, labeled from `0` to `numCourses - 1`.\n\nReturn `true` if it is possible to finish all courses, otherwise return `false`.\n\n\n\n**Example 1:**\n\n```java\nInput: numCourses = 2, prerequisites = [[0,1]]\n\nOutput: true\n```\n\nExplanation: First take course `1` (no prerequisites) and then take course `0`.\n\n\n\n**Example 2:**\n\n```java\nInput: numCourses = 2, prerequisites = [[0,1],[1,0]]\n\nOutput: false\n```\n\nExplanation: In order to take course `1` you must take course `0`, and to take course `0` you must take course `1`. So it is impossible.\n\n\n\n**Constraints:**\n* `1 <= numCourses <= 1000`\n* `0 <= prerequisites.length <= 1000`\n* `prerequisites[i].length == 2`\n* `0 <= a[i], b[i] < numCourses`\n* All `prerequisite` pairs are **unique**.",
+      "starterCode": "func canFinish(numCourses int, prerequisites [][]int) bool {\n    \n}\n",
+      "referenceCode": "func canFinish(numCourses int, prerequisites [][]int) bool {\n    preMap := make(map[int][]int)\n    for i := 0; i < numCourses; i++ {\n        preMap[i] = []int{}\n    }\n    for _, prereq := range prerequisites {\n        crs, pre := prereq[0], prereq[1]\n        preMap[crs] = append(preMap[crs], pre)\n    }\n\n    visiting := make(map[int]bool)\n\n    var dfs func(crs int) bool\n    dfs = func(crs int) bool {\n        if visiting[crs] {\n            return false\n        }\n        if len(preMap[crs]) == 0 {\n            return true\n        }\n\n        visiting[crs] = true\n        for _, pre := range preMap[crs] {\n            if !dfs(pre) {\n                return false\n            }\n        }\n        delete(visiting, crs)\n        preMap[crs] = []int{}\n        return true\n    }\n\n    for c := 0; c < numCourses; c++ {\n        if !dfs(c) {\n            return false\n        }\n    }\n    return true\n}\n",
+      "customTestCases": [
+        "numCourses=2\nprerequisites=[[0,1]]",
+        "numCourses=2\nprerequisites=[[0,1],[1,0]]"
+      ]
+    },
+    {
+      "title": "Graph Valid Tree",
+      "category": "Graphs",
+      "difficulty": "Medium",
+      "id": "valid-tree",
+      "statement": "Given `n` nodes labeled from `0` to `n - 1` and a list of **undirected** edges (each edge is a pair of nodes), write a function to check whether these edges make up a valid tree.\n\n\n\n**Example 1:**\n\n```java\nInput: n = 5, edges = [[0,1],[0,2],[0,3],[1,4]]\n\nOutput: true\n```\n\n\n\n**Example 2:**\n\n```java\nInput: n = 5, edges = [[0,1],[1,2],[2,3],[1,3],[1,4]]\n\nOutput: false\n```\n\n\n\n**Note:**\n* You can assume that no duplicate edges will appear in edges. Since all edges are `undirected`, `[0, 1]` is the same as `[1, 0]` and thus will not appear together in edges.\n\n\n\n**Constraints:**\n* `1 <= n <= 2000`\n* `0 <= edges.length <= 5000`\n* `edges[i].length == 2`\n* `0 <= a_i, b_i < n`\n* `a_i != b_i`\n* There are no self-loops or repeated edges.",
+      "starterCode": "func validTree(n int, edges [][]int) bool {\n    \n}\n",
+      "referenceCode": "func validTree(n int, edges [][]int) bool {\n    if n == 0 {\n        return true\n    }\n    adj := make(map[int][]int)\n    for i := 0; i < n; i++ {\n        adj[i] = []int{}\n    }\n    for _, edge := range edges {\n        n1, n2 := edge[0], edge[1]\n        adj[n1] = append(adj[n1], n2)\n        adj[n2] = append(adj[n2], n1)\n    }\n\n    visit := make(map[int]bool)\n\n    var dfs func(i, prev int) bool\n    dfs = func(i, prev int) bool {\n        if visit[i] {\n            return false\n        }\n\n        visit[i] = true\n        for _, j := range adj[i] {\n            if j == prev {\n                continue\n            }\n            if !dfs(j, i) {\n                return false\n            }\n        }\n        return true\n    }\n\n    return dfs(0, -1) && n == len(visit)\n}\n",
+      "customTestCases": [
+        "n=5\nedges=[[0,1],[0,2],[0,3],[1,4]]",
+        "n=5\nedges=[[0,1],[1,2],[2,3],[1,3],[1,4]]"
+      ]
+    },
+    {
+      "title": "Number of Connected Components In An Undirected Graph",
+      "category": "Graphs",
+      "difficulty": "Medium",
+      "id": "count-connected-components",
+      "statement": "You have an undirected graph of `n` nodes labeled from `0` to `n - 1`. You are given an integer `n` and an array `edges` where `edges[i] = [aᵢ, bᵢ]` indicates that there is an edge between `aᵢ` and `bᵢ` in the graph.\n\nReturn the number of connected components in the graph.\n\n\n\n**Example 1:**\n\n```java\nInput:\nn = 5, edges = [[0,1],[1,2],[3,4]]\n\nOutput: 2\n```\n\n\n\n**Example 2:**\n\n```java\nInput:\nn = 5, edges = [[0,1],[1,2],[2,3],[3,4]]\n\nOutput: 1\n```\n\n\n\n**Constraints:**\n* `1 <= n <= 2000`\n* `1 <= edges.length <= 5000`\n* `edges[i].length == 2`\n* `0 <= aᵢ < n`\n* `0 <= bᵢ < n`\n* `aᵢ != bᵢ`\n* There are no repeated edges.",
+      "starterCode": "func countComponents(n int, edges [][]int) int {\n    \n}\n",
+      "referenceCode": "type UnionFind struct {\n    f map[int]int\n}\n\nfunc NewUnionFind() *UnionFind {\n    return &UnionFind{\n        f: make(map[int]int),\n    }\n}\n\nfunc (this *UnionFind) FindParent(x int) int {\n    y, exists := this.f[x]\n    if !exists {\n        y = x\n    }\n    if x != y {\n        y = this.FindParent(y)\n        this.f[x] = y\n    }\n    return y\n}\n\nfunc (this *UnionFind) Union(x, y int) {\n    this.f[this.FindParent(x)] = this.FindParent(y)\n}\n\nfunc countComponents(n int, edges [][]int) int {\n    dsu := NewUnionFind()\n    for _, edge := range edges {\n        a, b := edge[0], edge[1]\n        dsu.Union(a, b)\n    }\n\n    parents := make(map[int]bool)\n    for x := 0; x < n; x++ {\n        parents[dsu.FindParent(x)] = true\n    }\n    return len(parents)\n}\n",
+      "customTestCases": [
+        "n=5\nedges=[[0,1],[1,2],[3,4]]",
+        "n=5\nedges=[[0,1],[1,2],[2,3],[3,4]]"
+      ]
+    },
+    {
+      "title": "Alien Dictionary",
+      "category": "Advanced Graphs",
+      "difficulty": "Hard",
+      "id": "foreign-dictionary",
+      "statement": "There is a new alien language that uses the English alphabet, but the order of the letters is unknown.\n\nYou are given a list of strings `words` from the alien language's dictionary. It is claimed that the strings in `words` are sorted lexicographically by the rules of this new language.\n\nIf this claim is incorrect, and the given arrangement of strings in `words` cannot correspond to any order of letters, return `\"\"`.\n\nOtherwise, return a string of the unique letters in the new alien language sorted in lexicographically increasing order by the new language's rules. If there are multiple solutions, return **any** of them.\n\nA string `a` is lexicographically smaller than a string `b` if either of the following is true:\n* The first letter where they differ is smaller in `a` than in `b`.\n* `a` is a prefix of `b` *and* `a.length < b.length`.\n\n\n\n**Example 1:**\n\n```java\nInput: words = [\"z\",\"o\"]\n\nOutput: \"zo\"\n```\n\nExplanation:\nFrom `\"z\"` and `\"o\"`, we know `'z' < 'o'`, so return `\"zo\"`.\n\n\n\n**Example 2:**\n\n```java\nInput: words = [\"hrn\",\"hrf\",\"er\",\"enn\",\"rfnn\"]\n\nOutput: \"hernf\"\n```\n\nExplanation:\n* from `\"hrn\"` and `\"hrf\"`, we know `'n' < 'f'`\n* from `\"hrf\"` and `\"er\"`, we know `'h' < 'e'`\n* from `\"er\"` and `\"enn\"`, we know `'r' < 'n'`\n* from `\"enn\"` and `\"rfnn\"` we know `'e' < 'r'`\n* so one possible solution is `\"hernf\"`\n\n\n\n**Example 3:**\n\n```java\nInput: words = [\"abc\",\"ab\"]\n\nOutput: \"\"\n```\n\nExplanation:\nThe second word is a prefix of the first word, but the first word appears before the second. This is impossible in a valid lexicographical ordering, so return `\"\"`.\n\n\n\n**Constraints:**\n* `1 <= words.length <= 100`\n* `1 <= words[i].length <= 100`\n* `words[i]` consists of only lowercase English letters.",
+      "starterCode": "func foreignDictionary(words []string) string {\n    \n}\n",
+      "referenceCode": "func foreignDictionary(words []string) string {\n    adj := make(map[rune]map[rune]bool)\n    for _, word := range words {\n        for _, char := range word {\n            if _, exists := adj[char]; !exists {\n                adj[char] = make(map[rune]bool)\n            }\n        }\n    }\n\n    for i := 0; i < len(words)-1; i++ {\n        w1, w2 := words[i], words[i+1]\n        minLen := len(w1)\n        if len(w2) < minLen {\n            minLen = len(w2)\n        }\n        if len(w1) > len(w2) && w1[:minLen] == w2[:minLen] {\n            return \"\"\n        }\n        for j := 0; j < minLen; j++ {\n            if w1[j] != w2[j] {\n                adj[rune(w1[j])][rune(w2[j])] = true\n                break\n            }\n        }\n    }\n\n    visited := make(map[rune]bool)\n    res := []rune{}\n\n    var dfs func(char rune) bool\n    dfs = func(char rune) bool {\n        if val, exists := visited[char]; exists {\n            return val\n        }\n\n        visited[char] = true\n\n        for neighChar := range adj[char] {\n            if dfs(neighChar) {\n                return true\n            }\n        }\n\n        visited[char] = false\n        res = append(res, char)\n        return false\n    }\n\n    for char := range adj {\n        if dfs(char) {\n            return \"\"\n        }\n    }\n\n    for i, j := 0, len(res)-1; i < j; i, j = i+1, j-1 {\n        res[i], res[j] = res[j], res[i]\n    }\n    return string(res)\n}\n",
+      "customTestCases": [
+        "words=[\"z\",\"o\"]",
+        "words=[\"hrn\",\"hrf\",\"er\",\"enn\",\"rfnn\"]",
+        "words=[\"abc\",\"ab\"]"
+      ]
+    },
+    {
+      "title": "Climbing Stairs",
+      "category": "1-D Dynamic Programming",
+      "difficulty": "Easy",
+      "id": "climbing-stairs",
+      "statement": "You are given an integer `n` representing the number of steps to reach the top of a staircase. You can climb with either `1` or `2` steps at a time.\n\nReturn the number of distinct ways to climb to the top of the staircase.\n\n**Example 1:**\n\n```java\nInput: n = 2\n\nOutput: 2\n```\n\nExplanation:\n1. `1 + 1 = 2`\n2. `2 = 2`\n\n**Example 2:**\n\n```java\nInput: n = 3\n\nOutput: 3\n```\n\nExplanation:\n1. `1 + 1 + 1 = 3`\n2. `1 + 2 = 3`\n3. `2 + 1 = 3`\n\n**Constraints:**\n* `1 <= n <= 45`",
+      "starterCode": "func climbStairs(n int) int {\n    \n}\n",
+      "referenceCode": "func climbStairs(n int) int {\n    if n <= 3 {\n        return n\n    }\n    n1, n2 := 2, 3\n\n    for i := 4; i <= n; i++ {\n        temp := n1 + n2\n        n1 = n2\n        n2 = temp\n    }\n    return n2\n}\n",
+      "customTestCases": [
+        "n=2",
+        "n=3"
+      ]
+    },
+    {
+      "title": "House Robber",
+      "category": "1-D Dynamic Programming",
+      "difficulty": "Medium",
+      "id": "house-robber",
+      "statement": "You are given an integer array `nums` where `nums[i]` represents the amount of money the `i`th house has. The houses are arranged in a straight line, i.e. the `i`th house is the neighbor of the `(i-1)`th and `(i+1)`th house.\n\nYou are planning to rob money from the houses, but you cannot rob **two adjacent houses** because the security system will automatically alert the police if two adjacent houses were *both* broken into.\n\nReturn the *maximum* amount of money you can rob **without** alerting the police.\n\n\n\n**Example 1:**\n\n```java\nInput: nums = [1,1,3,3]\n\nOutput: 4\n```\n\nExplanation: `nums[0]` + `nums[2]` = `1` + `3` = `4`.\n\n\n\n**Example 2:**\n\n```java\nInput: nums = [2,9,8,3,6]\n\nOutput: 16\n```\n\nExplanation: `nums[0]` + `nums[2]` + `nums[4]` = `2` + `8` + `6` = `16`.\n\n\n\n**Constraints:**\n* `1 <= nums.length <= 100`\n* `0 <= nums[i] <= 100`",
+      "starterCode": "func rob(nums []int) int {\n    \n}\n",
+      "referenceCode": "func rob(nums []int) int {\n    rob1, rob2 := 0, 0\n\n    for _, n := range nums {\n        temp := max(n+rob1, rob2)\n        rob1 = rob2\n        rob2 = temp\n    }\n    return rob2\n}\n",
+      "customTestCases": [
+        "nums=[1,1,3,3]",
+        "nums=[2,9,8,3,6]"
+      ]
+    },
+    {
+      "title": "House Robber II",
+      "category": "1-D Dynamic Programming",
+      "difficulty": "Medium",
+      "id": "house-robber-ii",
+      "statement": "You are given an integer array `nums` where `nums[i]` represents the amount of money the `i`th house has. The houses are arranged in a circle, i.e. the first house and the last house are neighbors.\n\nYou are planning to rob money from the houses, but you cannot rob **two adjacent houses** because the security system will automatically alert the police if two adjacent houses were *both* broken into.\n    \nReturn the *maximum* amount of money you can rob **without** alerting the police.\n\n**Example 1:**\n\n```java\nInput: nums = [3,4,3]\n\nOutput: 4\n```\n\nExplanation: You cannot rob `nums[0] + nums[2] = 6` because `nums[0]` and `nums[2]` are adjacent houses. The maximum you can rob is `nums[1] = 4`.\n\n**Example 2:**\n\n```java\nInput: nums = [2,9,8,3,6]\n\nOutput: 15\n```\n\nExplanation: You cannot rob `nums[0] + nums[2] + nums[4] = 16` because `nums[0]` and `nums[4]` are adjacent houses. The maximum you can rob is `nums[1] + nums[4] = 15`.\n\n\n**Constraints:**\n* `1 <= nums.length <= 100`\n* `0 <= nums[i] <= 200`",
+      "starterCode": "func rob(nums []int) int {\n    \n}\n",
+      "referenceCode": "func rob(nums []int) int {\n    return max(nums[0], helper(nums[1:]), helper(nums[:len(nums)-1]))\n}\n\nfunc helper(nums []int) int {\n    rob1, rob2 := 0, 0\n\n    for _, n := range nums {\n        newRob := max(rob1+n, rob2)\n        rob1 = rob2\n        rob2 = newRob\n    }\n    return rob2\n}\n",
+      "customTestCases": [
+        "nums=[3,4,3]",
+        "nums=[2,9,8,3,6]"
+      ]
+    },
+    {
+      "title": "Longest Palindromic Substring",
+      "category": "1-D Dynamic Programming",
+      "difficulty": "Medium",
+      "id": "longest-palindromic-substring",
+      "statement": "Given a string `s`, return the longest substring of `s` that is a *palindrome*.\n\nA **palindrome** is a string that reads the same forward and backward.\n\nIf there are multiple palindromic substrings that have the same length, return any one of them.\n\n**Example 1:**\n\n```java\nInput: s = \"ababd\"\n\nOutput: \"bab\"\n```\n\nExplanation: Both \"aba\" and \"bab\" are valid answers.\n\n**Example 2:**\n\n```java\nInput: s = \"abbc\"\n\nOutput: \"bb\"\n```\n\n**Constraints:**\n* `1 <= s.length <= 1000`\n* `s` contains only digits and English letters.",
+      "starterCode": "func longestPalindrome(s string) string {\n    \n}\n",
+      "referenceCode": "func longestPalindrome(s string) string {\n    res := \"\"\n    resLen := 0\n\n    for i := 0; i < len(s); i++ {\n        l, r := i, i\n        for l >= 0 && r < len(s) && s[l] == s[r] {\n            if (r - l + 1) > resLen {\n                res = s[l : r+1]\n                resLen = r - l + 1\n            }\n            l--\n            r++\n        }\n\n        l, r = i, i+1\n        for l >= 0 && r < len(s) && s[l] == s[r] {\n            if (r - l + 1) > resLen {\n                res = s[l : r+1]\n                resLen = r - l + 1\n            }\n            l--\n            r++\n        }\n    }\n    return res\n}\n",
+      "customTestCases": [
+        "s=\"ababd\"",
+        "s=\"abbc\""
+      ]
+    },
+    {
+      "title": "Palindromic Substrings",
+      "category": "1-D Dynamic Programming",
+      "difficulty": "Medium",
+      "id": "palindromic-substrings",
+      "statement": "Given a string `s`, return the number of substrings within `s` that are palindromes.\n\nA **palindrome** is a string that reads the same forward and backward.\n\n**Example 1:**\n\n```java\nInput: s = \"abc\"\n\nOutput: 3\n```\n\nExplanation: \"a\", \"b\", \"c\".\n\n**Example 2:**\n\n```java\nInput: s = \"aaa\"\n\nOutput: 6\n```\n\nExplanation: \"a\", \"a\", \"a\", \"aa\", \"aa\", \"aaa\". Note that different substrings are counted as different palindromes even if the string contents are the same.\n\n**Constraints:**\n* `1 <= s.length <= 1000`\n* `s` consists of lowercase English letters.",
+      "starterCode": "func countSubstrings(s string) int {\n    \n}\n",
+      "referenceCode": "func countSubstrings(s string) int {\n    res := 0\n    for i := 0; i < len(s); i++ {\n        res += countPali(s, i, i)\n        res += countPali(s, i, i+1)\n    }\n    return res\n}\n\nfunc countPali(s string, l, r int) int {\n    res := 0\n    for l >= 0 && r < len(s) && s[l] == s[r] {\n        res++\n        l--\n        r++\n    }\n    return res\n}\n",
+      "customTestCases": [
+        "s=\"abc\"",
+        "s=\"aaa\""
+      ]
+    },
+    {
+      "title": "Decode Ways",
+      "category": "1-D Dynamic Programming",
+      "difficulty": "Medium",
+      "id": "decode-ways",
+      "statement": "A string consisting of uppercase english characters can be encoded to a number using the following mapping:\n\n```java\n'A' -> \"1\"\n'B' -> \"2\"\n...\n'Z' -> \"26\"\n```\n\nTo **decode** a message, digits must be grouped and then mapped back into letters using the reverse of the mapping above. There may be multiple ways to decode a message. For example, `\"1012\"` can be mapped into:\n\n* `\"JAB\"` with the grouping `(10 1 2)`\n* `\"JL\"` with the grouping `(10 12)`\n\nThe grouping `(1 01 2)` is invalid because `01` cannot be mapped into a letter since it contains a leading zero.\n\nGiven a string `s` containing only digits, return the number of ways to **decode** it. You can assume that the answer fits in a **32-bit** integer.\n\n**Example 1:**\n\n```java\nInput: s = \"12\"\n\nOutput: 2\n\nExplanation: \"12\" could be decoded as \"AB\" (1 2) or \"L\" (12).\n```\n\n**Example 2:**\n\n```java\nInput: s = \"01\"\n\nOutput: 0\n```\n\nExplanation: \"01\" cannot be decoded because \"01\" cannot be mapped into a letter.\n\n**Constraints:**\n* `1 <= s.length <= 100`\n* `s` consists of digits",
+      "starterCode": "func numDecodings(s string) int {\n    \n}\n",
+      "referenceCode": "func numDecodings(s string) int {\n    dp := make(map[int]int)\n    dp[len(s)] = 1\n\n    var dfs func(i int) int\n    dfs = func(i int) int {\n        if val, exists := dp[i]; exists {\n            return val\n        }\n        if s[i] == '0' {\n            return 0\n        }\n\n        res := dfs(i + 1)\n        if i+1 < len(s) && (s[i] == '1' || (s[i] == '2' && s[i+1] >= '0' && s[i+1] <= '6')) {\n            res += dfs(i + 2)\n        }\n        dp[i] = res\n        return res\n    }\n\n    return dfs(0)\n}\n\n// Dynamic Programming solution\n// func numDecodings(s string) int {\n//     dp := make(map[int]int)\n//     dp[len(s)] = 1\n//\n//     for i := len(s) - 1; i >= 0; i-- {\n//         if s[i] == '0' {\n//             dp[i] = 0\n//         } else {\n//             dp[i] = dp[i+1]\n//         }\n//\n//         if i+1 < len(s) && (s[i] == '1' || (s[i] == '2' && s[i+1] >= '0' && s[i+1] <= '6')) {\n//             dp[i] += dp[i+2]\n//         }\n//     }\n//     return dp[0]\n// }\n",
+      "customTestCases": [
+        "s=\"12\"",
+        "s=\"226\"",
+        "s=\"06\""
+      ]
+    },
+    {
+      "title": "Coin Change",
+      "category": "1-D Dynamic Programming",
+      "difficulty": "Medium",
+      "id": "coin-change",
+      "statement": "You are given an integer array `coins` representing coins of different denominations (e.g. 1 dollar, 5 dollars, etc) and an integer `amount` representing a target amount of money.\n\nReturn the fewest number of coins that you need to make up the *exact* target amount. If it is impossible to make up the amount, return `-1`.\n\nYou may assume that you have an unlimited number of each coin.\n\n**Example 1:**\n\n```java\nInput: coins = [1,5,10], amount = 12\n\nOutput: 3\n```\n\nExplanation: 12 = 10 + 1 + 1. Note that we do not have to use every kind coin available.\n\n**Example 2:**\n\n```java\nInput: coins = [2], amount = 3\n\nOutput: -1\n```\n\nExplanation: The amount of 3 cannot be made up with coins of 2.\n\n**Example 3:**\n\n```java\nInput: coins = [1], amount = 0\n\nOutput: 0\n```\n\nExplanation: Choosing 0 coins is a valid way to make up 0.\n\n**Constraints:**\n* `1 <= coins.length <= 10`\n* `1 <= coins[i] <= 2^31 - 1`\n* `0 <= amount <= 10000`",
+      "starterCode": "func coinChange(coins []int, amount int) int {\n    \n}\n",
+      "referenceCode": "func coinChange(coins []int, amount int) int {\n    dp := make([]int, amount+1)\n    for i := 0; i <= amount; i++ {\n        dp[i] = amount + 1\n    }\n    dp[0] = 0\n\n    for a := 1; a <= amount; a++ {\n        for _, c := range coins {\n            if a-c >= 0 {\n                dp[a] = min(dp[a], 1+dp[a-c])\n            }\n        }\n    }\n\n    if dp[amount] != amount+1 {\n        return dp[amount]\n    }\n    return -1\n}\n",
+      "customTestCases": [
+        "coins=[1,2,5]\namount=11",
+        "coins=[2]\namount=3",
+        "coins=[1]\namount=0"
+      ]
+    },
+    {
+      "title": "Maximum Product Subarray",
+      "category": "1-D Dynamic Programming",
+      "difficulty": "Medium",
+      "id": "maximum-product-subarray",
+      "statement": "Given an integer array `nums`, find a **subarray** that has the largest product, and return the product.\n\nA **subarray** is a contiguous non-empty sequence of elements within an array.\n\nYou can assume the output will fit into a **32-bit** integer.\n\n**Note** that the product of an array with a single element is the value of that element.\n\n**Example 1:**\n\n```java\nInput: nums = [2,4,-3,5]\n\nOutput: 8\n```\n\nExplanation: `[2,4]` has the largest product `8`.\n\n\n\n**Example 2:**\n\n```java\nInput: nums = [-3,0,-2]\n\nOutput: 0\n```\n\nExplanation: The result cannot be `6`, because `[-3,-2]` is not a subarray.\n\n\n\n**Constraints:**\n* `1 <= nums.length <= 20,000`\n* `-10 <= nums[i] <= 10`\n* The product of any subarray of `nums` is **guaranteed** to fit in a **32-bit** integer.",
+      "starterCode": "func maxProduct(nums []int) int {\n    \n}\n",
+      "referenceCode": "func maxProduct(nums []int) int {\n    res := nums[0]\n    curMin, curMax := 1, 1\n\n    for _, n := range nums {\n        tmp := curMax * n\n        curMax = max(n*curMax, n*curMin, n)\n        curMin = min(tmp, n*curMin, n)\n        res = max(res, curMax)\n    }\n    return res\n}\n",
+      "customTestCases": [
+        "nums=[2,4,-3,5]",
+        "nums=[-3,0,-2]"
+      ]
+    },
+    {
+      "title": "Word Break",
+      "category": "1-D Dynamic Programming",
+      "difficulty": "Medium",
+      "id": "word-break",
+      "statement": "Given a string `s` and a dictionary of strings `wordDict`, return `true` if `s` can be segmented into a space-separated sequence of dictionary words.\n\nYou are allowed to reuse words in the dictionary an unlimited number of times. You may assume all dictionary words are unique.\n\n**Example 1:**\n\n```java\nInput: s = \"practicecode\", wordDict = [\"practice\",\"code\"]\n\nOutput: true\n```\n\nExplanation: Return true because \"practicecode\" can be split into \"neet\" and \"code\".\n\n**Example 2:**\n\n```java\nInput: s = \"applepenapple\", wordDict = [\"apple\",\"pen\",\"ape\"]\n\nOutput: true\n```\n\nExplanation: Return true because \"applepenapple\" can be split into \"apple\", \"pen\" and \"apple\". Notice that we can reuse words and also not use all the words.\n\n**Example 3:**\n\n```java\nInput: s = \"catsincars\", wordDict = [\"cats\",\"cat\",\"sin\",\"in\",\"car\"]\n\nOutput: false\n```\n\n**Constraints:**\n* `1 <= s.length <= 200`\n* `1 <= wordDict.length <= 100`\n* `1 <= wordDict[i].length <= 20`\n* `s` and `wordDict[i]` consist of only lowercase English letters.",
+      "starterCode": "func wordBreak(s string, wordDict []string) bool {\n    \n}\n",
+      "referenceCode": "func wordBreak(s string, wordDict []string) bool {\n    dp := make([]bool, len(s)+1)\n    dp[len(s)] = true\n\n    for i := len(s) - 1; i >= 0; i-- {\n        for _, w := range wordDict {\n            if (i+len(w)) <= len(s) && s[i:i+len(w)] == w {\n                dp[i] = dp[i+len(w)]\n            }\n            if dp[i] {\n                break\n            }\n        }\n    }\n    return dp[0]\n}\n",
+      "customTestCases": [
+        "s=\"practicecode\"\nwordDict=[\"practice\",\"code\"]",
+        "s=\"applepenapple\"\nwordDict=[\"apple\",\"pen\",\"ape\"]"
+      ]
+    },
+    {
+      "title": "Longest Increasing Subsequence",
+      "category": "1-D Dynamic Programming",
+      "difficulty": "Medium",
+      "id": "longest-increasing-subsequence",
+      "statement": "Given an integer array `nums`, return the *length* of the longest strictly *increasing* subsequence.\n\nA **subsequence** is a sequence that can be derived from the given sequence by deleting some or no elements  without changing the relative order of the remaining characters.\n\n* For example, `\"cat\"` is a subsequence of `\"crabt\"`.\n\n**Example 1:**\n\n```java\nInput: nums = [9,1,4,2,3,3,7]\n\nOutput: 4\n```\n\nExplanation: The longest increasing subsequence is [1,2,3,7], which has a length of 4.\n\n**Example 2:**\n\n```java\nInput: nums = [0,3,1,3,2,3]\n\nOutput: 4\n```\n\n**Constraints:**\n* `1 <= nums.length <= 1000`\n* `-1000 <= nums[i] <= 1000`",
+      "starterCode": "func lengthOfLIS(nums []int) int {\n    \n}\n",
+      "referenceCode": "func lengthOfLIS(nums []int) int {\n    lis := make([]int, len(nums))\n    for i := 0; i < len(nums); i++ {\n        lis[i] = 1\n    }\n\n    for i := len(nums) - 1; i >= 0; i-- {\n        for j := i + 1; j < len(nums); j++ {\n            if nums[i] < nums[j] {\n                lis[i] = max(lis[i], 1+lis[j])\n            }\n        }\n    }\n\n    result := lis[0]\n    for i := 1; i < len(lis); i++ {\n        result = max(result, lis[i])\n    }\n    return result\n}\n",
+      "customTestCases": [
+        "nums=[9,1,4,2,3,3,7]",
+        "nums=[0,3,1,3,2,3]"
+      ]
+    },
+    {
+      "title": "Unique Paths",
+      "category": "2-D Dynamic Programming",
+      "difficulty": "Medium",
+      "id": "count-paths",
+      "statement": "There is an `m x n` grid where you are allowed to move either down or to the right at any point in time.\n\nGiven the two integers `m` and `n`, return the number of possible unique paths that can be taken from the top-left corner of the grid (`grid[0][0]`) to the bottom-right corner (`grid[m - 1][n - 1]`).\n\nYou may assume the output will fit in a **32-bit** integer.\n\n**Example 1:**\n\n```java\nInput: m = 3, n = 6\n\nOutput: 21\n```\n\n**Example 2:**\n\n```java\nInput: m = 3, n = 3\n\nOutput: 6\n```\n\n**Constraints:**\n* `1 <= m, n <= 100`",
+      "starterCode": "func uniquePaths(m int, n int) int {\n    \n}\n",
+      "referenceCode": "func uniquePaths(m int, n int) int {\n    row := make([]int, n)\n    for i := 0; i < n; i++ {\n        row[i] = 1\n    }\n\n    for i := 0; i < m-1; i++ {\n        newRow := make([]int, n)\n        for j := 0; j < n; j++ {\n            newRow[j] = 1\n        }\n        for j := n - 2; j >= 0; j-- {\n            newRow[j] = newRow[j+1] + row[j]\n        }\n        row = newRow\n    }\n    return row[0]\n}\n",
+      "customTestCases": [
+        "m=3\nn=6",
+        "m=3\nn=3"
+      ]
+    },
+    {
+      "title": "Longest Common Subsequence",
+      "category": "2-D Dynamic Programming",
+      "difficulty": "Medium",
+      "id": "longest-common-subsequence",
+      "statement": "Given two strings `text1` and `text2`, return the length of the *longest common subsequence* between the two strings if one exists, otherwise return `0`.\n\nA **subsequence** is a sequence that can be derived from the given sequence by deleting some or no elements  without changing the relative order of the remaining characters.\n\n* For example, `\"cat\"` is a subsequence of `\"crabt\"`.\n\nA **common subsequence** of two strings is a subsequence that exists in both strings.\n\n**Example 1:**\n\n```java\nInput: text1 = \"cat\", text2 = \"crabt\" \n\nOutput: 3 \n```\n\nExplanation: The longest common subsequence is \"cat\" which has a length of 3.\n\n**Example 2:**\n\n```java\nInput: text1 = \"abcd\", text2 = \"abcd\"\n\nOutput: 4\n```\n\n**Example 3:**\n\n```java\nInput: text1 = \"abcd\", text2 = \"efgh\"\n\nOutput: 0\n```\n\n**Constraints:**\n* `1 <= text1.length, text2.length <= 1000`\n* `text1` and `text2` consist of only lowercase English characters.",
+      "starterCode": "func longestCommonSubsequence(text1 string, text2 string) int {\n    \n}\n",
+      "referenceCode": "func longestCommonSubsequence(text1 string, text2 string) int {\n    dp := make([][]int, len(text1)+1)\n    for i := 0; i <= len(text1); i++ {\n        dp[i] = make([]int, len(text2)+1)\n    }\n\n    for i := len(text1) - 1; i >= 0; i-- {\n        for j := len(text2) - 1; j >= 0; j-- {\n            if text1[i] == text2[j] {\n                dp[i][j] = 1 + dp[i+1][j+1]\n            } else {\n                dp[i][j] = max(dp[i][j+1], dp[i+1][j])\n            }\n        }\n    }\n    return dp[0][0]\n}\n",
+      "customTestCases": [
+        "text1=\"crabt\"\ntext2=\"cat\"",
+        "text1=\"abcd\"\ntext2=\"abcd\"",
+        "text1=\"abcd\"\ntext2=\"efgh\""
+      ]
+    },
+    {
+      "title": "Maximum Subarray",
+      "category": "Greedy",
+      "difficulty": "Medium",
+      "id": "maximum-subarray",
+      "statement": "Given an array of integers `nums`, find the subarray with the largest sum and return the sum.\n\nA **subarray** is a contiguous non-empty sequence of elements within an array.\n\n**Example 1:**\n\n```java\nInput: nums = [2,-3,4,-2,2,1,-1,4]\n\nOutput: 8\n```\n\nExplanation: The subarray [4,-2,2,1,-1,4] has the largest sum 8.\n\n**Example 2:**\n\n```java\nInput: nums = [-1]\n\nOutput: -1\n```\n\n**Constraints:**\n* `1 <= nums.length <= 100,000`\n* `-10,000 <= nums[i] <= 10,000`",
+      "starterCode": "func maxSubArray(nums []int) int {\n    \n}\n",
+      "referenceCode": "func maxSubArray(nums []int) int {\n    res := nums[0]\n    total := 0\n\n    for _, n := range nums {\n        total += n\n        res = max(res, total)\n        if total < 0 {\n            total = 0\n        }\n    }\n    return res\n}\n",
+      "customTestCases": [
+        "nums=[2,-3,4,-2,2,1,-1,4]",
+        "nums=[-1]"
+      ]
+    },
+    {
+      "title": "Jump Game",
+      "category": "Greedy",
+      "difficulty": "Medium",
+      "id": "jump-game",
+      "statement": "You are given an integer array `nums` where each element `nums[i]` indicates your maximum jump length at that position.\n\nReturn `true` if you can reach the last index starting from index `0`, or `false` otherwise.\n\n**Example 1:**\n\n```java\nInput: nums = [1,2,0,1,0]\n\nOutput: true\n```\n\nExplanation: First jump from index 0 to 1, then from index 1 to 3, and lastly from index 3 to 4.\n\n**Example 2:**\n\n```java\nInput: nums = [1,2,1,0,1]\n\nOutput: false\n```\n\n**Constraints:**\n* `1 <= nums.length <= 1000`\n* `0 <= nums[i] <= 1000`",
+      "starterCode": "func canJump(nums []int) bool {\n    \n}\n",
+      "referenceCode": "func canJump(nums []int) bool {\n    goal := len(nums) - 1\n\n    for i := len(nums) - 2; i >= 0; i-- {\n        if i+nums[i] >= goal {\n            goal = i\n        }\n    }\n    return goal == 0\n}\n",
+      "customTestCases": [
+        "nums=[1,2,0,1,0]",
+        "nums=[1,2,1,0,1]"
+      ]
+    },
+    {
+      "title": "Insert Interval",
+      "category": "Intervals",
+      "difficulty": "Medium",
+      "id": "insert-new-interval",
+      "statement": "You are given an array of non-overlapping intervals `intervals` where `intervals[i] = [start_i, end_i]` represents the start and the end time of the `ith` interval. `intervals` is initially sorted in ascending order by `start_i`.\n\nYou are given another interval `newInterval = [start, end]`.\n\nInsert `newInterval` into `intervals` such that `intervals` is still sorted in ascending order by `start_i` and also `intervals` still does not have any overlapping intervals. You may merge the overlapping intervals if needed.\n\nReturn `intervals` after adding `newInterval`.\n\nNote: Intervals are *non-overlapping* if they have no common point. For example, [1,2] and [3,4] are non-overlapping, but [1,2] and [2,3] are overlapping.\n\n**Example 1:**\n\n```java\nInput: intervals = [[1,3],[4,6]], newInterval = [2,5]\n\nOutput: [[1,6]]\n```\n\nExplanation: `[2,5]` overlaps with `[1,3]` and `[4,6]`, so all three are merged into `[1,6]`.\n\n**Example 2:**\n\n```java\nInput: intervals = [[1,2],[3,5],[9,10]], newInterval = [6,7]\n\nOutput: [[1,2],[3,5],[6,7],[9,10]]\n```\n\nExplanation: `[6,7]` does not overlap with any existing interval, so it is simply inserted between `[3,5]` and `[9,10]`.\n\n**Constraints:**\n* `0 <= intervals.length <= 10000`\n* `newInterval.length == intervals[i].length == 2`\n* `0 <= start <= end <= 100000`",
+      "starterCode": "func insert(intervals [][]int, newInterval []int) [][]int {\n    \n}\n",
+      "referenceCode": "func insert(intervals [][]int, newInterval []int) [][]int {\n    res := [][]int{}\n\n    for i := 0; i < len(intervals); i++ {\n        if newInterval[1] < intervals[i][0] {\n            res = append(res, newInterval)\n            res = append(res, intervals[i:]...)\n            return res\n        } else if newInterval[0] > intervals[i][1] {\n            res = append(res, intervals[i])\n        } else {\n            newInterval = []int{\n                min(newInterval[0], intervals[i][0]),\n                max(newInterval[1], intervals[i][1]),\n            }\n        }\n    }\n    res = append(res, newInterval)\n    return res\n}\n",
+      "customTestCases": [
+        "intervals=[[1,3],[4,6]]\nnewInterval=[2,5]",
+        "intervals=[[1,2],[3,5],[9,10]]\nnewInterval=[6,7]"
+      ]
+    },
+    {
+      "title": "Merge Intervals",
+      "category": "Intervals",
+      "difficulty": "Medium",
+      "id": "merge-intervals",
+      "statement": "Given an array of `intervals` where `intervals[i] = [start_i, end_i]`, merge all overlapping intervals, and return an array of the non-overlapping intervals that cover all the intervals in the input.\n\nYou may return the answer in **any order**.\n\nNote: Intervals are *non-overlapping* if they have no common point. For example, `[1, 2]` and `[3, 4]` are non-overlapping, but `[1, 2]` and `[2, 3]` are overlapping.\n\n**Example 1:**\n\n```java\nInput: intervals = [[1,3],[1,5],[6,7]]\n\nOutput: [[1,5],[6,7]]\n```\n\n**Example 2:**\n\n```java\nInput: intervals = [[1,2],[2,3]]\n\nOutput: [[1,3]]\n```\n\n**Constraints:**\n* `1 <= intervals.length <= 1000`\n* `intervals[i].length == 2`\n* `0 <= start <= end <= 1000`",
+      "starterCode": "func merge(intervals [][]int) [][]int {\n    \n}\n",
+      "referenceCode": "func merge(intervals [][]int) [][]int {\n    sort.Slice(intervals, func(i, j int) bool {\n        return intervals[i][0] < intervals[j][0]\n    })\n\n    output := [][]int{intervals[0]}\n\n    for _, interval := range intervals {\n        start, end := interval[0], interval[1]\n        lastEnd := output[len(output)-1][1]\n\n        if start <= lastEnd {\n            if end > lastEnd {\n                output[len(output)-1][1] = end\n            }\n        } else {\n            output = append(output, []int{start, end})\n        }\n    }\n\n    return output\n}\n",
+      "customTestCases": [
+        "intervals=[[1,3],[1,5],[6,7]]",
+        "intervals=[[1,2],[2,3]]"
+      ]
+    },
+    {
+      "title": "Non Overlapping Intervals",
+      "category": "Intervals",
+      "difficulty": "Medium",
+      "id": "non-overlapping-intervals",
+      "statement": "Given an array of intervals `intervals` where `intervals[i] = [start_i, end_i]`, return the minimum number of intervals you need to remove to make the rest of the intervals non-overlapping.\n\nNote: Intervals are *non-overlapping* even if they have a common point. For example, `[1, 3]` and `[2, 4]` are overlapping, but `[1, 2]` and `[2, 3]` are non-overlapping.\n\n**Example 1:**\n\n```java\nInput: intervals = [[1,2],[2,4],[1,4]]\n\nOutput: 1\n```\n\nExplanation: After [1,4] is removed, the rest of the intervals are non-overlapping.\n\n**Example 2:**\n\n```java\nInput: intervals = [[1,2],[2,4]]\n\nOutput: 0\n```\n\n**Constraints:**\n* `1 <= intervals.length <= 100,000`\n* `intervals[i].length == 2`\n* `-50000 <= starti < endi <= 50000`",
+      "starterCode": "func eraseOverlapIntervals(intervals [][]int) int {\n    \n}\n",
+      "referenceCode": "func eraseOverlapIntervals(intervals [][]int) int {\n    sort.Slice(intervals, func(i, j int) bool {\n        if intervals[i][0] == intervals[j][0] {\n            return intervals[i][1] < intervals[j][1]\n        }\n        return intervals[i][0] < intervals[j][0]\n    })\n\n    res := 0\n    prevEnd := intervals[0][1]\n\n    for i := 1; i < len(intervals); i++ {\n        start, end := intervals[i][0], intervals[i][1]\n        if start >= prevEnd {\n            prevEnd = end\n        } else {\n            res++\n            if end < prevEnd {\n                prevEnd = end\n            }\n        }\n    }\n\n    return res\n}\n",
+      "customTestCases": [
+        "intervals=[[1,2],[2,4],[1,4]]",
+        "intervals=[[1,2],[2,4]]"
+      ]
+    },
+    {
+      "title": "Meeting Rooms",
+      "category": "Intervals",
+      "difficulty": "Easy",
+      "id": "meeting-schedule",
+      "statement": "Given an array of meeting time interval objects consisting of start and end times `[[start_1,end_1],[start_2,end_2],...] (start_i < end_i)`, determine if a person could add all meetings to their schedule without any conflicts. The intervals may be provided in any order.\n\n**Note:** (0,8),(8,10) is not considered a conflict at 8\n\n**Example 1:**\n\n```java\nInput: intervals = [(0,30),(5,10),(15,20)]\n\nOutput: false\n```\n\nExplanation:\n* `(0,30)` and `(5,10)` will conflict\n* `(0,30)` and `(15,20)` will conflict\n\n**Example 2:**\n\n```java\nInput: intervals = [(5,8),(9,15)]\n\nOutput: true\n```\n\n\n**Constraints:**\n* `0 <= intervals.length <= 500`\n* `0 <= intervals[i].start < intervals[i].end <= 1,000,000`",
+      "starterCode": "/**\n * Definition of Interval:\n * type Interval struct {\n *    start int\n *    end   int\n * }\n */\n\nfunc canAttendMeetings(intervals []Interval) bool {\n\n}\n",
+      "referenceCode": "/**\n * Definition of Interval:\n * type Interval struct {\n *    start int\n *    end   int\n * }\n */\n\nfunc canAttendMeetings(intervals []Interval) bool {\n    sort.Slice(intervals, func(i, j int) bool {\n        return intervals[i].start < intervals[j].start\n    })\n\n    for i := 1; i < len(intervals); i++ {\n        i1 := intervals[i-1]\n        i2 := intervals[i]\n        if i1.end > i2.start {\n            return false\n        }\n    }\n    return true\n}\n",
+      "customTestCases": [
+        "intervals=[(0,30),(5,10),(15,20)]",
+        "intervals=[(5,8),(9,15)]"
+      ]
+    },
+    {
+      "title": "Meeting Rooms II",
+      "category": "Intervals",
+      "difficulty": "Medium",
+      "id": "meeting-schedule-ii",
+      "statement": "Given an array of meeting time interval objects consisting of start and end times `[[start_1,end_1],[start_2,end_2],...] (start_i < end_i)`, find the minimum number of rooms required to schedule all meetings without any conflicts.\n\n**Note:** `(0,8),(8,10)` is **NOT** considered a conflict at 8.\n\n**Example 1:**\n\n```java\nInput: intervals = [(0,40),(5,10),(15,20)]\n\nOutput: 2\n```\n\nExplanation:\nroom1: `(0,40)`\nroom2: `(5,10),(15,20)`\n\n**Example 2:**\n\n```java\nInput: intervals = [(4,9)]\n\nOutput: 1\n```\n\n**Constraints:**\n* `0 <= intervals.length <= 100,000`\n* `0 <= intervals[i].start < intervals[i].end <= 1,000,000`",
+      "starterCode": "/**\n * Definition of Interval:\n * type Interval struct {\n *    start int\n *    end   int\n * }\n */\n\nfunc minMeetingRooms(intervals []Interval) int {\n\n}\n",
+      "referenceCode": "/**\n * Definition of Interval:\n * type Interval struct {\n *    start int\n *    end   int\n * }\n */\n\nfunc minMeetingRooms(intervals []Interval) int {\n    time := [][]int{}\n    for _, i := range intervals {\n        start, end := i.start, i.end\n        time = append(time, []int{start, 1})\n        time = append(time, []int{end, -1})\n    }\n\n    sort.Slice(time, func(i, j int) bool {\n        if time[i][0] == time[j][0] {\n            return time[i][1] < time[j][1]\n        }\n        return time[i][0] < time[j][0]\n    })\n\n    count := 0\n    maxCount := 0\n    for _, t := range time {\n        count += t[1]\n        if count > maxCount {\n            maxCount = count\n        }\n    }\n\n    return maxCount\n}\n",
+      "customTestCases": [
+        "intervals=[(0,40),(5,10),(15,20)]",
+        "intervals=[(4,9)]"
+      ]
+    },
+    {
+      "title": "Rotate Image",
+      "category": "Math & Geometry",
+      "difficulty": "Medium",
+      "id": "rotate-matrix",
+      "statement": "Given a square `n x n` matrix of integers `matrix`, rotate it by 90 degrees *clockwise*.\n\nYou must rotate the matrix *in-place*. Do not allocate another 2D matrix and do the rotation.\n\n\n**Example 1:**\n\n```java\nInput: matrix = [\n  [1,2],\n  [3,4]\n]\n\nOutput: [\n  [3,1],\n  [4,2]\n]\n```\n\n**Example 2:**\n\n```java\nInput: matrix = [\n  [1,2,3],\n  [4,5,6],\n  [7,8,9]\n]\n\nOutput: [\n  [7,4,1],\n  [8,5,2],\n  [9,6,3]\n]\n```\n\n**Constraints:**\n* `n == matrix.length == matrix[i].length`\n* `1 <= n <= 20`\n* `-1000 <= matrix[i][j] <= 1000`",
+      "starterCode": "func rotate(matrix [][]int)  {\n    \n}\n",
+      "referenceCode": "func rotate(matrix [][]int) {\n    l, r := 0, len(matrix)-1\n\n    for l < r {\n        for i := 0; i < r-l; i++ {\n            top, bottom := l, r\n\n            // save the top-left\n            topLeft := matrix[top][l+i]\n\n            // move bottom-left into top-left\n            matrix[top][l+i] = matrix[bottom-i][l]\n\n            // move bottom-right into bottom-left\n            matrix[bottom-i][l] = matrix[bottom][r-i]\n\n            // move top-right into bottom-right\n            matrix[bottom][r-i] = matrix[top+i][r]\n\n            // move top-left into top-right\n            matrix[top+i][r] = topLeft\n        }\n        r--\n        l++\n    }\n}\n",
+      "customTestCases": [
+        "matrix=[[1,2],[3,4]]",
+        "matrix=[[1,2,3],[4,5,6],[7,8,9]]"
+      ]
+    },
+    {
+      "title": "Spiral Matrix",
+      "category": "Math & Geometry",
+      "difficulty": "Medium",
+      "id": "spiral-matrix",
+      "statement": "Given an `m x n` matrix of integers `matrix`, return a list of all elements within the matrix in *spiral order*.\n\n**Example 1:**\n\n```java\nInput: matrix = [[1,2],[3,4]]\n\nOutput: [1,2,4,3]\n```\n\n**Example 2:**\n\n```java\nInput: matrix = [[1,2,3],[4,5,6],[7,8,9]]\n\nOutput: [1,2,3,6,9,8,7,4,5]\n```\n\n**Example 3:**\n\n```java\nInput: matrix = [[1,2,3,4],[5,6,7,8],[9,10,11,12]]\n\nOutput: [1,2,3,4,8,12,11,10,9,5,6,7]\n```\n\n**Constraints:**\n* `1 <= matrix.length, matrix[i].length <= 10`\n* `-100 <= matrix[i][j] <= 100`",
+      "starterCode": "func spiralOrder(matrix [][]int) []int {\n    \n}\n",
+      "referenceCode": "func spiralOrder(matrix [][]int) []int {\n\tres := []int{}\n\tleft, right := 0, len(matrix[0])\n\ttop, bottom := 0, len(matrix)\n\n\tfor left < right && top < bottom {\n\t\tfor i := left; i < right; i++ {\n\t\t\tres = append(res, matrix[top][i])\n\t\t}\n\t\ttop++\n\t\tfor i := top; i < bottom; i++ {\n\t\t\tres = append(res, matrix[i][right-1])\n\t\t}\n\t\tright--\n\t\tif !(left < right && top < bottom) {\n\t\t\tbreak\n\t\t}\n\t\tfor i := right - 1; i >= left; i-- {\n\t\t\tres = append(res, matrix[bottom-1][i])\n\t\t}\n\t\tbottom--\n\t\tfor i := bottom - 1; i >= top; i-- {\n\t\t\tres = append(res, matrix[i][left])\n\t\t}\n\t\tleft++\n\t}\n\n\treturn res\n}\n",
+      "customTestCases": [
+        "matrix=[[1,2],[3,4]]",
+        "matrix=[[1,2,3],[4,5,6],[7,8,9]]",
+        "matrix=[[1,2,3,4],[5,6,7,8],[9,10,11,12]]"
+      ]
+    },
+    {
+      "title": "Set Matrix Zeroes",
+      "category": "Math & Geometry",
+      "difficulty": "Medium",
+      "id": "set-zeroes-in-matrix",
+      "statement": "Given an `m x n` matrix of integers `matrix`, if an element is `0`, set its entire row and column to `0`'s.\n\nYou must update the matrix *in-place*.\n\n**Follow up:** Could you solve it using `O(1)` space?\n\n**Example 1:**\n\n```java\nInput: matrix = [\n  [0,1],\n  [1,0]\n]\n\nOutput: [\n  [0,0],\n  [0,0]\n]\n```\n\n**Example 2:**\n\n```java\nInput: matrix = [\n  [1,2,3],\n  [4,0,5],\n  [6,7,8]\n]\n\nOutput: [\n  [1,0,3],\n  [0,0,0],\n  [6,0,8]\n]\n```\n\n**Constraints:**\n* `m == matrix.length`\n* `n == matrix[0].length`\n* `1 <= m, n <= 200`\n* `-2^31 <= matrix[i][j] <= (2^31) - 1`",
+      "starterCode": "func setZeroes(matrix [][]int) {\n    \n}\n",
+      "referenceCode": "func setZeroes(matrix [][]int) {\n\tROWS, COLS := len(matrix), len(matrix[0])\n\trowZero := false\n\n\tfor r := 0; r < ROWS; r++ {\n\t\tfor c := 0; c < COLS; c++ {\n\t\t\tif matrix[r][c] == 0 {\n\t\t\t\tmatrix[0][c] = 0\n\t\t\t\tif r > 0 {\n\t\t\t\t\tmatrix[r][0] = 0\n\t\t\t\t} else {\n\t\t\t\t\trowZero = true\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n\n\tfor r := 1; r < ROWS; r++ {\n\t\tfor c := 1; c < COLS; c++ {\n\t\t\tif matrix[0][c] == 0 || matrix[r][0] == 0 {\n\t\t\t\tmatrix[r][c] = 0\n\t\t\t}\n\t\t}\n\t}\n\n\tif matrix[0][0] == 0 {\n\t\tfor r := 0; r < ROWS; r++ {\n\t\t\tmatrix[r][0] = 0\n\t\t}\n\t}\n\n\tif rowZero {\n\t\tfor c := 0; c < COLS; c++ {\n\t\t\tmatrix[0][c] = 0\n\t\t}\n\t}\n}\n",
+      "customTestCases": [
+        "matrix=[[0,1],[1,0]]",
+        "matrix=[[1,2,3],[4,0,5],[6,7,8]]"
+      ]
+    },
+    {
+      "title": "Number of 1 Bits",
+      "category": "Bit Manipulation",
+      "difficulty": "Easy",
+      "id": "number-of-one-bits",
+      "statement": "You are given an unsigned integer `n`. Return the number of `1` bits in its binary representation.\n\nYou may assume `n` is a non-negative integer which fits within 32-bits.\n\n**Example 1:**\n\n```java\nInput: n = 00000000000000000000000000010111\n\nOutput: 4\n```\n\n**Example 2:**\n\n```java\nInput: n = 01111111111111111111111111111101\n\nOutput: 30\n```",
+      "starterCode": "func hammingWeight(n int) int {\n\n}\n",
+      "referenceCode": "func hammingWeight(n int) int {\n\tres := 0\n\tfor n != 0 {\n\t\tn &= n - 1\n\t\tres++\n\t}\n\treturn res\n}\n",
+      "customTestCases": [
+        "n=00000000000000000000000000001011",
+        "n=01111111111111111111111111111101"
+      ]
+    },
+    {
+      "title": "Counting Bits",
+      "category": "Bit Manipulation",
+      "difficulty": "Easy",
+      "id": "counting-bits",
+      "statement": "Given an integer `n`, count the number of `1`'s in the binary representation of every number in the range `[0, n]`.\n\nReturn an array `output` where `output[i]` is the number of `1`'s in the binary representation of `i`.\n\n**Example 1:**\n\n```java\nInput: n = 4\n\nOutput: [0,1,1,2,1]\n```\n\nExplanation:\n0 --> 0\n1 --> 1\n2 --> 10\n3 --> 11\n4 --> 100\n\n**Constraints:**\n* `0 <= n <= 1000`",
+      "starterCode": "func countBits(n int) []int {\n\n}\n",
+      "referenceCode": "func countBits(n int) []int {\n\tdp := make([]int, n+1)\n\toffset := 1\n\n\tfor i := 1; i <= n; i++ {\n\t\tif offset*2 == i {\n\t\t\toffset = i\n\t\t}\n\t\tdp[i] = 1 + dp[i-offset]\n\t}\n\n\treturn dp\n}\n",
+      "customTestCases": [
+        "n=4"
+      ]
+    },
+    {
+      "title": "Reverse Bits",
+      "category": "Bit Manipulation",
+      "difficulty": "Easy",
+      "id": "reverse-bits",
+      "statement": "Given a 32-bit unsigned integer `n`, reverse the bits of the binary representation of `n` and return the result.\n\n**Example 1:**\n\n```java\nInput: n = 00000000000000000000000000010101\n\nOutput:    2818572288 (10101000000000000000000000000000)\n```\n\nExplanation: Reversing `00000000000000000000000000010101`, which represents the unsigned integer `21`, gives us `10101000000000000000000000000000` which represents the unsigned integer `2818572288`.",
+      "starterCode": "func reverseBits(n int) int {\n\n}\n",
+      "referenceCode": "func reverseBits(n int) int {\n\tres := 0\n\tfor i := 0; i < 32; i++ {\n\t\tbit := (n >> i) & 1\n\t\tres += bit << (31 - i)\n\t}\n\treturn res\n}\n",
+      "customTestCases": [
+        "n=00000000000000000000000000010101"
+      ]
+    },
+    {
+      "title": "Missing Number",
+      "category": "Bit Manipulation",
+      "difficulty": "Easy",
+      "id": "missing-number",
+      "statement": "Given an array `nums` containing `n` integers in the range `[0, n]` without any duplicates, return the single number in the range that is missing from `nums`.\n\n**Follow-up**: Could you implement a solution using only `O(1)` extra space complexity and `O(n)` runtime complexity?\n\n**Example 1:**\n\n```java\nInput: nums = [1,2,3]\n\nOutput: 0\n```\n\nExplanation: Since there are 3 numbers, the range is [0,3]. The missing number is 0 since it does not appear in nums.\n\n**Example 2:**\n\n```java\nInput: nums = [0,2]\n\nOutput: 1\n```\n\n**Constraints:**\n* `1 <= nums.length <= 1000`",
+      "starterCode": "func missingNumber(nums []int) int {\n\n}\n",
+      "referenceCode": "func missingNumber(nums []int) int {\n\tres := len(nums)\n\tfor i := 0; i < len(nums); i++ {\n\t\tres += i - nums[i]\n\t}\n\treturn res\n}\n",
+      "customTestCases": [
+        "nums=[1,2,3]",
+        "nums=[0,2]"
+      ]
+    },
+    {
+      "title": "Sum of Two Integers",
+      "category": "Bit Manipulation",
+      "difficulty": "Medium",
+      "id": "sum-of-two-integers",
+      "statement": "Given two integers `a` and `b`, return the sum of the two integers without using the `+` and `-` operators.\n\n**Example 1:**\n\n```java\nInput: a = 1, b = 1\n\nOutput: 2\n```\n\n**Example 2:**\n\n```java\nInput: a = 4, b = 7\n\nOutput: 11\n```\n\n**Constraints:**\n* `-1000 <= a, b <= 1000`",
+      "starterCode": "func getSum(a int, b int) int {\n\n}\n",
+      "referenceCode": "func getSum(a int, b int) int {\n\tvar add func(x, y int) int\n\tadd = func(x, y int) int {\n\t\tif x == 0 || y == 0 {\n\t\t\tif x != 0 {\n\t\t\t\treturn x\n\t\t\t}\n\t\t\treturn y\n\t\t}\n\t\treturn add(x^y, (x&y)<<1)\n\t}\n\n\tif a*b < 0 {\n\t\tif a > 0 {\n\t\t\treturn getSum(b, a)\n\t\t}\n\t\tif add(^a, 1) == b {\n\t\t\treturn 0\n\t\t}\n\t\tif add(^a, 1) < b {\n\t\t\treturn add(^(add(add(^a, 1), add(^b, 1))), 1)\n\t\t}\n\t}\n\n\treturn add(a, b)\n}\n",
+      "customTestCases": [
+        "a=1\nb=1",
+        "a=4\nb=7"
+      ]
+    }
+  ]
+}

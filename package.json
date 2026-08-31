@@ -1,0 +1,33 @@
+{
+  "name": "blind75-go-practice",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "bun run build:go && vite",
+    "build": "bun scripts/build-app.mjs",
+    "build:go": "bun scripts/build-go-runtime.mjs",
+    "preview": "vite preview",
+    "test": "bun scripts/verify-fixtures.mjs",
+    "verify:fixtures": "bun scripts/verify-fixtures.mjs",
+    "verify:yaegi": "bun scripts/verify-yaegi-fixtures.mjs"
+  },
+  "dependencies": {
+    "@codemirror/commands": "latest",
+    "@codemirror/lang-go": "latest",
+    "@codemirror/state": "latest",
+    "@codemirror/theme-one-dark": "latest",
+    "@codemirror/view": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "react-markdown": "latest"
+  },
+  "devDependencies": {
+    "@testing-library/react": "latest",
+    "@testing-library/user-event": "latest",
+    "fake-indexeddb": "latest",
+    "jsdom": "latest",
+    "vite": "latest",
+    "vitest": "latest"
+  }
+}
