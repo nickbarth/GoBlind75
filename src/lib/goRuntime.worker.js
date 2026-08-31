@@ -5,9 +5,13 @@ async function startRuntime(runtimeBase) {
   ready = (async () => {
     // This worker is emitted as a classic IIFE worker (see vite.config.js),
     // which lets the Go runtime install its global Go constructor directly.
-    importScripts(`${runtimeBase}go/wasm_exec.js`);
+    // Inline workers run from a blob: URL, so resolve Pages' root-relative
+    // asset paths against the actual page origin before loading them.
+    const wasmExecUrl = new URL(`${runtimeBase}go/wasm_exec.js`, self.location.origin).href;
+    const runnerUrl = new URL(`${runtimeBase}go/runner.wasm`, self.location.origin).href;
+    importScripts(wasmExecUrl);
     const go = new Go();
-    const response = await fetch(`${runtimeBase}go/runner.wasm`);
+    const response = await fetch(runnerUrl);
     if (!response.ok) throw new Error(`Could not load Go runtime (${response.status}).`);
     let instance;
     try {
