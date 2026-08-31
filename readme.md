@@ -1,5 +1,7 @@
 # Blind 75 Go Practice
 
+https://www.nicbarth.com/GoBlind75/
+
 A browser-only Go practice app for the Blind 75. It provides 75 categorized problems, a Go editor, three test cases per problem, reference solutions, local progress tracking, and small SVG diagrams for visual problems.
 
 ## Requirements
