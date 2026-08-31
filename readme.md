@@ -51,6 +51,8 @@ make pages PAGES_BASE=/your-repository-name/
 
 The generated `dist/` directory is ready to upload through GitHub Pages or a Pages deployment workflow. The target builds locally only; it does not publish anything.
 
+The included GitHub Actions workflow builds and deploys `dist/` after every push to `main`. After the first successful run, the site is available at [nickbarth.github.io/GoBlind75](https://nickbarth.github.io/GoBlind75/).
+
 ## Using the app
 
 - Select a problem from the categorized sidebar. Its difficulty and completion state are shown beside the title.
