@@ -99,3 +99,5 @@ scripts/                   Build and fixture-verification scripts
 public/go/                 Generated browser Go runtime (not committed)
 dist/                      Generated production bundle (not committed)
 ```
+
+MIT License
