@@ -71,8 +71,13 @@ function preludeFor(problem, code) {
   const packageFor = { heap: '"container/heap"', math: '"math"', sort: '"sort"', strconv: '"strconv"', strings: '"strings"' };
   for (const [name, source] of Object.entries(packageFor)) if (new RegExp(`\\b${name}\\.`).test(code)) imports.push(source);
   if (/\bmaps\s*\.\s*Equal\s*\(/.test(code)) imports.push('"reflect"');
+  if (/\bslices\s*\.\s*Sort(?:Func)?\s*\(/.test(code) && !imports.includes('"sort"')) imports.push('"sort"');
   const helpers = [];
   if (/\bmaps\s*\.\s*Equal\s*\(/.test(code)) helpers.push('func mapsEqual(left, right any) bool { return reflect.DeepEqual(left, right) }');
+  if (/\bslices\s*\.\s*Sort\s*\(/.test(code) || /\bcmp\s*\.\s*Compare\s*\(/.test(code)) helpers.push(`type blind75Ordered interface { ~int | ~int8 | ~int16 | ~int32 | ~int64 | ~uint | ~uint8 | ~uint16 | ~uint32 | ~uint64 | ~uintptr | ~float32 | ~float64 | ~string }
+func blind75SlicesSort[T blind75Ordered](values []T) { sort.Slice(values, func(i, j int) bool { return values[i] < values[j] }) }
+func blind75CmpCompare[T blind75Ordered](left, right T) int { if left < right { return -1 }; if left > right { return 1 }; return 0 }`);
+  if (/\bslices\s*\.\s*SortFunc\s*\(/.test(code)) helpers.push('func blind75SlicesSortFunc[T any](values []T, compare func(T, T) int) { sort.Slice(values, func(i, j int) bool { return compare(values[i], values[j]) < 0 }) }');
   if (/ListNode/.test(problem.starterCode)) helpers.push(`type ListNode struct { Val int; Next *ListNode }
 func listFrom(values []int) *ListNode { if len(values) == 0 { return nil }; dummy := &ListNode{}; current := dummy; for _, value := range values { current.Next = &ListNode{Val: value}; current = current.Next }; return dummy.Next }
 func cycleListFrom(values []int, index int) *ListNode { head := listFrom(values); if head == nil || index < 0 { return head }; var target, tail *ListNode; for node, i := head, 0; node != nil; node, i = node.Next, i+1 { if i == index { target = node }; tail = node }; if target != nil { tail.Next = target }; return head }
@@ -180,7 +185,11 @@ export function buildProgram(problem, code, raw) {
   if (/^\s*(package|import)\b/m.test(code)) throw new Error('Write only the function(s) from the starter code. Package and imports are supplied for you.');
   const parsed = parseCase(raw);
   const body = parsed.operationArrays || parsed.flattenedOperations ? operationInvocation(problem, parsed) : normalInvocation(problem, parsed);
-  const runtimeCode = code.replace(/\bmaps\s*\.\s*Equal\s*\(/g, 'mapsEqual(');
+  const runtimeCode = code
+    .replace(/\bmaps\s*\.\s*Equal\s*\(/g, 'mapsEqual(')
+    .replace(/\bslices\s*\.\s*SortFunc\s*\(/g, 'blind75SlicesSortFunc(')
+    .replace(/\bslices\s*\.\s*Sort\s*\(/g, 'blind75SlicesSort(')
+    .replace(/\bcmp\s*\.\s*Compare\s*\(/g, 'blind75CmpCompare(');
   return `${preludeFor(problem, code)}\n${runtimeCode}\n\nfunc main() {\n  defer func() { if value := recover(); value != nil { fmt.Printf("${ERROR}%v\\n", value) } }()\n${body}\n}\n`;
 }
 
