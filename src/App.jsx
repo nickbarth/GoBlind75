@@ -15,6 +15,17 @@ import { formatGoCode, runProblem } from './lib/goProblemRunner.js';
 
 const problems = snapshot.problems;
 
+function normalizedStarterCode(source) {
+  return source
+    .replace(/(\{\n)[ \t]*(?=\n\})/g, '$1\t')
+    .replace(/\s+$/, '');
+}
+
+function firstEditablePosition(source) {
+  const match = /\n\t(?=\n\})/.exec(source);
+  return match ? match.index + 2 : source.length;
+}
+
 function formatValue(value) {
   if (value === undefined) return 'undefined';
   try { return JSON.stringify(value, null, 2); } catch { return String(value); }
@@ -40,7 +51,11 @@ function FormatIcon() {
   return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 6h14M5 10h9M5 14h14M5 18h9" /></svg>;
 }
 
-function CodeEditor({ value, onChange, readOnly = false, onRun }) {
+function CopyIcon() {
+  return <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="10" height="10" rx="1" /><path d="M15 9V6a1 1 0 0 0-1-1H6a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h3" /></svg>;
+}
+
+function CodeEditor({ value, onChange, readOnly = false, onRun, focusStarterToken }) {
   const hostRef = useRef(null);
   const viewRef = useRef(null);
   const runRef = useRef(onRun);
@@ -77,6 +92,14 @@ function CodeEditor({ value, onChange, readOnly = false, onRun }) {
     if (!view || value === view.state.doc.toString()) return;
     view.dispatch({ changes: { from: 0, to: view.state.doc.length, insert: value } });
   }, [value]);
+
+  useEffect(() => {
+    const view = viewRef.current;
+    if (!view || focusStarterToken == null) return;
+    const position = firstEditablePosition(view.state.doc.toString());
+    view.dispatch({ selection: { anchor: position }, scrollIntoView: true });
+    view.focus();
+  }, [focusStarterToken]);
 
   return <div className="code-editor" ref={hostRef} />;
 }
@@ -134,6 +157,8 @@ export default function App() {
   const [running, setRunning] = useState(false);
   const [formatting, setFormatting] = useState(false);
   const [success, setSuccess] = useState(null);
+  const [editorFocusToken, setEditorFocusToken] = useState(0);
+  const [solutionCopied, setSolutionCopied] = useState(false);
   const contentRef = useRef(null);
 
   useEffect(() => {
@@ -157,7 +182,8 @@ export default function App() {
 
   const selected = problems.find((problem) => problem.id === selectedId) ?? problems[0];
   const completed = useMemo(() => new Set(state.completedProblemIds), [state.completedProblemIds]);
-  const code = state.codeByProblemId[selected.id] ?? selected.starterCode;
+  const hasSavedCode = Object.hasOwn(state.codeByProblemId, selected.id);
+  const code = state.codeByProblemId[selected.id] ?? normalizedStarterCode(selected.starterCode);
 
   useEffect(() => {
     contentRef.current?.scrollTo({ top: 0, left: 0 });
@@ -168,7 +194,10 @@ export default function App() {
     codeByProblemId: { ...current.codeByProblemId, [selected.id]: nextCode },
   }));
 
-  const chooseProblem = (id) => { setSelectedId(id); setTab('problem'); setResults(null); };
+  const chooseProblem = (id) => {
+    setSelectedId(id); setTab('problem'); setResults(null); setSolutionCopied(false);
+    if (!Object.hasOwn(state.codeByProblemId, id)) setEditorFocusToken((token) => token + 1);
+  };
 
   const run = useCallback(async () => {
     setRunning(true); setResults(null); setTab('output');
@@ -191,7 +220,7 @@ export default function App() {
       delete codeByProblemId[selected.id];
       return { codeByProblemId, completedProblemIds: current.completedProblemIds.filter((id) => id !== selected.id) };
     });
-    setResults(null); setTab('problem');
+    setResults(null); setTab('problem'); setEditorFocusToken((token) => token + 1);
   };
 
   const formatCode = async () => {
@@ -199,6 +228,22 @@ export default function App() {
     try { updateCode(await formatGoCode(code)); }
     catch (error) { window.alert(`Could not format this Go code.\n\n${error instanceof Error ? error.message : String(error)}`); }
     finally { setFormatting(false); }
+  };
+
+  const copySolution = async () => {
+    const solution = selected.referenceCode.trimEnd();
+    try {
+      if (navigator.clipboard?.writeText) await navigator.clipboard.writeText(solution);
+      else {
+        const input = document.createElement('textarea');
+        input.value = solution; document.body.append(input); input.select();
+        document.execCommand('copy'); input.remove();
+      }
+      setSolutionCopied(true);
+      window.setTimeout(() => setSolutionCopied(false), 1500);
+    } catch {
+      window.alert('Could not copy the solution code.');
+    }
   };
 
   const resetAll = async () => {
@@ -225,11 +270,11 @@ export default function App() {
           </nav>
           <div className="left-pane-content" ref={contentRef}>
             {tab === 'problem' && <article className="statement"><ProblemDiagram problemId={selected.id} /><Markdown>{selected.statement}</Markdown></article>}
-            {tab === 'solution' && <section className="solution-editor"><h2>Go reference solution</h2><div className="editor"><CodeEditor value={selected.referenceCode} readOnly /></div></section>}
+            {tab === 'solution' && <section className="solution-editor"><header className="solution-header"><h2>Go reference solution</h2><IconButton label={solutionCopied ? 'Solution copied' : 'Copy solution code'} onClick={copySolution}><CopyIcon /></IconButton></header><div className="editor"><CodeEditor value={selected.referenceCode.trimEnd()} readOnly /></div></section>}
             {tab === 'output' && <TestOutput results={results} running={running} />}
           </div>
         </section>
-        <section className="right-pane editor-section"><header><div><h2>Go</h2><p className="editor-note">Write the starter function only. Common packages such as <code>sort</code>, <code>strings</code>, <code>strconv</code>, and <code>container/heap</code> are available.</p></div><div className="editor-actions"><IconButton label={formatting ? 'Formatting Go code' : 'Format Go code'} disabled={running || formatting} onClick={formatCode}><FormatIcon /></IconButton><IconButton label="Reset this question's code" disabled={formatting} onClick={resetQuestion}>↻</IconButton><IconButton label={running ? 'Running tests' : 'Run tests'} className="primary" disabled={running || formatting} onClick={run}>{running ? '…' : '▶'}</IconButton></div></header><div className="editor"><CodeEditor value={code} onChange={updateCode} onRun={run} /></div></section>
+        <section className="right-pane editor-section"><header><div><h2>Go</h2><p className="editor-note">Write the starter function only. Common packages such as <code>sort</code>, <code>strings</code>, <code>strconv</code>, and <code>container/heap</code> are available.</p></div><div className="editor-actions"><IconButton label={formatting ? 'Formatting Go code' : 'Format Go code'} disabled={running || formatting} onClick={formatCode}><FormatIcon /></IconButton><IconButton label="Reset this question's code" disabled={formatting} onClick={resetQuestion}>↻</IconButton><IconButton label={running ? 'Running tests' : 'Run tests'} className="primary" disabled={running || formatting} onClick={run}>{running ? '…' : '▶'}</IconButton></div></header><div className="editor"><CodeEditor value={code} onChange={updateCode} onRun={run} focusStarterToken={hasSavedCode ? undefined : editorFocusToken} /></div></section>
       </section>
     </section>
     {success && <div className="modal-backdrop" role="presentation"><section className="success-modal" role="dialog" aria-modal="true" aria-label="Question completed"><h2>Answered successfully</h2><p>You passed all three tests for {success}.</p><button className="primary" onClick={() => setSuccess(null)}>Continue</button></section></div>}
