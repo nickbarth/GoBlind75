@@ -70,7 +70,9 @@ function preludeFor(problem, code) {
   const imports = ['"fmt"'];
   const packageFor = { heap: '"container/heap"', math: '"math"', sort: '"sort"', strconv: '"strconv"', strings: '"strings"' };
   for (const [name, source] of Object.entries(packageFor)) if (new RegExp(`\\b${name}\\.`).test(code)) imports.push(source);
+  if (/\bmaps\s*\.\s*Equal\s*\(/.test(code)) imports.push('"reflect"');
   const helpers = [];
+  if (/\bmaps\s*\.\s*Equal\s*\(/.test(code)) helpers.push('func mapsEqual(left, right any) bool { return reflect.DeepEqual(left, right) }');
   if (/ListNode/.test(problem.starterCode)) helpers.push(`type ListNode struct { Val int; Next *ListNode }
 func listFrom(values []int) *ListNode { if len(values) == 0 { return nil }; dummy := &ListNode{}; current := dummy; for _, value := range values { current.Next = &ListNode{Val: value}; current = current.Next }; return dummy.Next }
 func cycleListFrom(values []int, index int) *ListNode { head := listFrom(values); if head == nil || index < 0 { return head }; var target, tail *ListNode; for node, i := head, 0; node != nil; node, i = node.Next, i+1 { if i == index { target = node }; tail = node }; if target != nil { tail.Next = target }; return head }
@@ -178,7 +180,8 @@ export function buildProgram(problem, code, raw) {
   if (/^\s*(package|import)\b/m.test(code)) throw new Error('Write only the function(s) from the starter code. Package and imports are supplied for you.');
   const parsed = parseCase(raw);
   const body = parsed.operationArrays || parsed.flattenedOperations ? operationInvocation(problem, parsed) : normalInvocation(problem, parsed);
-  return `${preludeFor(problem, code)}\n${code}\n\nfunc main() {\n  defer func() { if value := recover(); value != nil { fmt.Printf("${ERROR}%v\\n", value) } }()\n${body}\n}\n`;
+  const runtimeCode = code.replace(/\bmaps\s*\.\s*Equal\s*\(/g, 'mapsEqual(');
+  return `${preludeFor(problem, code)}\n${runtimeCode}\n\nfunc main() {\n  defer func() { if value := recover(); value != nil { fmt.Printf("${ERROR}%v\\n", value) } }()\n${body}\n}\n`;
 }
 
 export function readProgramOutput(output = '') {

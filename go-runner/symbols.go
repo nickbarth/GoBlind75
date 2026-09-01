@@ -45,6 +45,7 @@ func blind75Symbols() interp.Exports {
 			"Inf": reflect.ValueOf(math.Inf), "MaxInt": reflect.ValueOf(math.MaxInt), "MinInt": reflect.ValueOf(math.MinInt),
 			"MaxInt32": reflect.ValueOf(math.MaxInt32), "MinInt32": reflect.ValueOf(math.MinInt32),
 		},
+		"reflect/reflect": {"DeepEqual": reflect.ValueOf(reflect.DeepEqual)},
 		"sort/sort": {"Ints": reflect.ValueOf(sort.Ints), "Slice": reflect.ValueOf(sort.Slice)},
 		"strconv/strconv": {"Atoi": reflect.ValueOf(strconv.Atoi), "Itoa": reflect.ValueOf(strconv.Itoa)},
 		"strings/strings": {

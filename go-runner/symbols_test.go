@@ -15,17 +15,18 @@ func TestBlind75SymbolsExecuteReferenceStyleCode(t *testing.T) {
 	i := interp.New(interp.Options{Stdout: &output})
 	if err := i.Use(blind75Symbols()); err != nil { t.Fatal(err) }
 	_, err := i.Eval(`package main
-import ("fmt"; "sort"; "strings"; "container/heap")
+import ("fmt"; "reflect"; "sort"; "strings"; "container/heap")
 type maxHeap []int
 func (h maxHeap) Len() int { return len(h) }
 func (h maxHeap) Less(i, j int) bool { return h[i] > h[j] }
 func (h maxHeap) Swap(i, j int) { h[i], h[j] = h[j], h[i] }
 func (h *maxHeap) Push(value interface{}) { *h = append(*h, value.(int)) }
 func (h *maxHeap) Pop() interface{} { old := *h; value := old[len(old)-1]; *h = old[:len(old)-1]; return value }
-func main() { values := []int{3, 1, 2}; sort.Ints(values); h := &maxHeap{}; heap.Push(h, 2); heap.Push(h, 4); var b strings.Builder; b.WriteString("ok"); fmt.Printf("%v:%s", heap.Pop(h), b.String()) }
+func mapsEqual(left, right any) bool { return reflect.DeepEqual(left, right) }
+func main() { values := []int{3, 1, 2}; sort.Ints(values); h := &maxHeap{}; heap.Push(h, 2); heap.Push(h, 4); var b strings.Builder; b.WriteString("ok"); fmt.Printf("%v:%s:%t", heap.Pop(h), b.String(), mapsEqual(map[int]string{1: "one"}, map[int]string{1: "one"})) }
 `)
 	if err != nil { t.Fatal(err) }
-	if got, want := output.String(), "4:ok"; got != want { t.Fatalf("output = %q, want %q", got, want) }
+	if got, want := output.String(), "4:ok:true"; got != want { t.Fatalf("output = %q, want %q", got, want) }
 }
 
 func TestEvaluateGeneratedProgramShape(t *testing.T) {
