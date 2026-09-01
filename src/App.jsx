@@ -7,7 +7,7 @@ import { bracketMatching, indentOnInput, indentUnit } from '@codemirror/language
 import { oneDark } from '@codemirror/theme-one-dark';
 import { drawSelection, EditorView, highlightActiveLine, highlightActiveLineGutter, keymap, lineNumbers } from '@codemirror/view';
 import Markdown from 'react-markdown';
-import goGopher from './assets/go-gopher.png';
+import goGopher from './assets/go-gopher.svg';
 import snapshot from './data/blind75-problems.json';
 import { ProblemDiagram } from './ProblemDiagram.jsx';
 import { clearState, loadState, saveState } from './lib/storage.js';
