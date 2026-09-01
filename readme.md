@@ -75,7 +75,7 @@ The browser loads the locally built `runner.wasm` file and runs test programs in
 
 ## Artwork attribution
 
-`src/assets/go-gopher.svg` is the standing superhero Gopher artwork by [Egon Elbre](https://github.com/egonelbre), from the [gophers repository](https://github.com/egonelbre/gophers/tree/master/vector/superhero). Its artwork is released under [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/). The Go Gopher character was originally designed by Renée French.
+`src/assets/go-gopher.svg` is the standing superhero Gopher artwork by [Egon Elbre](https://github.com/egonelbre), from the [gophers repository](https://github.com/egonelbre/gophers/tree/master/vector/superhero). `src/assets/hiking-gopher.svg` is also by Egon Elbre, from the [hiking Gopher artwork](https://github.com/egonelbre/gophers/tree/master/vector/adventure). These artworks are released under [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/). The Go Gopher character was originally designed by Renée French.
 
 ## Verification
 

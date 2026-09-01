@@ -8,6 +8,7 @@ import { oneDark } from '@codemirror/theme-one-dark';
 import { drawSelection, EditorView, highlightActiveLine, highlightActiveLineGutter, keymap, lineNumbers } from '@codemirror/view';
 import Markdown from 'react-markdown';
 import goGopher from './assets/go-gopher.svg';
+import hikingGopher from './assets/hiking-gopher.svg';
 import snapshot from './data/blind75-problems.json';
 import { ProblemDiagram } from './ProblemDiagram.jsx';
 import { clearState, loadState, saveState } from './lib/storage.js';
@@ -277,6 +278,6 @@ export default function App() {
         <section className="right-pane editor-section"><header><div><h2>Go</h2><p className="editor-note">Common core packages and functions are <abbr className="supported-details" title="Available automatically: fmt; sort.Ints and sort.Slice; strings.Builder, Contains, Join, Split, and ToLower; strconv.Atoi and Itoa; container/heap.Init, Push, and Pop; math.Inf and integer bounds; maps.Equal; slices.Sort and slices.SortFunc; and cmp.Compare.">supported</abbr>.</p></div><div className="editor-actions"><IconButton label={formatting ? 'Formatting Go code' : 'Format Go code'} disabled={running || formatting} onClick={formatCode}><FormatIcon /></IconButton><IconButton label="Reset this question's code" disabled={formatting} onClick={resetQuestion}>↻</IconButton><IconButton label={running ? 'Running tests' : 'Run tests'} className="primary" disabled={running || formatting} onClick={run}>{running ? '…' : '▶'}</IconButton></div></header><div className="editor"><CodeEditor value={code} onChange={updateCode} onRun={run} focusStarterToken={hasSavedCode ? undefined : editorFocusToken} /></div></section>
       </section>
     </section>
-    {success && <div className="modal-backdrop" role="presentation"><section className="success-modal" role="dialog" aria-modal="true" aria-label="Question completed"><h2>Answered successfully</h2><p>You passed all three tests for {success}.</p><button className="primary" onClick={() => setSuccess(null)}>Continue</button></section></div>}
+    {success && <div className="modal-backdrop" role="presentation"><section className="success-modal" role="dialog" aria-modal="true" aria-label="Question completed"><img className="success-gopher" src={hikingGopher} alt="Hiking Go gopher" /><h2>Success</h2><p>You solved <strong>{success}!</strong></p><button className="primary success-complete" onClick={() => setSuccess(null)}><strong>Complete</strong></button></section></div>}
   </main>;
 }
