@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { closeBrackets, closeBracketsKeymap } from '@codemirror/autocomplete';
 import { EditorState } from '@codemirror/state';
 import { defaultKeymap, indentWithTab } from '@codemirror/commands';
 import { go } from '@codemirror/lang-go';
+import { bracketMatching, indentOnInput, indentUnit } from '@codemirror/language';
 import { oneDark } from '@codemirror/theme-one-dark';
 import { drawSelection, EditorView, highlightActiveLine, highlightActiveLineGutter, keymap, lineNumbers } from '@codemirror/view';
 import Markdown from 'react-markdown';
@@ -9,7 +11,7 @@ import goGopher from './assets/go-gopher.png';
 import snapshot from './data/blind75-problems.json';
 import { ProblemDiagram } from './ProblemDiagram.jsx';
 import { clearState, loadState, saveState } from './lib/storage.js';
-import { runProblem } from './lib/goProblemRunner.js';
+import { formatGoCode, runProblem } from './lib/goProblemRunner.js';
 
 const problems = snapshot.problems;
 
@@ -34,6 +36,10 @@ function CloseIcon() {
   return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg>;
 }
 
+function FormatIcon() {
+  return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 6h14M5 10h9M5 14h14M5 18h9" /></svg>;
+}
+
 function CodeEditor({ value, onChange, readOnly = false, onRun }) {
   const hostRef = useRef(null);
   const viewRef = useRef(null);
@@ -49,8 +55,8 @@ function CodeEditor({ value, onChange, readOnly = false, onRun }) {
     const state = EditorState.create({
       doc: value,
       extensions: [
-        lineNumbers(), drawSelection(), highlightActiveLine(), highlightActiveLineGutter(), go(), oneDark,
-        keymap.of([{ key: "Mod-'", run: runFromShortcut }, ...defaultKeymap, indentWithTab]),
+        lineNumbers(), drawSelection(), highlightActiveLine(), highlightActiveLineGutter(), bracketMatching(), closeBrackets(), indentOnInput(), indentUnit.of('\t'), go(), oneDark,
+        keymap.of([{ key: "Mod-'", run: runFromShortcut }, ...closeBracketsKeymap, ...defaultKeymap, indentWithTab]),
         EditorView.domEventHandlers({ keydown: (event) => {
           if (!isRunShortcut(event)) return false;
           event.preventDefault();
@@ -126,6 +132,7 @@ export default function App() {
   const [listVisible, setListVisible] = useState(true);
   const [results, setResults] = useState(null);
   const [running, setRunning] = useState(false);
+  const [formatting, setFormatting] = useState(false);
   const [success, setSuccess] = useState(null);
   const contentRef = useRef(null);
 
@@ -187,6 +194,13 @@ export default function App() {
     setResults(null); setTab('problem');
   };
 
+  const formatCode = async () => {
+    setFormatting(true);
+    try { updateCode(await formatGoCode(code)); }
+    catch (error) { window.alert(`Could not format this Go code.\n\n${error instanceof Error ? error.message : String(error)}`); }
+    finally { setFormatting(false); }
+  };
+
   const resetAll = async () => {
     if (!window.confirm('Reset all saved code and completion marks? This cannot be undone.')) return;
     await clearState();
@@ -215,7 +229,7 @@ export default function App() {
             {tab === 'output' && <TestOutput results={results} running={running} />}
           </div>
         </section>
-        <section className="right-pane editor-section"><header><div><h2>Go</h2><p className="editor-note">Write the starter function only. Common packages such as <code>sort</code>, <code>strings</code>, <code>strconv</code>, and <code>container/heap</code> are available.</p></div><div className="editor-actions"><IconButton label="Reset this question's code" onClick={resetQuestion}>↻</IconButton><IconButton label={running ? 'Running tests' : 'Run tests'} className="primary" disabled={running} onClick={run}>{running ? '…' : '▶'}</IconButton></div></header><div className="editor"><CodeEditor value={code} onChange={updateCode} onRun={run} /></div></section>
+        <section className="right-pane editor-section"><header><div><h2>Go</h2><p className="editor-note">Write the starter function only. Common packages such as <code>sort</code>, <code>strings</code>, <code>strconv</code>, and <code>container/heap</code> are available.</p></div><div className="editor-actions"><IconButton label={formatting ? 'Formatting Go code' : 'Format Go code'} disabled={running || formatting} onClick={formatCode}><FormatIcon /></IconButton><IconButton label="Reset this question's code" disabled={formatting} onClick={resetQuestion}>↻</IconButton><IconButton label={running ? 'Running tests' : 'Run tests'} className="primary" disabled={running || formatting} onClick={run}>{running ? '…' : '▶'}</IconButton></div></header><div className="editor"><CodeEditor value={code} onChange={updateCode} onRun={run} /></div></section>
       </section>
     </section>
     {success && <div className="modal-backdrop" role="presentation"><section className="success-modal" role="dialog" aria-modal="true" aria-label="Question completed"><h2>Answered successfully</h2><p>You passed all three tests for {success}.</p><button className="primary" onClick={() => setSuccess(null)}>Continue</button></section></div>}

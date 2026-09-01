@@ -4,14 +4,24 @@ import { buildProgram, readProgramOutput } from './goProgram.js';
 
 const TIMEOUT_MS = 30_000;
 
-function runSources(sources) {
+function useRuntime(message) {
   return new Promise((resolve) => {
     const worker = new GoWorker();
     const timeout = window.setTimeout(() => { worker.terminate(); resolve({ error: `Timed out after ${TIMEOUT_MS / 1000} seconds.` }); }, TIMEOUT_MS);
-    worker.onmessage = ({ data }) => { window.clearTimeout(timeout); worker.terminate(); resolve(data.ok ? { results: data.results } : { error: data.error }); };
+    worker.onmessage = ({ data }) => { window.clearTimeout(timeout); worker.terminate(); resolve(data.ok ? { results: data.results, result: data.result } : { error: data.error }); };
     worker.onerror = (event) => { window.clearTimeout(timeout); worker.terminate(); resolve({ error: event.message || 'The Go test worker stopped before returning a result.' }); };
-    worker.postMessage({ sources, runtimeBase: import.meta.env.BASE_URL });
+    worker.postMessage({ ...message, runtimeBase: import.meta.env.BASE_URL });
   });
+}
+
+function runSources(sources) { return useRuntime({ sources }); }
+
+export async function formatGoCode(source) {
+  const response = await useRuntime({ action: 'format', source });
+  if (response.error) throw new Error(response.error);
+  const result = response.results ?? response.result;
+  if (result?.error) throw new Error(result.error);
+  return result?.source ?? source;
 }
 
 function canonical(value) { return JSON.stringify(value); }

@@ -5,8 +5,10 @@
     "": {
       "name": "blind75-vim-practice",
       "dependencies": {
+        "@codemirror/autocomplete": "^6.20.3",
         "@codemirror/commands": "latest",
         "@codemirror/lang-go": "latest",
+        "@codemirror/language": "^6.12.4",
         "@codemirror/state": "latest",
         "@codemirror/theme-one-dark": "latest",
         "@codemirror/view": "latest",

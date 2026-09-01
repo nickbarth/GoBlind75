@@ -1,15 +1,25 @@
 let ready;
 
+async function loadWasmExec(url) {
+  try {
+    importScripts(url);
+  } catch (error) {
+    // Vite serves workers as modules in development. Module workers disallow
+    // importScripts, but the same Go loader is valid as a dynamic ES module.
+    if (!(error instanceof TypeError) || !error.message.includes('Module scripts')) throw error;
+    await import(/* @vite-ignore */ url);
+  }
+}
+
 async function startRuntime(runtimeBase) {
   if (ready) return ready;
   ready = (async () => {
-    // This worker is emitted as a classic IIFE worker (see vite.config.js),
-    // which lets the Go runtime install its global Go constructor directly.
-    // Inline workers run from a blob: URL, so resolve Pages' root-relative
-    // asset paths against the actual page origin before loading them.
+    // Production emits a classic IIFE worker while Vite development serves a
+    // module worker. Resolve root-relative asset paths against the page origin
+    // so either form can load the Go runtime from a worker or blob URL.
     const wasmExecUrl = new URL(`${runtimeBase}go/wasm_exec.js`, self.location.origin).href;
     const runnerUrl = new URL(`${runtimeBase}go/runner.wasm`, self.location.origin).href;
-    importScripts(wasmExecUrl);
+    await loadWasmExec(wasmExecUrl);
     const go = new Go();
     const response = await fetch(runnerUrl);
     if (!response.ok) throw new Error(`Could not load Go runtime (${response.status}).`);
@@ -35,6 +45,10 @@ async function startRuntime(runtimeBase) {
 self.onmessage = async ({ data }) => {
   try {
     await startRuntime(data.runtimeBase);
+    if (data.action === 'format') {
+      self.postMessage({ ok: true, result: self.formatGoProgram(data.source) });
+      return;
+    }
     const results = data.sources.map((source) => self.runGoProgram(source));
     self.postMessage({ ok: true, results });
   } catch (error) {
