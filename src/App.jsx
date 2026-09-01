@@ -5,6 +5,7 @@ import { go } from '@codemirror/lang-go';
 import { oneDark } from '@codemirror/theme-one-dark';
 import { drawSelection, EditorView, highlightActiveLine, highlightActiveLineGutter, keymap, lineNumbers } from '@codemirror/view';
 import Markdown from 'react-markdown';
+import goGopher from './assets/go-gopher.png';
 import snapshot from './data/blind75-problems.json';
 import { ProblemDiagram } from './ProblemDiagram.jsx';
 import { clearState, loadState, saveState } from './lib/storage.js';
@@ -102,7 +103,7 @@ function Sidebar({ selectedId, completed, onSelect, onResetAll }) {
     return [...categories.entries()];
   }, []);
   return <aside className="sidebar">
-    <div className="sidebar-title"><div className="sidebar-heading"><h1>Blind 75</h1></div><div className="sidebar-progress"><span>{completed.size}/75 complete</span><IconButton label="Reset all saved code and completion marks" onClick={onResetAll}>↻</IconButton></div></div>
+    <div className="sidebar-title"><div className="sidebar-heading"><img className="go-gopher" src={goGopher} alt="Go gopher" /><h1>Blind 75</h1></div><div className="sidebar-progress"><span>{completed.size}/75 complete</span><IconButton label="Reset all saved code and completion marks" onClick={onResetAll}>↻</IconButton></div></div>
     {groups.map(([category, categoryProblems]) => {
       const done = categoryProblems.filter((problem) => completed.has(problem.id)).length;
       return <section className="category" key={category}>

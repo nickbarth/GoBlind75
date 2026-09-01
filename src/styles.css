@@ -11,6 +11,7 @@ button:disabled { cursor: wait; opacity: .6; }
 .sidebar { align-self: stretch; min-height: 0; overflow-y: auto; padding: 1rem; border-right: 1px solid #404040; background: #202020; }
 .sidebar-title { display: flex; align-items: center; justify-content: space-between; gap: .5rem; }.sidebar-heading, .sidebar-progress, .editor-actions { display: flex; align-items: center; gap: .45rem; }
 .sidebar-title h1, .workspace-header h1 { margin: 0; font-size: 1.25rem; }
+.go-gopher { width: 1.9rem; height: 1.9rem; object-fit: contain; flex: 0 0 auto; }
 .sidebar-title span, small, .eyebrow { color: #aaa; font-size: .78rem; }
 .category { margin-top: 1.15rem; }
 .category h2 { margin: 0 0 .35rem; display: flex; justify-content: space-between; color: #c9c9c9; font-size: .9rem; }

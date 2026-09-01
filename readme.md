@@ -73,6 +73,10 @@ The app keeps code and completion state in the browser's IndexedDB database (`bl
 
 The browser loads the locally built `runner.wasm` file and runs test programs inside a Web Worker.
 
+## Artwork attribution
+
+`src/assets/go-gopher.png` is the Go gopher designed by Renee French, used under the [Creative Commons Attribution 4.0 license](https://creativecommons.org/licenses/by/4.0/). The original asset and attribution are published in the [Go website repository](https://go.googlesource.com/website/+/refs/heads/master/_content/doc/gopher/).
+
 ## Verification
 
 ```sh
