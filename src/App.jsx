@@ -48,7 +48,7 @@ function CloseIcon() {
 }
 
 function FormatIcon() {
-  return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 6h14M5 10h9M5 14h14M5 18h9" /></svg>;
+  return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h18M3 11l4 4-4 4M11 14h10M11 19h10" /></svg>;
 }
 
 function CopyIcon() {
@@ -132,7 +132,7 @@ function Sidebar({ selectedId, completed, onSelect, onResetAll }) {
     return [...categories.entries()];
   }, []);
   return <aside className="sidebar">
-    <div className="sidebar-title"><div className="sidebar-heading"><img className="go-gopher" src={goGopher} alt="Go gopher" /><h1>Blind 75</h1></div><div className="sidebar-progress"><span>{completed.size}/75 complete</span><IconButton label="Reset all saved code and completion marks" onClick={onResetAll}>↻</IconButton></div></div>
+    <div className="sidebar-title"><div className="sidebar-heading"><img className="go-gopher" src={goGopher} alt="Go gopher" /><h1>Blind75</h1></div><div className="sidebar-progress"><span>{completed.size}/75 complete</span><IconButton label="Reset all saved code and completion marks" onClick={onResetAll}>↻</IconButton></div></div>
     {groups.map(([category, categoryProblems]) => {
       const done = categoryProblems.filter((problem) => completed.has(problem.id)).length;
       return <section className="category" key={category}>
@@ -274,7 +274,7 @@ export default function App() {
             {tab === 'output' && <TestOutput results={results} running={running} />}
           </div>
         </section>
-        <section className="right-pane editor-section"><header><div><h2>Go</h2><p className="editor-note">Write the starter function only. Common packages such as <code>sort</code>, <code>strings</code>, <code>strconv</code>, and <code>container/heap</code> are available. <code>maps.Equal</code>, <code>slices.Sort</code>, <code>slices.SortFunc</code>, and <code>cmp.Compare</code> are also supported.</p></div><div className="editor-actions"><IconButton label={formatting ? 'Formatting Go code' : 'Format Go code'} disabled={running || formatting} onClick={formatCode}><FormatIcon /></IconButton><IconButton label="Reset this question's code" disabled={formatting} onClick={resetQuestion}>↻</IconButton><IconButton label={running ? 'Running tests' : 'Run tests'} className="primary" disabled={running || formatting} onClick={run}>{running ? '…' : '▶'}</IconButton></div></header><div className="editor"><CodeEditor value={code} onChange={updateCode} onRun={run} focusStarterToken={hasSavedCode ? undefined : editorFocusToken} /></div></section>
+        <section className="right-pane editor-section"><header><div><h2>Go</h2><p className="editor-note">Common core packages and functions are <abbr className="supported-details" title="Available automatically: fmt; sort.Ints and sort.Slice; strings.Builder, Contains, Join, Split, and ToLower; strconv.Atoi and Itoa; container/heap.Init, Push, and Pop; math.Inf and integer bounds; maps.Equal; slices.Sort and slices.SortFunc; and cmp.Compare.">supported</abbr>.</p></div><div className="editor-actions"><IconButton label={formatting ? 'Formatting Go code' : 'Format Go code'} disabled={running || formatting} onClick={formatCode}><FormatIcon /></IconButton><IconButton label="Reset this question's code" disabled={formatting} onClick={resetQuestion}>↻</IconButton><IconButton label={running ? 'Running tests' : 'Run tests'} className="primary" disabled={running || formatting} onClick={run}>{running ? '…' : '▶'}</IconButton></div></header><div className="editor"><CodeEditor value={code} onChange={updateCode} onRun={run} focusStarterToken={hasSavedCode ? undefined : editorFocusToken} /></div></section>
       </section>
     </section>
     {success && <div className="modal-backdrop" role="presentation"><section className="success-modal" role="dialog" aria-modal="true" aria-label="Question completed"><h2>Answered successfully</h2><p>You passed all three tests for {success}.</p><button className="primary" onClick={() => setSuccess(null)}>Continue</button></section></div>}
