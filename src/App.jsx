@@ -56,7 +56,7 @@ function CopyIcon() {
   return <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="10" height="10" rx="1" /><path d="M15 9V6a1 1 0 0 0-1-1H6a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h3" /></svg>;
 }
 
-function CodeEditor({ value, onChange, readOnly = false, onRun, focusStarterToken }) {
+function CodeEditor({ value, onChange, readOnly = false, onRun, focusStarterToken, className = '' }) {
   const hostRef = useRef(null);
   const viewRef = useRef(null);
   const runRef = useRef(onRun);
@@ -102,7 +102,21 @@ function CodeEditor({ value, onChange, readOnly = false, onRun, focusStarterToke
     view.focus();
   }, [focusStarterToken]);
 
-  return <div className="code-editor" ref={hostRef} />;
+  return <div className={`code-editor ${className}`} ref={hostRef} />;
+}
+
+function ExampleCodeBlock({ value }) {
+  const lineCount = Math.min(Math.max(value.split('\n').length, 2), 12);
+  return <div className="example-code-block" style={{ '--example-code-lines': lineCount }}><CodeEditor value={value} readOnly /></div>;
+}
+
+function ProblemStatement({ problem }) {
+  return <article className="statement"><ProblemDiagram problemId={problem.id} /><Markdown components={{
+    pre: ({ children }) => <>{children}</>,
+    code: ({ className, children, node: _node, ...props }) => className === 'language-go'
+      ? <ExampleCodeBlock value={String(children).replace(/\n$/, '')} />
+      : <code className={className} {...props}>{children}</code>,
+  }}>{problem.statement}</Markdown></article>;
 }
 
 function TestOutput({ results, running }) {
@@ -270,7 +284,7 @@ export default function App() {
             <button className={tab === 'output' ? 'active' : ''} onClick={() => setTab('output')}>Output</button>
           </nav>
           <div className="left-pane-content" ref={contentRef}>
-            {tab === 'problem' && <article className="statement"><ProblemDiagram problemId={selected.id} /><Markdown>{selected.statement}</Markdown></article>}
+            {tab === 'problem' && <ProblemStatement problem={selected} />}
             {tab === 'solution' && <section className="solution-editor"><header className="solution-header"><h2>Go reference solution</h2><IconButton label={solutionCopied ? 'Solution copied' : 'Copy solution code'} onClick={copySolution}><CopyIcon /></IconButton></header><div className="editor"><CodeEditor value={selected.referenceCode.trimEnd()} readOnly /></div></section>}
             {tab === 'output' && <TestOutput results={results} running={running} />}
           </div>
