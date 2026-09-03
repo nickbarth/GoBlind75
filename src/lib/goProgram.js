@@ -70,13 +70,14 @@ function preludeFor(problem, code) {
   const imports = ['"fmt"'];
   const packageFor = { heap: '"container/heap"', math: '"math"', sort: '"sort"', strconv: '"strconv"', strings: '"strings"' };
   for (const [name, source] of Object.entries(packageFor)) if (new RegExp(`\\b${name}\\.`).test(code)) imports.push(source);
-  if (/\bmaps\s*\.\s*Equal\s*\(/.test(code)) imports.push('"reflect"');
-  if (/\bslices\s*\.\s*Sort(?:Func)?\s*\(/.test(code) && !imports.includes('"sort"')) imports.push('"sort"');
+  if (/\bmaps\s*\.\s*Equal\s*\(/.test(code) || /\bcmp\s*\.\s*Or\s*\(/.test(code)) imports.push('"reflect"');
+  if ((/\bslices\s*\.\s*Sort(?:Func)?\s*\(/.test(code) || /\bcmp\s*\.\s*(?:Compare|Or)\s*\(/.test(code)) && !imports.includes('"sort"')) imports.push('"sort"');
   const helpers = [];
   if (/\bmaps\s*\.\s*Equal\s*\(/.test(code)) helpers.push('func mapsEqual(left, right any) bool { return reflect.DeepEqual(left, right) }');
-  if (/\bslices\s*\.\s*Sort\s*\(/.test(code) || /\bcmp\s*\.\s*Compare\s*\(/.test(code)) helpers.push(`type blind75Ordered interface { ~int | ~int8 | ~int16 | ~int32 | ~int64 | ~uint | ~uint8 | ~uint16 | ~uint32 | ~uint64 | ~uintptr | ~float32 | ~float64 | ~string }
+  if (/\bslices\s*\.\s*Sort\s*\(/.test(code) || /\bcmp\s*\.\s*(?:Compare|Or)\s*\(/.test(code)) helpers.push(`type blind75Ordered interface { ~int | ~int8 | ~int16 | ~int32 | ~int64 | ~uint | ~uint8 | ~uint16 | ~uint32 | ~uint64 | ~uintptr | ~float32 | ~float64 | ~string }
 func blind75SlicesSort[T blind75Ordered](values []T) { sort.Slice(values, func(i, j int) bool { return values[i] < values[j] }) }
-func blind75CmpCompare[T blind75Ordered](left, right T) int { if left < right { return -1 }; if left > right { return 1 }; return 0 }`);
+func blind75CmpCompare[T blind75Ordered](left, right T) int { if left < right { return -1 }; if left > right { return 1 }; return 0 }
+func blind75CmpOr[T any](first, second T) T { var zero T; if !reflect.DeepEqual(first, zero) { return first }; return second }`);
   if (/\bslices\s*\.\s*SortFunc\s*\(/.test(code)) helpers.push('func blind75SlicesSortFunc[T any](values []T, compare func(T, T) int) { sort.Slice(values, func(i, j int) bool { return compare(values[i], values[j]) < 0 }) }');
   if (/ListNode/.test(problem.starterCode)) helpers.push(`type ListNode struct { Val int; Next *ListNode }
 func listFrom(values []int) *ListNode { if len(values) == 0 { return nil }; dummy := &ListNode{}; current := dummy; for _, value := range values { current.Next = &ListNode{Val: value}; current = current.Next }; return dummy.Next }
@@ -189,7 +190,8 @@ export function buildProgram(problem, code, raw) {
     .replace(/\bmaps\s*\.\s*Equal\s*\(/g, 'mapsEqual(')
     .replace(/\bslices\s*\.\s*SortFunc\s*\(/g, 'blind75SlicesSortFunc(')
     .replace(/\bslices\s*\.\s*Sort\s*\(/g, 'blind75SlicesSort(')
-    .replace(/\bcmp\s*\.\s*Compare\s*\(/g, 'blind75CmpCompare(');
+    .replace(/\bcmp\s*\.\s*Compare\s*\(/g, 'blind75CmpCompare(')
+    .replace(/\bcmp\s*\.\s*Or\s*\(/g, 'blind75CmpOr(');
   return `${preludeFor(problem, code)}\n${runtimeCode}\n\nfunc main() {\n  defer func() { if value := recover(); value != nil { fmt.Printf("${ERROR}%v\\n", value) } }()\n${body}\n}\n`;
 }
 

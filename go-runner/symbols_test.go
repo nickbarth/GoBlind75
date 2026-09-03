@@ -27,8 +27,9 @@ type blind75Ordered interface { ~int | ~int8 | ~int16 | ~int32 | ~int64 | ~uint 
 func blind75SlicesSort[T blind75Ordered](values []T) { sort.Slice(values, func(i, j int) bool { return values[i] < values[j] }) }
 func blind75SlicesSortFunc[T any](values []T, compare func(T, T) int) { sort.Slice(values, func(i, j int) bool { return compare(values[i], values[j]) < 0 }) }
 func blind75CmpCompare[T blind75Ordered](left, right T) int { if left < right { return -1 }; if left > right { return 1 }; return 0 }
+func blind75CmpOr[T any](first, second T) T { var zero T; if !reflect.DeepEqual(first, zero) { return first }; return second }
 type Person struct { name string; age int }
-func main() { values := []int{3, 1, 2}; blind75SlicesSort(values); h := &maxHeap{}; heap.Push(h, 2); heap.Push(h, 4); var b strings.Builder; b.WriteString("ok"); people := []Person{{name: "Jax", age: 37}, {name: "TJ", age: 25}, {name: "Alex", age: 72}}; blind75SlicesSortFunc(people, func(a, b Person) int { return blind75CmpCompare(a.age, b.age) }); fmt.Printf("%v:%s:%t:%v", heap.Pop(h), b.String(), mapsEqual(map[int]string{1: "one"}, map[int]string{1: "one"}), people) }
+func main() { values := []int{3, 1, 2}; blind75SlicesSort(values); h := &maxHeap{}; heap.Push(h, 2); heap.Push(h, 4); var b strings.Builder; b.WriteString("ok"); people := []Person{{name: "Jax", age: 37}, {name: "TJ", age: 25}, {name: "Alex", age: 72}}; blind75SlicesSortFunc(people, func(a, b Person) int { return blind75CmpOr(blind75CmpCompare(a.age, b.age), blind75CmpCompare(a.name, b.name)) }); fmt.Printf("%v:%s:%t:%v", heap.Pop(h), b.String(), mapsEqual(map[int]string{1: "one"}, map[int]string{1: "one"}), people) }
 `)
 	if err != nil { t.Fatal(err) }
 	if got, want := output.String(), "4:ok:true:[{TJ 25} {Jax 37} {Alex 72}]"; got != want { t.Fatalf("output = %q, want %q", got, want) }
