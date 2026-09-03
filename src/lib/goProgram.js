@@ -79,6 +79,7 @@ func blind75SlicesSort[T blind75Ordered](values []T) { sort.Slice(values, func(i
 func blind75CmpCompare[T blind75Ordered](left, right T) int { if left < right { return -1 }; if left > right { return 1 }; return 0 }
 func blind75CmpOr[T any](first, second T) T { var zero T; if !reflect.DeepEqual(first, zero) { return first }; return second }`);
   if (/\bslices\s*\.\s*SortFunc\s*\(/.test(code)) helpers.push('func blind75SlicesSortFunc[T any](values []T, compare func(T, T) int) { sort.Slice(values, func(i, j int) bool { return compare(values[i], values[j]) < 0 }) }');
+  if (/\bslices\s*\.\s*Reverse\s*\(/.test(code)) helpers.push('func blind75SlicesReverse[T any](values []T) { for i, j := 0, len(values)-1; i < j; i, j = i+1, j-1 { values[i], values[j] = values[j], values[i] } }');
   if (/ListNode/.test(problem.starterCode)) helpers.push(`type ListNode struct { Val int; Next *ListNode }
 func listFrom(values []int) *ListNode { if len(values) == 0 { return nil }; dummy := &ListNode{}; current := dummy; for _, value := range values { current.Next = &ListNode{Val: value}; current = current.Next }; return dummy.Next }
 func cycleListFrom(values []int, index int) *ListNode { head := listFrom(values); if head == nil || index < 0 { return head }; var target, tail *ListNode; for node, i := head, 0; node != nil; node, i = node.Next, i+1 { if i == index { target = node }; tail = node }; if target != nil { tail.Next = target }; return head }
@@ -190,6 +191,7 @@ export function buildProgram(problem, code, raw) {
     .replace(/\bmaps\s*\.\s*Equal\s*\(/g, 'mapsEqual(')
     .replace(/\bslices\s*\.\s*SortFunc\s*\(/g, 'blind75SlicesSortFunc(')
     .replace(/\bslices\s*\.\s*Sort\s*\(/g, 'blind75SlicesSort(')
+    .replace(/\bslices\s*\.\s*Reverse\s*\(/g, 'blind75SlicesReverse(')
     .replace(/\bcmp\s*\.\s*Compare\s*\(/g, 'blind75CmpCompare(')
     .replace(/\bcmp\s*\.\s*Or\s*\(/g, 'blind75CmpOr(');
   return `${preludeFor(problem, code)}\n${runtimeCode}\n\nfunc main() {\n  defer func() { if value := recover(); value != nil { fmt.Printf("${ERROR}%v\\n", value) } }()\n${body}\n}\n`;
