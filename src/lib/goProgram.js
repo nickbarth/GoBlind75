@@ -188,6 +188,7 @@ export function buildProgram(problem, code, raw) {
   const parsed = parseCase(raw);
   const body = parsed.operationArrays || parsed.flattenedOperations ? operationInvocation(problem, parsed) : normalInvocation(problem, parsed);
   const runtimeCode = code
+    .replace(/for\s+([A-Za-z_]\w*)\s*:=\s*range\s+len\(([^()\n]+)\)\s*\{/g, 'for $1 := 0; $1 < len($2); $1++ {')
     .replace(/\bmaps\s*\.\s*Equal\s*\(/g, 'mapsEqual(')
     .replace(/\bslices\s*\.\s*SortFunc\s*\(/g, 'blind75SlicesSortFunc(')
     .replace(/\bslices\s*\.\s*Sort\s*\(/g, 'blind75SlicesSort(')
