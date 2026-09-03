@@ -860,12 +860,12 @@
       "category": "Intervals",
       "difficulty": "Easy",
       "id": "meeting-schedule",
-      "statement": "Given an array of meeting time interval objects consisting of start and end times `[[start_1,end_1],[start_2,end_2],...] (start_i < end_i)`, determine if a person could add all meetings to their schedule without any conflicts. The intervals may be provided in any order.\n\n**Note:** (0,8),(8,10) is not considered a conflict at 8\n\n**Example 1:**\n\n```go\nInput: intervals := []Interval{(0,30),(5,10),(15,20)}\nOutput: false\n```\n\nExplanation:\n* `(0,30)` and `(5,10)` will conflict\n* `(0,30)` and `(15,20)` will conflict\n\n**Example 2:**\n\n```go\nInput: intervals := []Interval{(5,8),(9,15)}\nOutput: true\n```\n\n\n**Constraints:**\n* `0 <= intervals.length <= 500`\n* `0 <= intervals[i].start < intervals[i].end <= 1,000,000`",
-      "starterCode": "/**\n * Definition of Interval:\n * type Interval struct {\n *    start int\n *    end   int\n * }\n */\n\nfunc canAttendMeetings(intervals []Interval) bool {\n\n}\n",
-      "referenceCode": "/**\n * Definition of Interval:\n * type Interval struct {\n *    start int\n *    end   int\n * }\n */\n\nfunc canAttendMeetings(intervals []Interval) bool {\n    sort.Slice(intervals, func(i, j int) bool {\n        return intervals[i].start < intervals[j].start\n    })\n\n    for i := 1; i < len(intervals); i++ {\n        i1 := intervals[i-1]\n        i2 := intervals[i]\n        if i1.end > i2.start {\n            return false\n        }\n    }\n    return true\n}\n",
+      "statement": "Given an array of meeting intervals where `intervals[i] = [start_i, end_i]` and `start_i < end_i`, determine if a person could add all meetings to their schedule without any conflicts. The intervals may be provided in any order.\n\n**Note:** [0,8], [8,10] is not considered a conflict at 8\n\n**Example 1:**\n\n```go\nInput: intervals := [][]int{{0,30},{5,10},{15,20}}\nOutput: false\n```\n\nExplanation:\n* `[0,30]` and `[5,10]` will conflict\n* `[0,30]` and `[15,20]` will conflict\n\n**Example 2:**\n\n```go\nInput: intervals := [][]int{{5,8},{9,15}}\nOutput: true\n```\n\n\n**Constraints:**\n* `0 <= intervals.length <= 500`\n* `0 <= intervals[i][0] < intervals[i][1] <= 1,000,000`",
+      "starterCode": "func canAttendMeetings(intervals [][]int) bool {\n\n}\n",
+      "referenceCode": "func canAttendMeetings(intervals [][]int) bool {\n    sort.Slice(intervals, func(i, j int) bool {\n        return intervals[i][0] < intervals[j][0]\n    })\n\n    for i := 1; i < len(intervals); i++ {\n        i1 := intervals[i-1]\n        i2 := intervals[i]\n        if i1[1] > i2[0] {\n            return false\n        }\n    }\n    return true\n}\n",
       "customTestCases": [
-        "intervals=[(0,30),(5,10),(15,20)]",
-        "intervals=[(5,8),(9,15)]"
+        "intervals=[[0,30],[5,10],[15,20]]",
+        "intervals=[[5,8],[9,15]]"
       ]
     },
     {
@@ -873,12 +873,12 @@
       "category": "Intervals",
       "difficulty": "Medium",
       "id": "meeting-schedule-ii",
-      "statement": "Given an array of meeting time interval objects consisting of start and end times `[[start_1,end_1],[start_2,end_2],...] (start_i < end_i)`, find the minimum number of rooms required to schedule all meetings without any conflicts.\n\n**Note:** `(0,8),(8,10)` is **NOT** considered a conflict at 8.\n\n**Example 1:**\n\n```go\nInput: intervals := []Interval{(0,40),(5,10),(15,20)}\nOutput: 2\n```\n\nExplanation:\nroom1: `(0,40)`\nroom2: `(5,10),(15,20)`\n\n**Example 2:**\n\n```go\nInput: intervals := []Interval{(4,9)}\nOutput: 1\n```\n\n**Constraints:**\n* `0 <= intervals.length <= 100,000`\n* `0 <= intervals[i].start < intervals[i].end <= 1,000,000`",
-      "starterCode": "/**\n * Definition of Interval:\n * type Interval struct {\n *    start int\n *    end   int\n * }\n */\n\nfunc minMeetingRooms(intervals []Interval) int {\n\n}\n",
-      "referenceCode": "/**\n * Definition of Interval:\n * type Interval struct {\n *    start int\n *    end   int\n * }\n */\n\nfunc minMeetingRooms(intervals []Interval) int {\n    time := [][]int{}\n    for _, i := range intervals {\n        start, end := i.start, i.end\n        time = append(time, []int{start, 1})\n        time = append(time, []int{end, -1})\n    }\n\n    sort.Slice(time, func(i, j int) bool {\n        if time[i][0] == time[j][0] {\n            return time[i][1] < time[j][1]\n        }\n        return time[i][0] < time[j][0]\n    })\n\n    count := 0\n    maxCount := 0\n    for _, t := range time {\n        count += t[1]\n        if count > maxCount {\n            maxCount = count\n        }\n    }\n\n    return maxCount\n}\n",
+      "statement": "Given an array of meeting intervals where `intervals[i] = [start_i, end_i]` and `start_i < end_i`, find the minimum number of rooms required to schedule all meetings without any conflicts.\n\n**Note:** `[0,8], [8,10]` is **NOT** considered a conflict at 8.\n\n**Example 1:**\n\n```go\nInput: intervals := [][]int{{0,40},{5,10},{15,20}}\nOutput: 2\n```\n\nExplanation:\nroom1: `[0,40]`\nroom2: `[5,10],[15,20]`\n\n**Example 2:**\n\n```go\nInput: intervals := [][]int{{4,9}}\nOutput: 1\n```\n\n**Constraints:**\n* `0 <= intervals.length <= 100,000`\n* `0 <= intervals[i][0] < intervals[i][1] <= 1,000,000`",
+      "starterCode": "func minMeetingRooms(intervals [][]int) int {\n\n}\n",
+      "referenceCode": "func minMeetingRooms(intervals [][]int) int {\n    time := [][]int{}\n    for _, i := range intervals {\n        start, end := i[0], i[1]\n        time = append(time, []int{start, 1})\n        time = append(time, []int{end, -1})\n    }\n\n    sort.Slice(time, func(i, j int) bool {\n        if time[i][0] == time[j][0] {\n            return time[i][1] < time[j][1]\n        }\n        return time[i][0] < time[j][0]\n    })\n\n    count := 0\n    maxCount := 0\n    for _, t := range time {\n        count += t[1]\n        if count > maxCount {\n            maxCount = count\n        }\n    }\n\n    return maxCount\n}\n",
       "customTestCases": [
-        "intervals=[(0,40),(5,10),(15,20)]",
-        "intervals=[(4,9)]"
+        "intervals=[[0,40],[5,10],[15,20]]",
+        "intervals=[[4,9]]"
       ]
     },
     {
