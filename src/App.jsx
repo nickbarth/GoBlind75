@@ -170,20 +170,19 @@ function ProblemStatement({ problem }) {
 }
 
 function TestOutput({ problem, results, running }) {
-  const stdout = results?.flatMap((result, index) => result.logs?.length ? [`Test ${index + 1}`, ...result.logs] : []) ?? [];
-  if (running) return <section className="output"><h2>Test results</h2><p>Running all three tests…</p><section className="stdout"><h2>stdout</h2><p className="muted">Waiting for console output…</p></section></section>;
-  if (!results) return <section className="output muted"><h2>Test results</h2><p>No code has been run yet.</p><section className="stdout"><h2>stdout</h2><p>No console output yet.</p></section></section>;
+  if (running) return <section className="output"><h2>Test results</h2><p>Running all three tests…</p></section>;
+  if (!results) return <section className="output muted"><h2>Test results</h2><p>No code has been run yet.</p></section>;
   return <section className="output" aria-live="polite">
     <h2>Test results</h2>
     {results.map((result, index) => <article className={`test-result ${result.passed ? 'passed' : 'failed'}`} key={`${result.raw}-${index}`}>
       <header><strong>Test {index + 1}</strong><span>{result.passed ? 'Passed' : result.timedOut ? 'Timed out' : 'Failed'}</span></header>
       <pre><b>Input</b>{'\n'}{formatGoInput(problem, result.raw)}</pre>
+      {result.logs?.length ? <pre><b>Output</b>{'\n'}{result.logs.join('\n')}</pre> : null}
       {result.error ? <pre className="error"><b>Error</b>{'\n'}{result.error}</pre> : <>
         <pre><b>Expected</b>{'\n'}{formatGoOutput(result.expected)}</pre>
         <pre><b>Actual</b>{'\n'}{formatGoOutput(result.actual)}</pre>
       </>}
     </article>)}
-    <section className="stdout"><h2>stdout</h2>{stdout.length ? <pre>{stdout.join('\n')}</pre> : <p className="muted">No console output.</p>}</section>
   </section>;
 }
 
