@@ -67,7 +67,7 @@ func emitResult(value any) { encoded, err := json.Marshal(value); if err != nil 
 `;
 
 function preludeFor(problem, code) {
-  const imports = ['"fmt"'];
+  const imports = ['"encoding/json"', '"fmt"'];
   const packageFor = { heap: '"container/heap"', math: '"math"', sort: '"sort"', strconv: '"strconv"', strings: '"strings"' };
   for (const [name, source] of Object.entries(packageFor)) if (new RegExp(`\\b${name}\\.`).test(code)) imports.push(source);
   if (/\bmaps\s*\.\s*Equal\s*\(/.test(code) || /\bcmp\s*\.\s*Or\s*\(/.test(code)) imports.push('"reflect"');
@@ -94,7 +94,7 @@ func graphValue(root *Node) [][]int { if root == nil { return [][]int{} }; queue
   if (/Interval/.test(problem.starterCode)) helpers.push('type Interval struct { start int; end int }');
   const minShim = /func\s+min\s*\(/.test(code) ? '' : 'func min(values ...int) int { result := values[0]; for _, value := range values[1:] { if value < result { result = value } }; return result }';
   const maxShim = /func\s+max\s*\(/.test(code) ? '' : 'func max(values ...int) int { result := values[0]; for _, value := range values[1:] { if value > result { result = value } }; return result }';
-  return `package main\n\nimport (\n  ${imports.join('\n  ')}\n)\n\n${minShim}\n${maxShim}\n\n${helpers.join('\n\n')}\n\nfunc emitResult(value any) { fmt.Printf("${RESULT}%v\\n", value) }\n`;
+  return `package main\n\nimport (\n  ${imports.join('\n  ')}\n)\n\n${minShim}\n${maxShim}\n\n${helpers.join('\n\n')}\n\nfunc emitResult(value any) { encoded, err := json.Marshal(value); if err != nil { fmt.Printf("${ERROR}%s\\n", err); return }; fmt.Printf("${RESULT}%s\\n", encoded) }\n`;
 }
 
 function rewriteRangeIntegerLoops(source) {
@@ -217,7 +217,10 @@ export function readProgramOutput(output = '') {
   const stdout = [];
   let result; let error;
   for (const line of output.split(/\r?\n/)) {
-    if (line.startsWith(RESULT)) result = line.slice(RESULT.length);
+    if (line.startsWith(RESULT)) {
+      const payload = line.slice(RESULT.length);
+      try { result = JSON.parse(payload); } catch { result = payload; }
+    }
     else if (line.startsWith(ERROR)) error = line.slice(ERROR.length).trim();
     else if (line) stdout.push(line);
   }

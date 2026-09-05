@@ -26,7 +26,18 @@ export async function formatGoCode(source) {
 
 function canonical(value) { return JSON.stringify(value); }
 function sortNested(value) { return !Array.isArray(value) ? value : value.map((item) => Array.isArray(item) ? [...item].sort() : item).sort((a, b) => canonical(a).localeCompare(canonical(b))); }
-const UNORDERED = new Set(['anagram-groups', 'three-integer-sum', 'top-k-elements-in-list', 'search-for-word-ii', 'pacific-atlantic-water-flow']);
+// These problems explicitly allow their output (and, for combinations, the
+// values within each result) to be returned in any order. Word Search II has
+// the same contract when it asks for all matching words.
+const UNORDERED = new Set([
+  'anagram-groups',
+  'top-k-elements-in-list',
+  'three-integer-sum',
+  'combination-target-sum',
+  'search-for-word-ii',
+  'pacific-atlantic-water-flow',
+  'merge-intervals',
+]);
 function matches(problem, actual, expected, raw) {
   if (problem.id === 'two-integer-sum') { const { values } = JSON.parse(JSON.stringify({ values: {} })); const entries = raw.split(/\r?\n/).map((line) => line.split('=')); for (const [key, value] of entries) values[key] = JSON.parse(value); const pair = String(actual).match(/^\[(-?\d+) (-?\d+)\]$/); return Boolean(pair) && pair[1] !== pair[2] && values.nums[Number(pair[1])] + values.nums[Number(pair[2])] === values.target; }
   if (problem.id === 'longest-palindromic-substring') { const s = JSON.parse(raw.split('=')[1]); return typeof actual === 'string' && s.includes(actual) && actual === [...actual].reverse().join('') && actual.length === expected.length; }
