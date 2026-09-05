@@ -8,7 +8,7 @@
       "id": "duplicate-integer",
       "statement": "Given an integer array `nums`, return `true` if any value appears **more than once** in the array, otherwise return `false`.\n\n**Example 1:**\n\n```go\nInput: nums := []int{1, 2, 3, 3}\nOutput: true\n```\n\n\n\n**Example 2:**\n\n```go\nInput: nums := []int{1, 2, 3, 4}\nOutput: false\n```\n\n**Constraints:**\n* `0 <= nums.length <= 10^5`\n* `-10^9 <= nums[i] <= 10^9`",
       "starterCode": "func hasDuplicate(nums []int) bool {\n    \n}\n",
-      "referenceCode": "func hasDuplicate(nums []int) bool {\n\tseen := make(map[int]struct{})\n\tfor _, num := range nums {\n\t\tseen[num] = struct{}{}\n\t}\n\treturn len(seen) < len(nums)\n}\n",
+      "referenceCode": "func hasDuplicate(nums []int) bool {\n\tseen := make(map[int]bool)\n\tfor _, num := range nums {\n\t\tif seen[num] {\n\t\t\treturn true\n\t\t}\n\t\tseen[num] = true\n\t}\n\treturn false\n}\n",
       "customTestCases": [
         "nums=[1,2,3,3]",
         "nums=[1,2,3,4]"
