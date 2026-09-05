@@ -32,6 +32,56 @@ function formatValue(value) {
   try { return JSON.stringify(value, null, 2); } catch { return String(value); }
 }
 
+function parseDisplayValue(source) {
+  try { return JSON.parse(source.trim().replace(/\((-?\d+(?:\.\d+)?),\s*(-?\d+(?:\.\d+)?)\)/g, '[$1,$2]')); } catch { return source.trim(); }
+}
+
+function goLiteral(value, type = '') {
+  if (value === null) return 'nil';
+  if (typeof value === 'boolean' || typeof value === 'number') return String(value);
+  if (typeof value === 'string') return JSON.stringify(value);
+  if (Array.isArray(value)) {
+    const elementType = type.startsWith('[]') ? type.slice(2) : (() => {
+      const nonNull = value.filter((item) => item !== null);
+      if (nonNull.length && nonNull.every((item) => typeof item === 'string')) return 'string';
+      if (nonNull.length && nonNull.every((item) => typeof item === 'number')) return 'int';
+      if (nonNull.length && nonNull.every((item) => Array.isArray(item))) {
+        const nested = nonNull.flatMap((item) => item.filter((entry) => entry !== null));
+        return nested.length && nested.every((item) => typeof item === 'string') ? '[]string' : '[]int';
+      }
+      return 'any';
+    })();
+    const prefix = type.startsWith('[]') ? type : `[]${elementType}`;
+    return `${prefix}{${value.map((item) => goLiteral(item, elementType)).join(',')}}`;
+  }
+  return String(value);
+}
+
+function displayTypes(problem) {
+  const match = /func\s+(?:\([^)]*\)\s+)?\w+\(([^)]*)\)/.exec(problem.starterCode);
+  if (!match) return new Map();
+  return new Map(match[1].split(',').map((part) => part.trim().match(/^(\w+)\s+(.+)$/)).filter(Boolean).map(([, name, type]) => [name, type]));
+}
+
+function formatGoInput(problem, raw) {
+  const types = displayTypes(problem);
+  const lines = raw.trim().split(/\r?\n/).filter(Boolean);
+  if (lines.every((line) => line.trim().startsWith('['))) {
+    return lines.map((line, index) => `${index === 0 ? 'operations' : 'arguments'} := ${goLiteral(parseDisplayValue(line))}`).join('\n');
+  }
+  return lines.map((line) => {
+    const equal = line.indexOf('=');
+    if (equal < 1) return line;
+    const name = line.slice(0, equal).trim();
+    return `${name} := ${goLiteral(parseDisplayValue(line.slice(equal + 1)), types.get(name) ?? '')}`;
+  }).join('\n');
+}
+
+function formatGoOutput(value) {
+  if (value === undefined) return 'undefined';
+  return goLiteral(parseDisplayValue(typeof value === 'string' ? value : JSON.stringify(value)));
+}
+
 function Difficulty({ value }) {
   return <span className={`difficulty ${value.toLowerCase()}`}>{value}</span>;
 }
@@ -119,7 +169,7 @@ function ProblemStatement({ problem }) {
   }}>{problem.statement}</Markdown></article>;
 }
 
-function TestOutput({ results, running }) {
+function TestOutput({ problem, results, running }) {
   const stdout = results?.flatMap((result, index) => result.logs?.length ? [`Test ${index + 1}`, ...result.logs] : []) ?? [];
   if (running) return <section className="output"><h2>Test results</h2><p>Running all three tests…</p><section className="stdout"><h2>stdout</h2><p className="muted">Waiting for console output…</p></section></section>;
   if (!results) return <section className="output muted"><h2>Test results</h2><p>No code has been run yet.</p><section className="stdout"><h2>stdout</h2><p>No console output yet.</p></section></section>;
@@ -127,10 +177,10 @@ function TestOutput({ results, running }) {
     <h2>Test results</h2>
     {results.map((result, index) => <article className={`test-result ${result.passed ? 'passed' : 'failed'}`} key={`${result.raw}-${index}`}>
       <header><strong>Test {index + 1}</strong><span>{result.passed ? 'Passed' : result.timedOut ? 'Timed out' : 'Failed'}</span></header>
-      <pre><b>Input</b>{'\n'}{result.raw}</pre>
+      <pre><b>Input</b>{'\n'}{formatGoInput(problem, result.raw)}</pre>
       {result.error ? <pre className="error"><b>Error</b>{'\n'}{result.error}</pre> : <>
-        <pre><b>Expected</b>{'\n'}{formatValue(result.expected)}</pre>
-        <pre><b>Actual</b>{'\n'}{formatValue(result.actual)}</pre>
+        <pre><b>Expected</b>{'\n'}{formatGoOutput(result.expected)}</pre>
+        <pre><b>Actual</b>{'\n'}{formatGoOutput(result.actual)}</pre>
       </>}
     </article>)}
     <section className="stdout"><h2>stdout</h2>{stdout.length ? <pre>{stdout.join('\n')}</pre> : <p className="muted">No console output.</p>}</section>
@@ -286,7 +336,7 @@ export default function App() {
           <div className="left-pane-content" ref={contentRef}>
             {tab === 'problem' && <ProblemStatement problem={selected} />}
             {tab === 'solution' && <section className="solution-editor"><header className="solution-header"><h2>Go reference solution</h2><IconButton label={solutionCopied ? 'Solution copied' : 'Copy solution code'} onClick={copySolution}><CopyIcon /></IconButton></header><div className="editor"><CodeEditor value={selected.referenceCode.trimEnd()} readOnly /></div></section>}
-            {tab === 'output' && <TestOutput results={results} running={running} />}
+            {tab === 'output' && <TestOutput problem={selected} results={results} running={running} />}
           </div>
         </section>
         <section className="right-pane editor-section"><header><div><h2>Go</h2><p className="editor-note">Common core packages and functions are <abbr className="supported-details" title="Available automatically: fmt; sort.Ints and sort.Slice; strings.Builder, Contains, Join, Split, and ToLower; strconv.Atoi and Itoa; container/heap.Init, Push, and Pop; math.Inf and integer bounds; maps.Equal; slices.Sort, slices.SortFunc, and slices.Reverse; and cmp.Compare and cmp.Or.">supported</abbr>.</p></div><div className="editor-actions"><IconButton label={formatting ? 'Formatting Go code' : 'Format Go code'} disabled={running || formatting} onClick={formatCode}><FormatIcon /></IconButton><IconButton label="Reset this question's code" disabled={formatting} onClick={resetQuestion}>↻</IconButton><IconButton label={running ? 'Running tests' : 'Run tests'} className="primary" disabled={running || formatting} onClick={run}>{running ? '…' : '▶'}</IconButton></div></header><div className="editor"><CodeEditor value={code} onChange={updateCode} onRun={run} focusStarterToken={hasSavedCode ? undefined : editorFocusToken} /></div></section>
