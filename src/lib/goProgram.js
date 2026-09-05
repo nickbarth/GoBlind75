@@ -99,7 +99,14 @@ func graphValue(root *Node) [][]int { if root == nil { return [][]int{} }; queue
 
 function rewriteRangeIntegerLoops(source) {
   const scalarNames = new Set(['amount', 'count', 'k', 'length', 'limit', 'n', 'num', 'size', 'steps', 'total']);
-  for (const match of source.matchAll(/\b(?:var\s+)?([A-Za-z_]\w*)\s*(?::=|=)\s*(?:len\([^)]*\)|-?\d+(?:\.\d+)?|[A-Za-z_]\w*)\b/g)) scalarNames.add(match[1]);
+  for (const match of source.matchAll(/\b(?:var\s+)?([A-Za-z_]\w*)\s*(?::=|=)\s*(?:len\([^)]*\)|-?\d+(?:\.\d+)?)\b/g)) scalarNames.add(match[1]);
+  let changed = true;
+  while (changed) {
+    changed = false;
+    for (const match of source.matchAll(/\b(?:var\s+)?([A-Za-z_]\w*)\s*(?::=|=)\s*([A-Za-z_]\w*)\b/g)) {
+      if (scalarNames.has(match[2]) && !scalarNames.has(match[1])) { scalarNames.add(match[1]); changed = true; }
+    }
+  }
   for (const match of source.matchAll(/\b([A-Za-z_]\w*)\s+(?:u?int(?:8|16|32|64)?|float(?:32|64)?)\b/g)) scalarNames.add(match[1]);
   let rewritten = source.replace(/for\s+([A-Za-z_]\w*)\s*:=\s*range\s+len\(([^()\n]+)\)\s*\{/g, 'for $1 := 0; $1 < len($2); $1++ {');
   rewritten = rewritten.replace(/for\s+([A-Za-z_]\w*)\s*:=\s*range\s+(-?\d+)\s*\{/g, 'for $1 := 0; $1 < $2; $1++ {');
