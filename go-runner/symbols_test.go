@@ -46,3 +46,10 @@ func main() { emitResult(hasDuplicate([]int{1, 2, 3, 3})) }
 	if result.Error != "" { t.Fatal(result.Error) }
 	if got, want := result.Stdout, "__BLIND75_RESULT__true\n"; got != want { t.Fatalf("stdout = %q, want %q", got, want) }
 }
+
+func TestEvaluateRecoversInterpreterPanics(t *testing.T) {
+	result := evaluate(`package main
+func main() { values := make([]int, 1); _ = values[1] }
+`)
+	if result.Error == "" { t.Fatal("expected an interpreter panic to be returned as an error") }
+}

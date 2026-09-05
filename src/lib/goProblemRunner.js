@@ -2,7 +2,7 @@ import GoWorker from './goRuntime.worker.js?worker&inline';
 import { getThreeTestCases } from '../data/testCases.js';
 import { buildProgram, readProgramOutput } from './goProgram.js';
 
-const TIMEOUT_MS = 30_000;
+const TIMEOUT_MS = 5_000;
 
 function useRuntime(message) {
   return new Promise((resolve) => {
