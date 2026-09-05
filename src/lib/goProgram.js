@@ -97,6 +97,15 @@ func graphValue(root *Node) [][]int { if root == nil { return [][]int{} }; queue
   return `package main\n\nimport (\n  ${imports.join('\n  ')}\n)\n\n${minShim}\n${maxShim}\n\n${helpers.join('\n\n')}\n\nfunc emitResult(value any) { fmt.Printf("${RESULT}%v\\n", value) }\n`;
 }
 
+function rewriteRangeIntegerLoops(source) {
+  const scalarNames = new Set(['amount', 'count', 'k', 'length', 'limit', 'n', 'num', 'size', 'steps', 'total']);
+  for (const match of source.matchAll(/\b(?:var\s+)?([A-Za-z_]\w*)\s*(?::=|=)\s*(?:len\([^)]*\)|-?\d+(?:\.\d+)?|[A-Za-z_]\w*)\b/g)) scalarNames.add(match[1]);
+  for (const match of source.matchAll(/\b([A-Za-z_]\w*)\s+(?:u?int(?:8|16|32|64)?|float(?:32|64)?)\b/g)) scalarNames.add(match[1]);
+  let rewritten = source.replace(/for\s+([A-Za-z_]\w*)\s*:=\s*range\s+len\(([^()\n]+)\)\s*\{/g, 'for $1 := 0; $1 < len($2); $1++ {');
+  rewritten = rewritten.replace(/for\s+([A-Za-z_]\w*)\s*:=\s*range\s+(-?\d+)\s*\{/g, 'for $1 := 0; $1 < $2; $1++ {');
+  return rewritten.replace(/for\s+([A-Za-z_]\w*)\s*:=\s*range\s+([A-Za-z_]\w*)\s*\{/g, (full, index, bound) => scalarNames.has(bound) ? `for ${index} := 0; ${index} < ${bound}; ${index}++ {` : full);
+}
+
 function parseValue(source) {
   const value = source.trim();
   if (/^[01]{8,}$/.test(value)) return Number.parseInt(value, 2);
@@ -187,8 +196,7 @@ export function buildProgram(problem, code, raw) {
   if (/^\s*(package|import)\b/m.test(code)) throw new Error('Write only the function(s) from the starter code. Package and imports are supplied for you.');
   const parsed = parseCase(raw);
   const body = parsed.operationArrays || parsed.flattenedOperations ? operationInvocation(problem, parsed) : normalInvocation(problem, parsed);
-  const runtimeCode = code
-    .replace(/for\s+([A-Za-z_]\w*)\s*:=\s*range\s+len\(([^()\n]+)\)\s*\{/g, 'for $1 := 0; $1 < len($2); $1++ {')
+  const runtimeCode = rewriteRangeIntegerLoops(code)
     .replace(/\bmaps\s*\.\s*Equal\s*\(/g, 'mapsEqual(')
     .replace(/\bslices\s*\.\s*SortFunc\s*\(/g, 'blind75SlicesSortFunc(')
     .replace(/\bslices\s*\.\s*Sort\s*\(/g, 'blind75SlicesSort(')
