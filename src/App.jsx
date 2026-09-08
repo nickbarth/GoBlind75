@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { closeBrackets, closeBracketsKeymap } from '@codemirror/autocomplete';
-import { EditorState } from '@codemirror/state';
-import { defaultKeymap, indentWithTab } from '@codemirror/commands';
+import { EditorState, Transaction } from '@codemirror/state';
+import { defaultKeymap, history, historyKeymap, indentWithTab } from '@codemirror/commands';
 import { go } from '@codemirror/lang-go';
 import { bracketMatching, indentOnInput, indentUnit } from '@codemirror/language';
 import { oneDark } from '@codemirror/theme-one-dark';
@@ -121,8 +121,8 @@ function CodeEditor({ value, onChange, readOnly = false, onRun, focusStarterToke
     const state = EditorState.create({
       doc: value,
       extensions: [
-        lineNumbers(), drawSelection(), highlightActiveLine(), highlightActiveLineGutter(), bracketMatching(), closeBrackets(), indentOnInput(), indentUnit.of('\t'), go(), oneDark,
-        keymap.of([{ key: "Mod-'", run: runFromShortcut }, ...closeBracketsKeymap, ...defaultKeymap, indentWithTab]),
+        lineNumbers(), drawSelection(), highlightActiveLine(), highlightActiveLineGutter(), bracketMatching(), closeBrackets(), indentOnInput(), indentUnit.of('\t'), go(), oneDark, history(),
+        keymap.of([{ key: "Mod-'", run: runFromShortcut }, ...closeBracketsKeymap, ...historyKeymap, ...defaultKeymap, indentWithTab]),
         EditorView.domEventHandlers({ keydown: (event) => {
           if (!isRunShortcut(event)) return false;
           event.preventDefault();
@@ -141,7 +141,7 @@ function CodeEditor({ value, onChange, readOnly = false, onRun, focusStarterToke
   useEffect(() => {
     const view = viewRef.current;
     if (!view || value === view.state.doc.toString()) return;
-    view.dispatch({ changes: { from: 0, to: view.state.doc.length, insert: value } });
+    view.dispatch({ changes: { from: 0, to: view.state.doc.length, insert: value }, annotations: Transaction.addToHistory.of(false) });
   }, [value]);
 
   useEffect(() => {
