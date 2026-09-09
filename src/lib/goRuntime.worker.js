@@ -1,4 +1,5 @@
-import { runnerWasmBase64, wasmExecSource } from '../generated/goRuntimeAssets.js';
+const runnerWasmBase64 = __RUNNER_WASM_BASE64__;
+const wasmExecSource = __WASM_EXEC_SOURCE__;
 
 let ready;
 

@@ -1,12 +1,18 @@
-import GoWorker from './goRuntime.worker.js?worker&inline';
+import { workerSource } from '../generated/goRuntimeWorker.js';
 import { getThreeTestCases } from '../data/testCases.js';
 import { buildProgram, readProgramOutput } from './goProgram.js';
 
 const TIMEOUT_MS = 5_000;
+let workerUrl;
+
+function createWorker() {
+  if (!workerUrl) workerUrl = URL.createObjectURL(new Blob([workerSource], { type: 'text/javascript' }));
+  return new Worker(workerUrl, { name: 'blind75-go-runtime' });
+}
 
 function useRuntime(message) {
   return new Promise((resolve) => {
-    const worker = new GoWorker();
+    const worker = createWorker();
     const timeout = window.setTimeout(() => { worker.terminate(); resolve({ error: `Timed out after ${TIMEOUT_MS / 1000} seconds.` }); }, TIMEOUT_MS);
     worker.onmessage = ({ data }) => { window.clearTimeout(timeout); worker.terminate(); resolve(data.ok ? { results: data.results, result: data.result } : { error: data.error }); };
     worker.onerror = (event) => { window.clearTimeout(timeout); worker.terminate(); resolve({ error: event.message || 'The Go test worker stopped before returning a result.' }); };

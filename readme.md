@@ -25,7 +25,7 @@ make
 
 Then open the local URL printed by Vite, normally `http://localhost:5173`.
 
-The first development start builds `src/generated/goRuntimeAssets.js`. It embeds the Go WebAssembly interpreter and its loader directly into the JavaScript bundle; the generated module is intentionally ignored by Git.
+The first development start builds `src/generated/goRuntimeWorker.js`. It embeds the Go WebAssembly interpreter, its loader, and the test-worker source directly into the JavaScript bundle; the generated module is intentionally ignored by Git.
 
 ## Make targets
 
