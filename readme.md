@@ -25,7 +25,7 @@ make
 
 Then open the local URL printed by Vite, normally `http://localhost:5173`.
 
-The first development start builds `public/go/runner.wasm` and its matching Go WebAssembly loader. Those generated files are intentionally ignored by Git.
+The first development start builds `src/generated/goRuntimeAssets.js`. It embeds the Go WebAssembly interpreter and its loader directly into the JavaScript bundle; the generated module is intentionally ignored by Git.
 
 ## Make targets
 
@@ -33,7 +33,7 @@ The first development start builds `public/go/runner.wasm` and its matching Go W
 | --- | --- |
 | `make` or `make dev` | Build the Go runtime and start Vite in development mode. |
 | `make build` | Produce a production bundle in `dist/`. |
-| `make clean` | Remove generated `dist/`, `public/go/`, and `.cache/` files. |
+| `make clean` | Remove generated `dist/`, `src/generated/`, and `.cache/` files. |
 | `make release` | Clean and create a fresh production bundle. It does not publish or deploy anything. |
 | `make pages` | Build `dist/` for a GitHub Pages project site. |
 
@@ -71,7 +71,7 @@ On desktop, the question list, center content pane, and editor each scroll indep
 
 The app keeps code and completion state in the browser's IndexedDB database (`blind75-go-practice`). No account, server-side storage, or remote code execution is used.
 
-The browser loads the locally built `runner.wasm` file and runs test programs inside a Web Worker.
+The browser runs test programs inside a Web Worker using a Go WebAssembly interpreter embedded in the JavaScript bundle. Once the app itself is available locally, testing does not request a separate runtime file from the network.
 
 ## Artwork attribution
 
@@ -100,7 +100,7 @@ src/
   lib/                     Persistence, test harness, and browser runtime worker
 go-runner/                 Go/Yaegi interpreter compiled to WebAssembly
 scripts/                   Build and fixture-verification scripts
-public/go/                 Generated browser Go runtime (not committed)
+src/generated/             Generated embedded Go runtime module (not committed)
 dist/                      Generated production bundle (not committed)
 ```
 

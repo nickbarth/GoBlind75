@@ -12,7 +12,7 @@ build:
 	$(BUN) run build
 
 clean:
-	rm -rf -- dist public/go .cache
+	rm -rf -- dist src/generated .cache
 
 release: clean
 	$(MAKE) build

@@ -3,9 +3,9 @@ node_modules/
 .npm/
 .bun/
 
-# Vite production output and generated browser Go runtime
+# Vite production output and generated browser Go runtime module
 dist/
-public/go/
+src/generated/
 
 # Local test/build caches and Go binaries
 .cache/

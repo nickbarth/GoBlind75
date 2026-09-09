@@ -1,6 +1,16 @@
+import { runnerWasmBase64, wasmExecSource } from '../generated/goRuntimeAssets.js';
+
 let ready;
 
-async function loadWasmExec(url) {
+function base64ToArrayBuffer(value) {
+  const binary = atob(value);
+  const bytes = new Uint8Array(binary.length);
+  for (let index = 0; index < binary.length; index++) bytes[index] = binary.charCodeAt(index);
+  return bytes.buffer;
+}
+
+async function loadWasmExec() {
+  const url = URL.createObjectURL(new Blob([wasmExecSource], { type: 'text/javascript' }));
   try {
     importScripts(url);
   } catch (error) {
@@ -8,27 +18,19 @@ async function loadWasmExec(url) {
     // importScripts, but the same Go loader is valid as a dynamic ES module.
     if (!(error instanceof TypeError) || !error.message.includes('Module scripts')) throw error;
     await import(/* @vite-ignore */ url);
+  } finally {
+    URL.revokeObjectURL(url);
   }
 }
 
-async function startRuntime(runtimeBase) {
+async function startRuntime() {
   if (ready) return ready;
   ready = (async () => {
-    // Production emits a classic IIFE worker while Vite development serves a
-    // module worker. Resolve root-relative asset paths against the page origin
-    // so either form can load the Go runtime from a worker or blob URL.
-    const wasmExecUrl = new URL(`${runtimeBase}go/wasm_exec.js`, self.location.origin).href;
-    const runnerUrl = new URL(`${runtimeBase}go/runner.wasm`, self.location.origin).href;
-    await loadWasmExec(wasmExecUrl);
+    // The loader and interpreter are compiled into this worker bundle, so a
+    // run never needs to fetch Go runtime assets from the network.
+    await loadWasmExec();
     const go = new Go();
-    const response = await fetch(runnerUrl);
-    if (!response.ok) throw new Error(`Could not load Go runtime (${response.status}).`);
-    let instance;
-    try {
-      ({ instance } = await WebAssembly.instantiateStreaming(response.clone(), go.importObject));
-    } catch {
-      ({ instance } = await WebAssembly.instantiate(await response.arrayBuffer(), go.importObject));
-    }
+    const { instance } = await WebAssembly.instantiate(base64ToArrayBuffer(runnerWasmBase64), go.importObject);
     void go.run(instance);
     await new Promise((resolve, reject) => {
       const timeout = setTimeout(() => reject(new Error('Go runtime did not initialise.')), 10_000);
@@ -44,7 +46,7 @@ async function startRuntime(runtimeBase) {
 
 self.onmessage = async ({ data }) => {
   try {
-    await startRuntime(data.runtimeBase);
+    await startRuntime();
     if (data.action === 'format') {
       self.postMessage({ ok: true, result: self.formatGoProgram(data.source) });
       return;
