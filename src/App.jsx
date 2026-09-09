@@ -7,14 +7,17 @@ import { bracketMatching, indentOnInput, indentUnit } from '@codemirror/language
 import { oneDark } from '@codemirror/theme-one-dark';
 import { drawSelection, EditorView, highlightActiveLine, highlightActiveLineGutter, keymap, lineNumbers } from '@codemirror/view';
 import Markdown from 'react-markdown';
-import goGopher from './assets/go-gopher.svg';
-import hikingGopher from './assets/hiking-gopher.svg';
+import goGopherSvg from './assets/go-gopher.svg?raw';
+import hikingGopherSvg from './assets/hiking-gopher.svg?raw';
 import snapshot from './data/blind75-problems.json';
 import { ProblemDiagram } from './ProblemDiagram.jsx';
 import { clearState, loadState, saveState } from './lib/storage.js';
 import { formatGoCode, runProblem } from './lib/goProblemRunner.js';
 
 const problems = snapshot.problems;
+const inlineSvg = (source) => `data:image/svg+xml,${encodeURIComponent(source)}`;
+const goGopher = inlineSvg(goGopherSvg);
+const hikingGopher = inlineSvg(hikingGopherSvg);
 
 function normalizedStarterCode(source) {
   return source
@@ -224,6 +227,15 @@ export default function App() {
   const [editorFocusToken, setEditorFocusToken] = useState(0);
   const [solutionCopied, setSolutionCopied] = useState(false);
   const contentRef = useRef(null);
+
+  useEffect(() => {
+    const icon = document.createElement('link');
+    icon.rel = 'icon';
+    icon.type = 'image/svg+xml';
+    icon.href = goGopher;
+    document.head.append(icon);
+    return () => icon.remove();
+  }, []);
 
   useEffect(() => {
     let active = true;

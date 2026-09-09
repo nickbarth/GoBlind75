@@ -71,7 +71,7 @@ On desktop, the question list, center content pane, and editor each scroll indep
 
 The app keeps code and completion state in the browser's IndexedDB database (`blind75-go-practice`). No account, server-side storage, or remote code execution is used.
 
-The browser runs test programs inside a Web Worker using a Go WebAssembly interpreter embedded in the JavaScript bundle. Once the app itself is available locally, testing does not request a separate runtime file from the network.
+The browser runs test programs inside a Web Worker using a Go WebAssembly interpreter embedded in the JavaScript bundle. The local Gopher artwork is embedded there as well. Once the app itself is available locally, testing and artwork do not request separate runtime or image files from the network.
 
 ## Artwork attribution
 
