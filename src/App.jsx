@@ -39,7 +39,7 @@ function parseDisplayValue(source) {
   try { return JSON.parse(source.trim().replace(/\((-?\d+(?:\.\d+)?),\s*(-?\d+(?:\.\d+)?)\)/g, '[$1,$2]')); } catch { return source.trim(); }
 }
 
-function goLiteral(value, type = '') {
+function goLiteral(value, type = '', elideType = false) {
   if (value === null) return 'nil';
   if (typeof value === 'boolean' || typeof value === 'number') return String(value);
   if (typeof value === 'string') return JSON.stringify(value);
@@ -54,8 +54,9 @@ function goLiteral(value, type = '') {
       }
       return 'any';
     })();
-    const prefix = type.startsWith('[]') ? type : `[]${elementType}`;
-    return `${prefix}{${value.map((item) => goLiteral(item, elementType)).join(',')}}`;
+    const prefix = elideType ? '' : (type.startsWith('[]') ? type : `[]${elementType}`);
+    const elideNestedType = type.startsWith('[]') && elementType.startsWith('[]');
+    return `${prefix}{${value.map((item) => goLiteral(item, elementType, elideNestedType)).join(',')}}`;
   }
   return String(value);
 }
