@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "bun run build:go && vite",
     "build": "bun scripts/build-app.mjs",
+    "build:single-file": "bun scripts/build-single-file.mjs",
     "build:go": "bun scripts/build-go-runtime.mjs",
     "preview": "vite preview",
     "test": "bun scripts/verify-fixtures.mjs",

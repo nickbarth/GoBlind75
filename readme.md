@@ -27,6 +27,16 @@ Then open the local URL printed by Vite, normally `http://localhost:5173`.
 
 The first development start builds `src/generated/goRuntimeWorker.js`. It embeds the Go WebAssembly interpreter, its loader, and the test-worker source directly into the JavaScript bundle; the generated module is intentionally ignored by Git.
 
+## Single-file offline release
+
+Build a standalone offline release with:
+
+```sh
+make single-file
+```
+
+This creates `dist/GoBlind75.html`. Copy that one file to another machine and open it in a modern browser—no local HTTP server or additional asset files are required. Browser data such as saved solutions is stored locally by that browser.
+
 ## Make targets
 
 | Command | Purpose |
@@ -34,7 +44,8 @@ The first development start builds `src/generated/goRuntimeWorker.js`. It embeds
 | `make` or `make dev` | Build the Go runtime and start Vite in development mode. |
 | `make build` | Produce a production bundle in `dist/`. |
 | `make clean` | Remove generated `dist/`, `src/generated/`, and `.cache/` files. |
-| `make release` | Clean and create a fresh production bundle. It does not publish or deploy anything. |
+| `make single-file` | Create `dist/GoBlind75.html`, a standalone offline release. |
+| `make release` | Clean and create a fresh standalone offline release. It does not publish or deploy anything. |
 | `make pages` | Build `dist/` for a GitHub Pages project site. |
 
 ## GitHub Pages
@@ -51,7 +62,7 @@ By default the generated asset base is `/GoBlind75/`, matching this repository's
 make pages PAGES_BASE=/your-repository-name/
 ```
 
-The generated `dist/` directory is ready to upload through GitHub Pages or a Pages deployment workflow. The target builds locally only; it does not publish anything.
+The generated `dist/index.html` is the same standalone file used for the offline release, so the hosted site does not depend on separate app assets. The download button in the hosted app also provides `GoBlind75.html` for offline use. The target builds locally only; it does not publish anything.
 
 The included GitHub Actions workflow builds and deploys `dist/` after every push to `main`. After the first successful run, the site is available at [nickbarth.github.io/GoBlind75](https://nickbarth.github.io/GoBlind75/).
 

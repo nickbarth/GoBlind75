@@ -102,6 +102,10 @@ function CloseIcon() {
   return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg>;
 }
 
+function DownloadIcon() {
+  return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 19h14" /></svg>;
+}
+
 function FormatIcon() {
   return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h18M3 11l4 4-4 4M11 14h10M11 19h10" /></svg>;
 }
@@ -336,7 +340,7 @@ export default function App() {
     <section className="workspace">
       <header className="workspace-header">
         <div><p className="eyebrow">{selected.category}</p><h1>{selected.title}</h1><Difficulty value={selected.difficulty} /></div>
-        <div className="actions"><IconButton label={listVisible ? 'Hide problems' : 'Show problems'} onClick={() => setListVisible((visible) => !visible)}>{listVisible ? <CloseIcon /> : <MenuIcon />}</IconButton></div>
+        <div className="actions"><a className="icon-button" href="GoBlind75.html" download aria-label="Download offline version" title="Download offline version"><DownloadIcon /></a><IconButton label={listVisible ? 'Hide problems' : 'Show problems'} onClick={() => setListVisible((visible) => !visible)}>{listVisible ? <CloseIcon /> : <MenuIcon />}</IconButton></div>
       </header>
       <section className="workbench">
         <section className="left-pane">
