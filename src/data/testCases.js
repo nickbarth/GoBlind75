@@ -43,7 +43,7 @@ export const EXTRA_TEST_CASES = {
     '["WordDictionary","addWord","search"]\n[[],["a"],["."]]',
   ],
   'search-for-word-ii': ['board=[["a"]]\nwords=["a"]'],
-  'count-number-of-islands': ['grid=[["0"]]'],
+  'count-number-of-islands': ['grid=[[0]]'],
   'pacific-atlantic-water-flow': ['heights=[[1,2],[4,3]]'],
   'course-schedule': ['numCourses=1\nprerequisites=[]'],
   'valid-tree': ['n=1\nedges=[]'],
