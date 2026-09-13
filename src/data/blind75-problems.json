@@ -641,7 +641,7 @@
       "referenceCode": "func climbStairs(n int) int {\n\tif n <= 3 {\n\t\treturn n\n\t}\n\tn1, n2 := 2, 3\n\n\tfor i := 4; i <= n; i++ {\n\t\ttemp := n1 + n2\n\t\tn1 = n2\n\t\tn2 = temp\n\t}\n\treturn n2\n}\n",
       "customTestCases": [
         "n=2",
-        "n=3"
+        "n=7"
       ]
     },
     {
