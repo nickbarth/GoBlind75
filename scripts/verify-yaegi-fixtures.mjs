@@ -4,6 +4,7 @@ import { promisify } from 'node:util';
 import snapshot from '../src/data/blind75-problems.json' with { type: 'json' };
 import { getThreeTestCases } from '../src/data/testCases.js';
 import { buildProgram, readProgramOutput } from '../src/lib/goProgram.js';
+import { matches } from '../src/lib/goProblemRunner.js';
 
 const exec = promisify(execFile);
 const runner = new URL('../.cache/yaegi-fixture-runner', import.meta.url).pathname;
@@ -21,6 +22,7 @@ for (const problem of snapshot.problems) {
       const result = JSON.parse(stdout);
       const parsed = readProgramOutput(result.stdout);
       if (result.error || result.stderr || parsed.error || parsed.result === undefined) failures.push(`${problem.id}: ${raw} => ${result.error || result.stderr || parsed.error || 'no test result'}`);
+      else if (!matches(problem, parsed.result, parsed.result, raw)) failures.push(`${problem.id}: ${raw} => runner rejected its reference result`);
       checked += 1;
     } catch (error) {
       failures.push(`${problem.id}: ${raw} => ${error.message}`);

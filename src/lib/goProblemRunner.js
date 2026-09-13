@@ -44,8 +44,16 @@ const UNORDERED = new Set([
   'pacific-atlantic-water-flow',
   'merge-intervals',
 ]);
-function matches(problem, actual, expected, raw) {
-  if (problem.id === 'two-integer-sum') { const { values } = JSON.parse(JSON.stringify({ values: {} })); const entries = raw.split(/\r?\n/).map((line) => line.split('=')); for (const [key, value] of entries) values[key] = JSON.parse(value); const pair = String(actual).match(/^\[(-?\d+) (-?\d+)\]$/); return Boolean(pair) && pair[1] !== pair[2] && values.nums[Number(pair[1])] + values.nums[Number(pair[2])] === values.target; }
+export function matches(problem, actual, expected, raw) {
+  if (problem.id === 'two-integer-sum') {
+    const values = Object.fromEntries(raw.split(/\r?\n/).map((line) => {
+      const [key, value] = line.split('=');
+      return [key, JSON.parse(value)];
+    }));
+    if (!Array.isArray(actual) || actual.length !== 2 || !actual.every(Number.isInteger)) return false;
+    const [first, second] = actual;
+    return first !== second && first >= 0 && second >= 0 && first < values.nums.length && second < values.nums.length && values.nums[first] + values.nums[second] === values.target;
+  }
   if (problem.id === 'longest-palindromic-substring') { const s = JSON.parse(raw.split('=')[1]); return typeof actual === 'string' && s.includes(actual) && actual === [...actual].reverse().join('') && actual.length === expected.length; }
   const left = UNORDERED.has(problem.id) ? sortNested(actual) : actual;
   const right = UNORDERED.has(problem.id) ? sortNested(expected) : expected;
