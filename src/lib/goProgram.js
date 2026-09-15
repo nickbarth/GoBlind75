@@ -129,11 +129,16 @@ export function parseCase(raw) {
 }
 
 function string(value) { return JSON.stringify(String(value)); }
+function rune(value) {
+  if (Number.isInteger(value)) return String(value);
+  return `'${String(value).replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/\n/g, '\\n').replace(/\r/g, '\\r').replace(/\t/g, '\\t')}'`;
+}
 function literal(value, type) {
   if (type === 'string') return string(value);
   // Numeric byte inputs (for example, a [][]byte island grid containing 0s
   // and 1s) should stay numeric. Character grids still use their byte value.
   if (type === 'byte') return Number.isInteger(value) ? String(value) : String(String(value).charCodeAt(0));
+  if (type === 'rune') return rune(value);
   if (type === 'bool') return value ? 'true' : 'false';
   if (type === 'int' || type === 'float64' || type === 'float32') return String(value);
   if (type === '*ListNode') return `listFrom(${literal(value, '[]int')})`;

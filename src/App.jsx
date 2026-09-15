@@ -42,6 +42,7 @@ function parseDisplayValue(source) {
 function goLiteral(value, type = '', elideType = false) {
   if (value === null) return 'nil';
   if (typeof value === 'boolean' || typeof value === 'number') return String(value);
+  if (type === 'rune' && typeof value === 'string') return `'${value.replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/\n/g, '\\n').replace(/\r/g, '\\r').replace(/\t/g, '\\t')}'`;
   if (typeof value === 'string') return JSON.stringify(value);
   if (Array.isArray(value)) {
     const elementType = type.startsWith('[]') ? type.slice(2) : (() => {
