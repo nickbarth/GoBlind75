@@ -42,6 +42,18 @@ const titles = {
   zeroes: 'Matrix zeroes diagram',
 };
 
+function horizontalOffset(kind, problemId) {
+  if (kind === 'tree-compare') return -20;
+  if (kind.startsWith('tree')) return 50;
+  if (kind === 'container' || kind === 'word-grid') return 15;
+  if (kind === 'linked-list' || kind === 'cycle') return -4;
+  if (kind === 'graph' && problemId === 'clone-graph') return -10;
+  if (kind === 'water-grid') return 2;
+  if (kind === 'paths') return 5;
+  if (kind === 'spiral') return 20;
+  return 0;
+}
+
 function Node({ x, y, value, accent = false, small = false }) {
   return <g><circle cx={x} cy={y} r={small ? 11 : 14} className={accent ? 'diagram-node accent' : 'diagram-node'} /><text x={x} y={y + (small ? 3.5 : 4)} textAnchor="middle" className={small ? 'diagram-small-label' : ''}>{value}</text></g>;
 }
@@ -87,5 +99,5 @@ function Diagram({ kind, problemId }) {
 export function ProblemDiagram({ problemId }) {
   const kind = diagramByProblemId[problemId];
   if (!kind) return null;
-  return <figure className="problem-diagram"><svg viewBox="0 0 320 210" role="img" aria-label={titles[kind]}><defs><marker id="arrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path className="diagram-arrowhead" d="M0 0 7 3.5 0 7z" /></marker><marker id="accent-arrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path className="diagram-accent-arrowhead" d="M0 0 7 3.5 0 7z" /></marker></defs><Diagram kind={kind} problemId={problemId} /></svg><figcaption>{titles[kind]}</figcaption></figure>;
+  return <figure className="problem-diagram"><svg viewBox="0 0 320 210" role="img" aria-label={titles[kind]}><defs><marker id="arrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path className="diagram-arrowhead" d="M0 0 7 3.5 0 7z" /></marker><marker id="accent-arrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path className="diagram-accent-arrowhead" d="M0 0 7 3.5 0 7z" /></marker></defs><g transform={`translate(${horizontalOffset(kind, problemId)} 0)`}><Diagram kind={kind} problemId={problemId} /></g></svg><figcaption>{titles[kind]}</figcaption></figure>;
 }
