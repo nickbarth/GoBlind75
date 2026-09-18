@@ -587,8 +587,8 @@
       "starterCode": "func canFinish(numCourses int, prerequisites [][]int) bool {\n    \n}\n",
       "referenceCode": "func canFinish(numCourses int, prerequisites [][]int) bool {\n\tpreMap := make(map[int][]int)\n\tfor i := 0; i < numCourses; i++ {\n\t\tpreMap[i] = []int{}\n\t}\n\tfor _, prereq := range prerequisites {\n\t\tcrs, pre := prereq[0], prereq[1]\n\t\tpreMap[crs] = append(preMap[crs], pre)\n\t}\n\n\tvisiting := make(map[int]bool)\n\n\tvar dfs func(crs int) bool\n\tdfs = func(crs int) bool {\n\t\tif visiting[crs] {\n\t\t\treturn false\n\t\t}\n\t\tif len(preMap[crs]) == 0 {\n\t\t\treturn true\n\t\t}\n\n\t\tvisiting[crs] = true\n\t\tfor _, pre := range preMap[crs] {\n\t\t\tif !dfs(pre) {\n\t\t\t\treturn false\n\t\t\t}\n\t\t}\n\t\tdelete(visiting, crs)\n\t\tpreMap[crs] = []int{}\n\t\treturn true\n\t}\n\n\tfor c := 0; c < numCourses; c++ {\n\t\tif !dfs(c) {\n\t\t\treturn false\n\t\t}\n\t}\n\treturn true\n}\n",
       "customTestCases": [
-        "numCourses=2\nprerequisites=[[0,1]]",
-        "numCourses=2\nprerequisites=[[0,1],[1,0]]"
+        "numCourses=2\nprerequisites=[[0,1],[1,0]]",
+        "numCourses=6\nprerequisites=[[1,0],[2,0],[3,1],[4,2]]"
       ]
     },
     {
