@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import { closeBrackets, closeBracketsKeymap } from '@codemirror/autocomplete';
 import { EditorState, Transaction } from '@codemirror/state';
 import { defaultKeymap, history, historyKeymap, indentWithTab } from '@codemirror/commands';
@@ -115,11 +115,12 @@ function CopyIcon() {
   return <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="10" height="10" rx="1" /><path d="M15 9V6a1 1 0 0 0-1-1H6a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h3" /></svg>;
 }
 
-function CodeEditor({ value, onChange, readOnly = false, onRun, focusStarterToken, className = '' }) {
+function CodeEditor({ value, onChange, readOnly = false, onRun, focusStarterToken, editorRef, className = '' }) {
   const hostRef = useRef(null);
   const viewRef = useRef(null);
   const runRef = useRef(onRun);
   const changeRef = useRef(onChange);
+  useImperativeHandle(editorRef, () => ({ focus: () => viewRef.current?.focus() }), []);
   useEffect(() => { runRef.current = onRun; }, [onRun]);
   useEffect(() => { changeRef.current = onChange; }, [onChange]);
 
@@ -233,6 +234,7 @@ export default function App() {
   const [editorFocusToken, setEditorFocusToken] = useState(0);
   const [solutionCopied, setSolutionCopied] = useState(false);
   const contentRef = useRef(null);
+  const editorRef = useRef(null);
 
   useEffect(() => {
     const icon = document.createElement('link');
@@ -292,9 +294,14 @@ export default function App() {
           ? current.completedProblemIds
           : [...current.completedProblemIds, selected.id],
       }));
-      setSuccess(selected.title);
+      if (!completed.has(selected.id)) setSuccess(selected.title);
     }
-  }, [code, selected]);
+  }, [code, selected, completed]);
+
+  const dismissSuccess = () => {
+    setSuccess(null);
+    editorRef.current?.focus();
+  };
 
   const resetQuestion = () => {
     setState((current) => {
@@ -356,9 +363,11 @@ export default function App() {
             {tab === 'output' && <TestOutput problem={selected} results={results} running={running} />}
           </div>
         </section>
-        <section className="right-pane editor-section"><header><div><h2>Go</h2><p className="editor-note">Common core packages and functions are <abbr className="supported-details" title="Available automatically: fmt; sort.Ints and sort.Slice; strings.Builder, Contains, Join, Split, and ToLower; strconv.Atoi and Itoa; container/heap.Init, Push, and Pop; math.Inf and integer bounds; maps.Equal; slices.Sort, slices.SortFunc, and slices.Reverse; and cmp.Compare and cmp.Or.">supported</abbr>.</p></div><div className="editor-actions"><IconButton label={formatting ? 'Formatting Go code' : 'Format Go code'} disabled={running || formatting} onClick={formatCode}><FormatIcon /></IconButton><IconButton label="Reset this question's code" disabled={formatting} onClick={resetQuestion}>↻</IconButton><IconButton label={running ? 'Running tests' : 'Run tests'} className="primary" disabled={running || formatting} onClick={run}>{running ? '…' : '▶'}</IconButton></div></header><div className="editor"><CodeEditor value={code} onChange={updateCode} onRun={run} focusStarterToken={hasSavedCode ? undefined : editorFocusToken} /></div></section>
+        <section className="right-pane editor-section"><header><div><h2>Go</h2><p className="editor-note">Common core packages and functions are <abbr className="supported-details" title="Available automatically: fmt; sort.Ints and sort.Slice; strings.Builder, Contains, Join, Split, and ToLower; strconv.Atoi and Itoa; container/heap.Init, Push, and Pop; math.Inf and integer bounds; maps.Equal; slices.Sort, slices.SortFunc, and slices.Reverse; and cmp.Compare and cmp.Or.">supported</abbr>.</p></div><div className="editor-actions"><IconButton label={formatting ? 'Formatting Go code' : 'Format Go code'} disabled={running || formatting} onClick={formatCode}><FormatIcon /></IconButton><IconButton label="Reset this question's code" disabled={formatting} onClick={resetQuestion}>↻</IconButton><IconButton label={running ? 'Running tests' : 'Run tests'} className="primary" disabled={running || formatting} onClick={run}>{running ? '…' : '▶'}</IconButton></div></header><div className="editor"><CodeEditor editorRef={editorRef} value={code} onChange={updateCode} onRun={run} focusStarterToken={hasSavedCode ? undefined : editorFocusToken} /></div></section>
       </section>
     </section>
-    {success && <div className="modal-backdrop" role="presentation"><section className="success-modal" role="dialog" aria-modal="true" aria-label="Question completed"><img className="success-gopher" src={hikingGopher} alt="Hiking Go gopher" /><h2>Success</h2><p>You solved <strong>{success}!</strong></p><button className="primary success-complete" onClick={() => setSuccess(null)}><strong>Complete</strong></button></section></div>}
+    {success && <div className="modal-backdrop" role="presentation"><section className="success-modal" role="dialog" aria-modal="true" aria-label="Question completed" onKeyDown={(event) => {
+      if (event.key === 'Tab') event.preventDefault();
+    }}><img className="success-gopher" src={hikingGopher} alt="Hiking Go gopher" /><h2>Success</h2><p>You solved <strong>{success}!</strong></p><button autoFocus className="primary success-complete" onClick={dismissSuccess}><strong>Complete</strong></button></section></div>}
   </main>;
 }
