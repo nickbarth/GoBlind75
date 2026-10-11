@@ -166,12 +166,20 @@ function emit(expression, type) {
   return `emitResult(${expression})`;
 }
 
-function normalInvocation(problem, parsed) {
+function constructorName(code, type) {
+  const name = `New${type}`;
+  // Keep solutions saved before the constructor rename runnable without rewriting user code.
+  if (!new RegExp(`^\\s*func\\s+${name}\\s*\\(`, 'm').test(code)
+      && /^\s*func\s+Constructor\s*\(/m.test(code)) return 'Constructor';
+  return name;
+}
+
+function normalInvocation(problem, parsed, code) {
   if (problem.id === 'string-encode-and-decode') {
     return `  strs := ${literal(parsed.values.strs, '[]string')}\n  solver := Solution{}\n  ${emit('solver.Decode(solver.Encode(strs))', '[]string')}`;
   }
   if (problem.id === 'serialize-and-deserialize-binary-tree') {
-    return `  root := ${literal(parsed.values.root, '*TreeNode')}\n  codec := Constructor()\n  ${emit('codec.deserialize(codec.serialize(root))', '*TreeNode')}`;
+    return `  root := ${literal(parsed.values.root, '*TreeNode')}\n  codec := ${constructorName(code, 'Codec')}()\n  ${emit('codec.deserialize(codec.serialize(root))', '*TreeNode')}`;
   }
   const signature = functionSignature(problem.starterCode);
   const lines = [];
@@ -186,14 +194,14 @@ function normalInvocation(problem, parsed) {
   return `${lines.join('\n')}\n  ${emit(`${signature.name}(${args})`, signature.returns)}`;
 }
 
-function operationInvocation(problem, parsed) {
+function operationInvocation(problem, parsed, code) {
   const [operations, argsList] = parsed.operationArrays ?? [parsed.flattenedOperations, null];
   const type = problem.starterCode.match(/type\s+(\w+)\s+struct/)?.[1];
   if (!type) throw new Error('Could not find the design type.');
   const methods = [...problem.starterCode.matchAll(/func\s+\([^)]*\)\s*(\w+)\s*\([^)]*\)\s*([^\s{]+)?\s*\{/g)].map((match) => ({ name: match[1], returns: match[2] ?? '' }));
   const methodFor = (operation) => methods.find((method) => method.name.toLowerCase() === String(operation).toLowerCase());
   const values = [];
-  const lines = [`  solver := Constructor()`, `  output := []any{nil}`];
+  const lines = [`  solver := ${constructorName(code, type)}()`, `  output := []any{nil}`];
   for (let index = 1; index < operations.length;) {
     const operation = operations[index];
     index += 1;
@@ -209,7 +217,7 @@ function operationInvocation(problem, parsed) {
 export function buildProgram(problem, code, raw) {
   if (/^\s*(package|import)\b/m.test(code)) throw new Error('Write only the function(s) from the starter code. Package and imports are supplied for you.');
   const parsed = parseCase(raw);
-  const body = parsed.operationArrays || parsed.flattenedOperations ? operationInvocation(problem, parsed) : normalInvocation(problem, parsed);
+  const body = parsed.operationArrays || parsed.flattenedOperations ? operationInvocation(problem, parsed, code) : normalInvocation(problem, parsed, code);
   const runtimeCode = rewriteRangeIntegerLoops(code)
     .replace(/\bmaps\s*\.\s*Equal\s*\(/g, 'mapsEqual(')
     .replace(/\bslices\s*\.\s*SortFunc\s*\(/g, 'blind75SlicesSortFunc(')

@@ -15,17 +15,23 @@ await exec('go', ['build', '-buildvcs=false', '-o', runner, '.'], { cwd: runnerD
 const failures = [];
 let checked = 0;
 for (const problem of snapshot.problems) {
-  for (const raw of getThreeTestCases(problem)) {
-    const source = buildProgram(problem, problem.referenceCode, raw);
-    try {
-      const { stdout } = await exec(runner, [Buffer.from(source).toString('base64')], { maxBuffer: 1024 * 1024 * 4, timeout: 20_000 });
-      const result = JSON.parse(stdout);
-      const parsed = readProgramOutput(result.stdout);
-      if (result.error || result.stderr || parsed.error || parsed.result === undefined) failures.push(`${problem.id}: ${raw} => ${result.error || result.stderr || parsed.error || 'no test result'}`);
-      else if (!matches(problem, parsed.result, parsed.result, raw)) failures.push(`${problem.id}: ${raw} => runner rejected its reference result`);
-      checked += 1;
-    } catch (error) {
-      failures.push(`${problem.id}: ${raw} => ${error.message}`);
+  const versions = [['reference', problem.referenceCode]];
+  if (/func New\w+\(\)/.test(problem.starterCode)) {
+    versions.push(['saved legacy solution', problem.referenceCode.replace(/\bNew(Codec|MedianFinder|PrefixTree|WordDictionary)\b/g, 'Constructor')]);
+  }
+  for (const [version, code] of versions) {
+    for (const raw of getThreeTestCases(problem)) {
+      const source = buildProgram(problem, code, raw);
+      try {
+        const { stdout } = await exec(runner, [Buffer.from(source).toString('base64')], { maxBuffer: 1024 * 1024 * 4, timeout: 20_000 });
+        const result = JSON.parse(stdout);
+        const parsed = readProgramOutput(result.stdout);
+        if (result.error || result.stderr || parsed.error || parsed.result === undefined) failures.push(`${problem.id} (${version}): ${raw} => ${result.error || result.stderr || parsed.error || 'no test result'}`);
+        else if (!matches(problem, parsed.result, parsed.result, raw)) failures.push(`${problem.id} (${version}): ${raw} => runner rejected its reference result`);
+        checked += 1;
+      } catch (error) {
+        failures.push(`${problem.id} (${version}): ${raw} => ${error.message}`);
+      }
     }
   }
 }

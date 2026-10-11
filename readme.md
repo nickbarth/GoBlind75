@@ -94,7 +94,7 @@ The browser runs test programs inside a Web Worker using a Go WebAssembly interp
 # Validate all 75 problem definitions and 225 generated test programs.
 bun run test
 
-# Run all 225 reference fixtures through the same Yaegi-based interpreter core.
+# Run all 225 reference fixtures plus 12 legacy-constructor compatibility cases through Yaegi.
 bun run verify:yaegi
 
 # Test the Go runner package.

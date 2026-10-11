@@ -30,17 +30,17 @@ export const EXTRA_TEST_CASES = {
   'binary-tree-maximum-path-sum': ['root=[-3]'],
   'serialize-and-deserialize-binary-tree': ['root=[1]'],
   'find-median-in-a-data-stream': [
-    '["MedianFinder","addNum","5","findMedian"]',
-    '["MedianFinder","addNum","1","addNum","3","findMedian"]',
+    '["NewMedianFinder","addNum","5","findMedian"]',
+    '["NewMedianFinder","addNum","1","addNum","3","findMedian"]',
   ],
   'search-for-word': ['board=[["A"]]\nword="A"'],
   'implement-prefix-tree': [
-    '["PrefixTree","insert","cat","startsWith","ca","search","car"]',
-    '["PrefixTree","insert","a","search","a"]',
+    '["NewPrefixTree","insert","cat","startsWith","ca","search","car"]',
+    '["NewPrefixTree","insert","a","search","a"]',
   ],
   'design-word-search-data-structure': [
-    '["WordDictionary","addWord","search","search"]\n[[],["bad"],["bad"],[".ad"]]',
-    '["WordDictionary","addWord","search"]\n[[],["a"],["."]]',
+    '["NewWordDictionary","addWord","search","search"]\n[[],["bad"],["bad"],[".ad"]]',
+    '["NewWordDictionary","addWord","search"]\n[[],["a"],["."]]',
   ],
   'search-for-word-ii': ['board=[["a"]]\nwords=["a"]'],
   'count-number-of-islands': ['grid=[[0]]'],
